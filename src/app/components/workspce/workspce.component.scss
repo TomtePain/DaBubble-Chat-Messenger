@@ -1,0 +1,15 @@
+.workspace-container {
+    background-color: white;
+    width: 20%;
+    min-width: 100%; 
+    height: 100%;
+    border-radius: 30px;
+}
+
+.workspace-header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+}

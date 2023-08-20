@@ -7,10 +7,20 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { GeneralViewComponent } from './pages/general-view/general-view.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { ThreadComponent } from './components/thread/thread.component';
+import { WorkspceComponent } from './components/workspce/workspce.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GeneralViewComponent,
+    ChatComponent,
+    ThreadComponent,
+    WorkspceComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
