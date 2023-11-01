@@ -1,15 +1,15 @@
 export const environment = {
   firebase: {
-    projectId: 'dabubble-664',
-    appId: '1:671613952696:web:bbf222cded93b3ae4f8a4d',
-    storageBucket: 'dabubble-664.appspot.com',
-    locationId: 'europe-west',
-    apiKey: 'AIzaSyAOvxwT3Bl67jORKu2gPCK8shxhqjK3ClM',
-    authDomain: 'dabubble-664.firebaseapp.com',
-    messagingSenderId: '671613952696',
+    apiKey: "AIzaSyDmG43qF_eSj30iFKkpwel-lWiLGTUpcj8",
+    authDomain: "da-bubble-own.firebaseapp.com",
+    projectId: "da-bubble-own",
+    storageBucket: "da-bubble-own.appspot.com",
+    messagingSenderId: "199785897732",
+    appId: "1:199785897732:web:45d55fca274013c6147a51"
   },
-  userDb: 'kwusers',
-  channelDb: 'MSchannel',
-  threadDb: 'Threads',
-  messagesDb: 'CH-messages'
+  userDb: 'user',
+  channelDb: 'channel',
+  threadDb: 'threads',
+  messagesDb: 'messages'
 };
+
