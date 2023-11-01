@@ -26,6 +26,7 @@ export class SingelChatHeaderComponent implements OnInit {
   @Input() currentUser: string = '';
   @Input() channelID: string = '';
   channel: any;
+  own: boolean = false;
   channelUser: Array<any> = [];
   allUserDataInfo: Array<any> = [];
   existingUser: Array<any> = [];
@@ -33,11 +34,13 @@ export class SingelChatHeaderComponent implements OnInit {
   channelCreatorName: string = '';
 
 
+
   ngOnInit(): void {
     this.route.params.subscribe(() => {
       this.getCurrentChannelInfo();
       this.checkUserDataFromDb();
     })
+    
   }
 
 
@@ -49,6 +52,7 @@ export class SingelChatHeaderComponent implements OnInit {
       allChannels = result;
       this.channel = allChannels.find(exist => exist.id == this.channelID);
       if (this.channel) {
+        this.own = this.channel.own;
         if (this.channel.ids) {
           this.channel.ids.forEach((element: any) => {
             this.channelUser.push(element);

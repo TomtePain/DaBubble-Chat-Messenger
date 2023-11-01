@@ -19,7 +19,7 @@ export class TreeService {
   userMessages: any = [];
   uid = this.user.userDBId;
   currentSelectedChannel: string | null = null;
-
+  own = false;
   search = false;
   newMessage = false;
 
@@ -57,7 +57,10 @@ export class TreeService {
   async routeToDmChannel(node: any) {
     if (node.id === this.uid) {
       console.log('Messaging oneself');
-      return;
+      this.own = true;
+      // return;
+    } else {
+      this.own = false
     }
   
     const dmChannelsRef = collection(this.firestore, environment.channelDb);
@@ -106,12 +109,12 @@ export class TreeService {
   createNewDm(id: string) {
     const DM = {
       ids: [id, this.user.userDBId],
-      type: 'message'
-
+      type: 'message',
+      own: this.own
     };
-    debugger
+    // debugger
     this.crud.addItem(DM, environment.channelDb).then((docRef) => {
-      debugger
+      // debugger
       this.router.navigate(['/', docRef.id]);
       this.currentSelectedChannel = id;
       this.search = false;
