@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddPeopleToChannelComponent } from '../add-people-to-channel/add-people-to-channel.component';
 import { UserService } from 'src/app/main/services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dialog-add-channel',
@@ -14,7 +15,7 @@ export class DialogAddChannelComponent {
   channelForm: FormGroup;
   channelName='';
   description='';
-  channelPath = 'MSchannel';
+  channelPath = environment.channelDb;
   uid:any = this.user.userDBId;
   constructor(private crud:CrudService, private formBuilder: FormBuilder,public dialog:MatDialog,private dialogRef: MatDialogRef<DialogAddChannelComponent>, private user:UserService){
     this.channelForm = this.formBuilder.group({

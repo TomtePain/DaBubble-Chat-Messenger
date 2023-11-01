@@ -5,6 +5,7 @@ import { CrudService } from '../../../services/crud.service';
 import { AddedUserToChannel } from './added-user-to-channel';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -67,7 +68,7 @@ export class AddPeopleToChannelComponent {
         this.addedToChannelIds.push(this.uid);
         resolve();
       } else {
-        this.crud.getItem('kwusers').subscribe(
+        this.crud.getItem(environment.userDb).subscribe(
           (user) => {
             this.addedToChannelIds = user.map((added: { id: string }) => added.id);
             resolve();

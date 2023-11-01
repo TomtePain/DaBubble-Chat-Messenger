@@ -57,7 +57,7 @@ export class TreeComponent implements OnInit {
   userDmData: any = [];
   dmUserId = '';
   dmIds = [];
-  collection2 = 'kwusers';
+  collection2 = environment.userDb;
  // collection3 = 'environment.channelDb';
 
   channelRef = query(
@@ -114,7 +114,7 @@ export class TreeComponent implements OnInit {
   }
 
   async getUsers() {
-    const userRef = collection(this.firestore, 'kwusers');
+    const userRef = collection(this.firestore, environment.userDb);
 
     const querySnapshot = await getDocs(userRef); // Use getDocs to fetch data once
 
@@ -164,7 +164,8 @@ export class TreeComponent implements OnInit {
     const updatedChannels = [
       {
         name: 'Channels',
-        children: [{ name: 'allgemein', img: 'assets/workspace-images/tag.svg', id: 'allgemein',Type:'channel' },
+        // children: [{ name: 'allgemein', img: 'assets/workspace-images/tag.svg', id: 'allgemein',Type:'channel' },
+        children: [
         ...this.dbChannels.map
           (channel => ({
              id: channel.id, name: channel.name, img: channel.img,type:channel.type })),

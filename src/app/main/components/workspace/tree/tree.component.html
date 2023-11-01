@@ -32,7 +32,7 @@
 
   <mat-tree [dataSource]="messagesSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node">
-      <div class="dm-container"  (click)="this.tree.routeToDmChannel(node)"
+      <div class="dm-container" *ngIf="node.type == 'message'" (click)="this.tree.routeToDmChannel(node)"
       [class.selected]="this.tree.currentSelectedChannel === node.id" >
         <div class="container-img">
           <img class="profile-img-container" src="{{node.img}}" alt="">
