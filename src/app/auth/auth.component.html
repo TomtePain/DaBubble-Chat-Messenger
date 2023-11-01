@@ -1,0 +1,20 @@
+<div class="intro-container" [@fadeOut]="isShown ? 'open' : 'close'">
+    <img src="./assets/images/intro-logo.png" alt="intro logo">
+    <ngx-typed-js [strings]="['DABubble']" [typeSpeed]="80" [startDelay]="800" [showCursor]="false" (completed)="startAnimation()">
+        <h1 class="typing"></h1>
+    </ngx-typed-js>
+</div>
+
+<div class="auth-container">
+    <div class="header">
+        <img src="./assets/images/logo.png" alt="" [@setLogoAnimation]="isShown ? 'open' : 'closed'" class="image">
+        <div class="reg-container" *ngIf="!hideRegister">
+            <p>Neu bei DABubble?</p>
+            <a routerLink="register">Konto erstellen</a>
+        </div>
+    </div>
+    <div class="auth-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+<app-alert></app-alert>

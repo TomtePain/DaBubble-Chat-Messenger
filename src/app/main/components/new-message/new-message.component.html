@@ -1,0 +1,29 @@
+<div class="container">
+    <h3>Neue Nachricht</h3>
+    <input (input)="searching($event)" type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
+    <div *ngFor="let selected of selectedUser">
+        <div >
+            <img [src]="selected.photoURL" alt="">
+            <p>{{selected.fullName}}</p>
+        </div>
+    </div>
+    <div *ngIf="this.tree.search" class="search-container" >
+        <div class="scroll">
+            <div *ngFor="let channel of channelsUser" (click)="this.tree.handleNodeClick(channel)">
+                <div class="search-result">
+                    <p>#</p>
+                    <p>{{channel.name}}</p>
+                </div>
+                
+            </div>
+            <div *ngFor="let user of messageUser; index as i">
+                <div class="search-result" (click)="checkForDm(i)">
+                    <p>@</p>
+                    <img [src]="user.photoURL" alt="">
+                    <p>{{user.fullName}}</p>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>

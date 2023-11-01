@@ -1,0 +1,21 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ThreadMessageComponent } from './thread-message.component';
+
+describe('ThreadMessageComponent', () => {
+  let component: ThreadMessageComponent;
+  let fixture: ComponentFixture<ThreadMessageComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ThreadMessageComponent]
+    });
+    fixture = TestBed.createComponent(ThreadMessageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

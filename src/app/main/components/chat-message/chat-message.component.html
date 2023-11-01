@@ -1,0 +1,90 @@
+<div class="message-chat" [class.own]="messageData.user === userName">
+
+  <div class="reaction-bar">
+    <div *ngFor="let sortedReaction of sortedReactionTypes; let i = index" class="emoji" [ngClass]="{'d-none': i >= 2}" id="emoji-{{sortedReaction}}{{messageDataIndex}}" (click)="toggleReaction(sortedReaction, messageData.id, messageData.reaction)">
+        <img src="assets/images/emoji/emoji-{{sortedReaction}}.png" alt="">
+    </div>
+    <div id="add-reaction-icon" (click)="showMoreEmojis(messageDataIndex)"></div>
+    <ng-container *ngIf="!isThreadMessage">
+    <div id="answer-icon" *ngIf="messageData.threadId; else noThreadId" (click)="openThread(messageData.threadId)">
+      </div>
+      
+      <!-- If messageData.threadId does NOT exist -->
+      <ng-template #noThreadId>
+        <div id="answer-icon" (click)="createThread(messageData.id)">
+        </div>
+      </ng-template>
+    <div id="options-icon" (click)="bubbleEdit(messageDataIndex)" *ngIf="messageData.user == userName"></div>
+    <div class="options" *ngIf="messageData.user == userName ">
+        <div class="bubble-edit d-none" id="bubble-edit{{messageDataIndex}}">
+            <div (click)="openEditMessage(messageData, messageDataIndex)">Nachricht bearbeiten</div>
+        </div>
+    </div>
+  </ng-container>
+</div>
+
+
+  <!-- <img class="avatar" src="assets/images/profile-icons/avatar-1.png" alt=""> -->
+  <img *ngIf="existingUser" class="avatar" src="{{ existingUser.photoURL }}" alt="">
+
+  <div class="message-chat-info">
+      <div class="message-chat-info-header">
+          <h3 *ngIf="existingUser" (click)="viewUsersProfile(existingUser.id)">{{ existingUser.fullName }}</h3>
+          <p>{{ messageData.timestamp | date : 'shortTime' : 'de-DE' }} Uhr</p>
+      </div>
+      <div class="message-chat-info-content" *ngIf="!editActive" #messageChatContent>
+          {{ messageData.message }} <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
+      </div>
+
+      <div *ngIf="editActive" class="editor-container">
+        <div class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent" contentEditable=plaintext-only>
+            {{ messageData.message }}
+        </div>
+        <div class="icon-area">
+            <div class="icon" id="smiley"></div>
+            <div class="edit-button-container">
+                <button class="btn-secondary" (click)="closeEditMessage()">Abbrechen</button>
+                <button class="btn-prime" (click)="saveEditMessage(messageData)">Speichern</button>
+            </div>
+        </div>
+      </div>
+      
+
+        <div class="reaction-view">
+            <ng-container *ngIf="(messageData.reaction && messageData.reactionsTime)">
+                <app-reaction [reactionData]="messageData.reaction" [reactionTimestamps]="messageData.reactionsTime" [messageId]="messageData.id" [channelID]="channelID" class="reaction-container"></app-reaction>
+            </ng-container>
+
+
+        <div class="add-reaction" (click)="showEmojiBubble(messageDataIndex)">
+          <ng-container *ngIf="!isThreadMessage"> 
+             <div class="reaction-hover d-none" id="emoji-container{{messageDataIndex}}">
+              <div *ngFor="let staticReaction of staticReactionTypes" (click)="toggleReaction(staticReaction, messageData.id, messageData.reaction)">
+                  <img src="assets/images/emoji/emoji-{{staticReaction}}.png" alt="">
+              </div>
+          </div> 
+        </ng-container>
+        <ng-container *ngIf="isThreadMessage"> 
+          <div class="reaction-hover d-none" id="thread-emoji-container">
+           <div *ngFor="let staticReaction of staticReactionTypes" (click)="toggleReaction(staticReaction, messageData.id, messageData.reaction)">
+               <img src="assets/images/emoji/emoji-{{staticReaction}}.png" alt="">
+           </div>
+       </div> 
+     </ng-container>
+      </div>
+
+
+<ng-container *ngIf="messageData.threadId && !isThreadMessage">
+      <div class="message-chat-info-footer">
+          <div (click)="openThread(messageData.threadId)">
+            <ng-container *ngIf="amountThreadMessages === 1">{{ amountThreadMessages }} Antwort</ng-container>
+            <ng-container *ngIf="amountThreadMessages > 1">{{ amountThreadMessages }} Antworten</ng-container>
+        </div>
+          <span *ngIf="isLastMessageToday">Letzte Antwort {{lastThreadTimeStamp | date:'shortTime'}}</span>
+          <span *ngIf="!isLastMessageToday">Letzte Antwort {{lastThreadTimeStamp | date:'short'}}</span>
+      </div>
+    </ng-container>
+
+  </div>
+
+</div>

@@ -1,0 +1,24 @@
+<div class="show-channel-user-content">
+
+    <header>
+        <div>Mitglieder</div>
+        <div class="close" (click)="closeDialog()"></div>
+    </header>
+
+    <div class="users-menu">
+        <div class="users-submenu scroll" >
+            <div class="each-user" *ngFor="let user of channelUser;" (click)="viewUsersProfile(user.id)">
+                <img class="avatar" src="{{ user.photoURL }}" alt="">
+                <span class="information-text">{{ user.fullName }}</span>
+            </div>
+        </div>
+
+        <div class="mt-15">
+            <div class="add-member">
+                <div class="add-member-icon"></div>
+                <span class="information-text">Mitglieder hinzufügen</span>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,9 +1,136 @@
+
+* {
+  font-family: 'Nunito' !important;
+}
+
+html,
 body {
-    background-color: rgba(236, 238, 254, 1);
-    margin: 0;
-    padding: 10px;
-    font-family: 'Nunito'!important;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --main-bg-color: #ECEEFE;
+  --purple-1: #444DF2;
+  --purple-2: #797EF3;
+  --purple-3: #535AF1;
+  --text-gray: #686868;
+  --ligth-purple-lines: #ADB0D9;
+  --light-purple-bg: rgba(236, 238, 254, 1);
 }
 
 
+.btn-prime {
+  display: inline-flex;
+  padding: 12px 25px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 25px;
+  background: var(--purple-1, #444DF2);
+  color: white;
+  border: none;
+  cursor: pointer;
 
+  &:hover {
+    border-radius: 25px;
+    background: var(--purple-2, #797EF3);
+  }
+
+  &:active {
+    border-radius: 25px;
+    background: var(--purple-1, #444DF2);
+  }
+
+  &:disabled {
+    border-radius: 25px;
+    background: var(--text-gray, #686868);
+  }
+}
+
+.btn-secondary {
+  display: inline-flex;
+  padding: 12px 25px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 25px;
+  border: 1px solid var(--purple-2, #797EF3);
+  color: var(--purple-1, #444DF2);
+  cursor: pointer;
+
+  &:hover {
+    border-radius: 25px;
+    background: var(--purple-3, #535AF1);
+    color: white;
+  }
+
+  &:active {
+    border-radius: 25px;
+    background: var(--purple-1, #444DF2);
+    color: white;
+  }
+
+  &:disabled {
+    border-radius: 25px;
+    border: 1px solid var(--text-gray, #686868);
+    color: var(--text-gray, #686868);
+  }
+}
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 30px !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.scroll {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+      // display: none;
+      width: 4px;
+      background-color: var(--main-bg-color);
+      background-color: white;
+      border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+      background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background-color: var(--purple-2);
+      border-radius: 30px;
+  }
+}
+
+.material-icons{
+  font-family: 'Material Icons' !important;
+}
+
+.mb-20{
+  margin-bottom: 20px;
+}
+
+.mt-20{
+  margin-top: 20px;
+}
+
+
+// ONLY FOR WORK BY TOM
+
+@media (max-width: 500px) {
+  .header, .workspace-card, .workspace {
+    display: none !important;
+  }
+
+
+}

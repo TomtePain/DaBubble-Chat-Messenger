@@ -1,0 +1,182 @@
+.chat-container {
+  background-color: white;
+  height: 80vh;
+  max-width: 500px;
+  border-radius: 30px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+      // display: none;
+      width: 4px;
+      background-color: var(--main-bg-color);
+      background-color: white;
+      border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+      background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background-color: var(--purple-2);
+      border-radius: 30px;
+  }
+}
+
+.chat-header {
+  height: 50px;
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.06);
+  padding: 25px 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+
+  p {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32.74px;
+
+      span {
+        font-size: 14px;
+        color: var(--purple-2)
+      }
+  }
+}
+
+.right {
+  // width: 192px;
+  display: flex;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: var(--main-bg-color);
+  background-image: url(/assets/images/close.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+      &:hover {
+          background-image: url(/assets/images/icons/person_add_purple.png);
+  }
+
+  p {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 27.28px;
+  }
+
+  .add-member {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background-color: var(--main-bg-color);
+      background-image: url(/assets/images/close.png);
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      &:hover {
+          background-image: url(/assets/images/icons/person_add_purple.png);
+      }
+  }
+}
+
+.chat-content {
+  padding-left: 35px;
+  padding-right: 35px;
+  height: inherit;
+  overflow-x: hidden;
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateX(-20px);
+  }
+
+  to {
+      transform: translateX(0px);
+  }
+}
+
+.chat-top {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 16px;
+  background: var(--main-bg-color);
+
+  div {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 700;
+      gap: 10px;
+  }
+}
+
+.editor-container {
+  width: calc(100% - 70px);
+  padding: 38px 35px;
+}
+
+@media (max-width: 500px) {
+
+  .chat-top {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+  }
+
+  .chat-container {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: white;
+      height: calc(100vh - 80px);
+      border-radius: unset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      .chat-header {
+          padding: 10px 16px;
+
+          .left {
+              p {
+                  font-size: 20px;
+                  line-height: 27.28px;
+              }
+          }
+
+          .right {
+              justify-content: flex-end;
+              width: auto;
+          }
+      }
+  }
+}

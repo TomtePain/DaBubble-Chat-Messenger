@@ -1,0 +1,168 @@
+.mt-20 {
+    margin-top: 20px;
+}
+
+.dialog-edit-content {
+    width: calc(872px - 80px);
+    height: calc(616px - 80px);
+    border-radius: 0px 30px 30px 30px;
+    padding: 40px;
+}
+
+.header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32.74px;
+
+    .header-channel-name {
+        display: flex;
+        align-items: center;
+    }
+
+    .close {
+        background-image: url(/assets/images/close.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+
+        &:hover {
+            background-image: url(/assets/images/closehover.png);
+            background-color: var(--main-bg-color);
+            border-radius: 100%;
+        }
+    }
+}
+
+.section-edit-channel-name,
+.section-edit-channel-description {
+    margin-top: 20px;
+    border: 1px solid var(--ligth-purple-lines);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title-headline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+        margin: 0;
+        font-weight: 700;
+        line-height: 24.55px;
+        font-size: 18px;
+    }
+
+    .edit-btn {
+        background: unset;
+        border: none;
+        outline: none;
+        color: var(--purple-3);
+        font-weight: 600;
+        line-height: 24.55px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+}
+
+.channel-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.information-text {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24.55px;
+}
+
+.pseudoline {
+    border: 1px solid var(--ligth-purple-lines);
+}
+
+.pseudoline-edit {
+    margin-left: auto;
+    margin-right: auto;
+    height: 1px;
+    width: 90%;
+    background: var(--ligth-purple-lines);
+}
+
+.creator {
+    color: var(--purple-3);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32.74px;
+}
+
+.section-btn {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    button {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 24.55px;
+    }
+}
+
+.edit-name {
+    border: 1px solid var(--ligth-purple-lines);
+    border-radius: 40px;
+    min-height: 20px;
+    padding: 18px 20px 18px 20px;
+    color: var(--text-gray);
+    outline: none;
+
+    &:hover {
+        border-color: var(--purple-3);
+    }
+}
+
+.editable {
+    outline: none;
+    width: 100%;
+}
+
+#channel-description-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+@media (max-width: 500px) {
+    .dialog-edit-content {
+        width: unset;
+        height: unset;
+        border-radius: unset;
+        padding: 10px;
+    }
+
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: unset;
+    }
+}

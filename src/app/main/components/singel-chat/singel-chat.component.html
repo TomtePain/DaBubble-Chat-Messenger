@@ -1,0 +1,66 @@
+<div class="chat-flex">
+    <!-- TODO for mobile view
+        <div class="chat-top">
+        <div><img class="arrow-icon" src="/assets/images/icons/arrow_left.png" alt=""><img class="thread-icon"
+                src="/assets/images/icons/workspace-logo.png" alt=""> Code Learning</div> <img class="thread-icon"
+            src="/assets/images/profile-icons/avatar-1.png" alt="">
+    </div> -->
+
+    <div class="chat-container">
+        <app-singel-chat-header class="chat-header" [channelID]="channelId" [currentUser]="userName"
+            (arrayUpdated)="onArrayUpdated($event)"></app-singel-chat-header>
+
+
+        <div class="chat-content scroll">
+
+            <div class="starter-info" *ngIf="userMessages.length <= 0 && channelType == 'message' && channelId != 'allgemein' ">
+                <div class="starter-info-container" *ngFor="let user of existingUser;">
+                    <div class="starter-info-content" *ngIf="user.id != userName">
+                        <img class="starter-info-avatar" src="{{ user.photoURL }}" alt="">
+                        <span (click)="viewUsersProfile(user.id)">{{ user.fullName }}</span>
+                    </div>
+                    <div class="text" *ngIf="user.id != userName">
+                        Diese Unterhaltung findet nur zwischen <span (click)="viewUsersProfile(user.id)">@{{ user.fullName }}</span> und dir statt.
+                    </div>
+                </div>
+            </div>
+
+            <div class="starter-info" *ngIf="userMessages.length <= 0 && channelType == 'channel'">
+                <div class="starter-info-container" *ngFor="let channel of currentChannel">
+                    <div class="starter-info-content" *ngIf="channel">
+                        <span (click)="showChannelDialog()" ># {{ channel.name }}</span>
+                    </div>
+                    <div class="text black" *ngIf="channel">
+                        Das ist der Anfang des Channels <span># {{ channel.name }}</span>.
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngFor="let message of userMessages; let i = index;">
+
+                <ng-container *ngFor="let day of chatDays">
+                    <div class="time-seperator" *ngIf="day.timestamp == message.timestamp">
+                        <div class="line"></div>
+                        <div class="time" *ngIf="!day.today"> {{ day.timestamp | date : 'EEEE, d MMMM' : 'de-DE' }}
+                        </div>
+                        <div class="time" *ngIf="day.today"> {{ day.today }} </div>
+                    </div>
+                </ng-container>
+
+                <app-chat-message [messageData]="message" [messageDataIndex]="i"
+                    [channelID]="channelId"></app-chat-message>
+            </ng-container>
+
+            <div id="anchor"></div>
+        </div>
+
+        <div class="editor-container">
+            <app-editor (scrollToBottom)="scrollToBottom()" [isChatArea]="true" [channelId]="channelId"></app-editor>
+        </div>
+
+    </div>
+
+    <!-- Router for Threads area -->
+    <router-outlet></router-outlet>
+
+</div>

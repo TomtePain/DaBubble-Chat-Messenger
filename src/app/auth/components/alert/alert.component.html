@@ -1,0 +1,5 @@
+<div class="alert-container" *ngIf="showAlert">
+    <div class="alert-content" [ngClass]="{'animation': showAlert}">
+        {{ alertText }}
+    </div>
+</div>

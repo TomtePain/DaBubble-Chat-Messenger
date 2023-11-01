@@ -1,0 +1,18 @@
+<div class="forgotpwd-container">
+    <div class="head">
+        <mat-icon fontIcon="arrow_back" class="arrow-back" routerLink="/auth/login"></mat-icon>
+        <h2>Passwort zurücksetzen</h2>
+    </div>
+    <p>Bitte geben Sie Ihre E-Mail-Adresse ein.</p>
+
+    <form [formGroup]="forgotpwdForm" class="reg-form">
+        <div class="input-box">
+            <mat-icon fontIcon="mail" class="icon"></mat-icon>
+            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com">
+        </div>
+    </form>
+    <p class="hint">Wir senden Ihnen eine E-Mail, über die Sie Ihr Passwort ändern können.</p>
+    <div class="forgetpwd-btns">
+        <button mat-raised-button color="primary" [disabled]="!forgotpwdForm.valid" (click)="sendMail()">E-Mail senden</button>
+    </div>
+</div>

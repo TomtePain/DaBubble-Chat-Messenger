@@ -1,0 +1,153 @@
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0px 24px;
+    margin-top: 16px;
+
+    h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .mat-mdc-icon-button {
+        &:hover {
+            color: #535AF1;
+            background-color: #ECEEFE;
+        }
+
+        &:active {
+            background-color: #ECEEFE !important;
+        }
+
+        &:focus {
+            background-color: #ECEEFE !important;
+        }
+    }
+}
+
+.profile-img {
+    display: flex;
+    justify-content: center;
+
+
+    img {
+        // height: 170px;
+        width: 70px;
+        height: 70px;
+        fill: var(--White, #FFF);
+        border-radius: 100%;
+    }
+}
+
+.profile-info {
+    .name {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+
+        h3 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            color: black;
+        }
+
+        .mat-mdc-button {
+            &:hover {
+                font-weight: 600;
+            }
+        }
+    }
+
+    .status {
+        color: #92C83E;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 15px;
+
+        .status-icon {
+            width: 16.667px;
+            height: 16.667px;
+            background-color: #92C83E;
+            border-radius: 100%;
+        }
+    }
+
+    .mail-container {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+        color: black;
+
+        .mail-address {
+            a {
+                text-decoration: none;
+                color: #1381FF;
+
+                &:visited {
+                    color: #1381FF;
+                }
+
+                &:active {
+                    color: #0f6bd4;
+                }
+            }
+        }
+    }
+}
+
+.profile-edit {
+    display: flex;
+    justify-content: center;
+
+    .input-container {
+
+        margin-bottom: 16px;
+
+        .label {
+            color: black;
+            display: flex;
+            gap: 16px;
+
+            mat-icon {
+                font-size: 30px;
+                height: auto;
+                width: auto;
+            }
+
+            h3 {
+                font-size: 20px;
+                font-weight: 700;
+            }
+        }
+
+        input.input-field {
+            display: flex;
+            width: 270px;
+            padding: 15px 20px;
+            align-items: flex-start;
+            gap: 10px;
+            border-radius: 30px;
+            border: 1px solid var(--ligth-purple-lines, #ADB0D9);
+            outline: none;
+
+            &:focus {
+                border: 1px solid var(--purple-1, #444DF2);
+            }
+        }
+    }
+
+    .is-invalid {
+        border-color: red !important;
+    }
+}
+
+.mat-mdc-dialog-actions {
+    justify-content: center !important;
+    margin-bottom: 32px;
+}

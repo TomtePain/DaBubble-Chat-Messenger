@@ -1,0 +1,242 @@
+.card {
+    box-shadow: 0px 6px 10px 0px #00000033;
+    padding: 40px;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 630px;
+    border-radius: 30px;
+
+}
+
+.image-container {
+    width: 50px;
+    height: 50px;
+    position: relative;
+}
+
+.online-state {
+    position: absolute;
+    width: 14px !important;
+    height: 14px !important;
+    top: 35px;
+    left: 37px;
+    z-index: 2;
+}
+
+input {
+    margin: 0;
+}
+
+h3 {
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+.add-btn {
+    width: fit-content;
+    height: auto;
+}
+
+.container-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.form-container {
+    gap: 20px;
+}
+
+.container-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.colored{
+    color: var(--purple-3);
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.container-select {
+    display: flex;
+    align-items: center;
+    input{
+        cursor: pointer;
+    }
+    p {
+        margin: 0;
+        margin-left: 20px;
+    }
+}
+
+.search-container {
+    display: flex;
+    padding: 4px 20px 4px 20px;
+    gap: 15px;
+    border-radius: 35px;
+    font-size: 18px;
+    align-items: center;
+    margin-top: 15px;
+    cursor: pointer;
+
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 30px;
+    }
+
+    &:hover {
+        background-color: var(--main-bg-color);
+    }
+
+
+}
+
+.add-person-container {
+    overflow-y: auto;
+    margin-left: 20px;
+    background-color: white;
+    position: absolute;
+    border: 1px solid rgb(173, 176, 217);
+    border-radius: 0px 20px 20px 20px;
+    padding: 20px 21px 20px 21px;
+    width: 335px;
+    min-height: 171px;
+    max-height: 180px;
+    display: flex;
+    flex-direction: column;
+    margin-top: -10px;
+
+}
+
+.added-to-channel-container {
+    display: flex;
+    align-items: center;
+}
+
+.added-to-channel-users {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding:  3px 20px 3px 20px;
+    border-radius: 35px;
+    background-color: var(--main-bg-color);
+    cursor: unset;
+    p{
+        margin: 0;
+        font-size: 18px;
+    }
+}
+
+.added-to-channel-img{
+    width: 34px;
+    height: 34px;
+    border-radius: 30px;
+}
+
+.added-user-close{
+    width: 9.86px;
+    height: 9.86px;
+    cursor: pointer;
+}
+
+::ng-deep{
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+        border-radius: 30px !important;
+        overflow-y: visible;
+      }
+}
+
+
+.round-input {
+    width: calc(100% - 40px);
+    border-radius: 30px;
+    border: 1px solid #ADB0D9;
+    padding: 15px 20px 15px 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &:hover {
+        border: 1px solid var(--purple-2);
+    }
+
+    &:focus {
+        outline: none;
+        border: 1px solid var(--purple-3);
+    }
+
+}
+
+.scroll-x {
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+  
+    &::-webkit-scrollbar {
+        // display: none;
+        width: 4px;
+        height: 4px;
+        margin-top: 8px;
+        background-color: var(--main-bg-color);
+        background-color: white;
+        border-radius: 3px;
+    }
+  
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--purple-2);
+        border-radius: 30px;
+    }
+  }
+
+.input-container{
+    min-width: 100px;
+    border: none;
+    outline: none;
+}
+
+.placeholder {
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    /* Allow user interaction with the contenteditable div */
+    color: #aaa;
+    /* Placeholder text color */
+}
+
+.round-input:focus+.placeholder {
+    display: none;
+    /* Hide the placeholder when the div is focused */
+}
+
+// KW New
+.search-user-input-field {
+    border: none;
+    width: 100%;
+    &:focus {
+        outline: none;
+    }
+}

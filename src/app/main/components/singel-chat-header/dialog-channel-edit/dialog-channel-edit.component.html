@@ -1,0 +1,66 @@
+<div class="dialog-edit-content">
+
+    <header class="header">
+        <div class="header-channel-name"><img src="/assets/images/tag.png" alt=""> {{ channelName }}</div>
+        <div class="close" (click)="closeDialog()"></div>
+    </header>
+
+<!-- VIEW WITHOUT EDIT ACTIVE -->
+
+    <div class="section-edit-channel-name" id="channel-name-save">
+        <div class="title-headline">
+            <h2 class="title">Channel-Name</h2>
+            <button class="edit-btn" (click)="viewEditChannelName()">Bearbeiten</button>
+        </div>
+        <span class="channel-name information-text"><img src="/assets/images/tag.png" alt="">{{ channelName }}</span>
+    </div>
+
+<!-- VIEW WITH EDIT ACTIVE -->
+
+    <div class="mt-20 d-none" id="channel-name-edit">
+        <div class="title-headline">
+            <h2 class="title">Channel-Name</h2>
+            <button class="edit-btn" (click)="editChannelName()">Speichern</button>
+        </div>
+        <div class="channel-name information-text edit-name mt-20"><img src="/assets/images/tag.png" alt=""><span class="editable" contentEditable=plaintext-only id="channel-name">{{ channelName }}</span></div>
+    </div>
+
+<!-- VIEW WITHOUT EDIT ACTIVE -->
+
+    <div class="section-edit-channel-description" id="channel-description-save">
+        <div class="title-headline">
+            <h2 class="title">Beschreibung</h2>
+            <button class="edit-btn" (click)="viewEditChannelDescription()">Bearbeiten</button>
+        </div>
+        <span class="information-text">{{ channelDescription }}</span>
+
+        <div class="pseudoline"></div>
+
+        <div class="title-headline">
+            <h2 class="title">Erstellt von</h2>
+        </div>
+        <span class="creator">{{ channelCreatorName }}</span>
+    </div>
+
+<!-- VIEW WITH EDIT ACTIV -->
+
+    <div class="mt-20 d-none" id="channel-description-edit">
+        <div class="title-headline">
+            <h2 class="title">Beschreibung</h2>
+            <button class="edit-btn" (click)="editChannelDescription()">Speichern</button>
+        </div>
+        <span class="information-text edit-name" contentEditable=plaintext-only id="channel-decription">{{ channelDescription }}</span>
+
+        <div class="pseudoline-edit"></div>
+
+        <div class="title-headline">
+            <h2 class="title">Erstellt von</h2>
+        </div>
+        <span class="creator">{{ channelCreatorName }}</span>
+    </div>
+
+
+
+    <div class="section-btn"><button class="btn-prime" (click)="leaveChannel()">Channel verlassen</button></div>
+
+</div>

@@ -1,0 +1,38 @@
+
+
+<div class="editor">
+  <div class="markt-users" *ngIf="searchMarktUsers">
+  <div class="users-box">
+    <div class="user-box" *ngFor="let item of searchResult" (click)="addToMsg(item.fullName)">
+      <div class="image-container">
+        <img src="{{item.photoURL}}" alt="">
+        <img class="online-state"
+          [src]="item.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+
+  <textarea type="text" placeholder="Nachricht an..." id="text" *ngIf="isChatArea" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)"></textarea>
+  <textarea type="text" placeholder="Antworten..." id="thread-text" *ngIf="(isThreadArea && !isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)"></textarea>
+  <textarea type="text" placeholder="Antworten und Thread erstellen..." id="new-thread-text" *ngIf="(isThreadArea && isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)"></textarea>
+  <input type="file" #fileInput (change)="onFileSelect($event)" accept=".pdf, image/*" style="display: none;" />
+
+  <div class="icon-area">
+    <div>
+       <img class="icon" src="/assets/images/plus-icon.png" alt="" />
+      <!-- (click)="fileInput.click()" -->
+      <div class="vertical-separator"></div>
+      <img class="icon" src="/assets/images/reaction-icon.png" alt="" (click)="toggleEmojiPicker()" />
+      <img class="icon" src="/assets/images/add-icon.png" alt="" (click)="updateMessageAndSearch()" />
+    </div>
+    <div>
+      <img class="sendicon" src="/assets/images/send-icon.png" alt="" (click)="addNewMessage()" *ngIf="isChatArea">
+      <img class="sendicon" src="/assets/images/send-icon.png" alt="" (click)="addNewMessageThread()" *ngIf="(isThreadArea && !isNewThread)">
+      <img class="sendicon" src="/assets/images/send-icon.png" alt="" (click)="addNewThread()" *ngIf="(isThreadArea && isNewThread)">
+    </div>
+  </div>
+  
+</div>
+<emoji-mart class="emoji-mart" *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"
+  [darkMode]="false"></emoji-mart>

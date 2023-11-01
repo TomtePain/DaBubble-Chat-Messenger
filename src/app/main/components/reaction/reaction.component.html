@@ -1,0 +1,24 @@
+<ng-container *ngFor="let sortedReaction of sortedReactions">
+  <div *ngIf="sortedReaction.userIds.length !=0"class="reaction-indicator" (click)="toggleReaction( sortedReaction.reaction , messageId, reactionData)">
+    <div class="reaction-hover">
+      <img src="../assets/images/emoji/emoji-{{ sortedReaction.reaction }}.png" alt="" />
+      <div class="reaction-username">
+        <!-- show "Du" if only currentUser has reacted -->
+        <ng-container *ngIf="(sortedReaction.userIds.length === 1) && (sortedReaction.userNames.includes(currentUserDefaultString))">{{currentUserDefaultString}} </ng-container>
+        <!-- show "und Du" if currentUser and others have reacted -->
+        <ng-container *ngIf="(sortedReaction.userIds.length > 1) && (sortedReaction.userIds.length <= reactionUserListMaximum) && (sortedReaction.userNames.includes(currentUserDefaultString))">{{ removeCurrentUserFromArray(sortedReaction.userNames) }} und {{currentUserDefaultString}} </ng-container>
+        <!-- show number of users "und Du" if currentUser and others have reacted, but maximum of list is exceeded -->
+        <ng-container *ngIf="(sortedReaction.userIds.length > reactionUserListMaximum) && (sortedReaction.userNames.includes(currentUserDefaultString))">{{sortedReaction.userIds.length}} andere User und {{currentUserDefaultString}} </ng-container>
+        <!-- show only userName if currentUser has NOT reacted -->
+        <ng-container *ngIf="(sortedReaction.userIds.length <= reactionUserListMaximum) && !(sortedReaction.userNames.includes(currentUserDefaultString))">{{sortedReaction.userNames}} </ng-container>
+        <!-- show number of users if currentUser has NOT reacted and others have reacted, but maximum of list is exceeded -->
+        <ng-container *ngIf="(sortedReaction.userIds.length > reactionUserListMaximum) && !(sortedReaction.userNames.includes(currentUserDefaultString))">{{sortedReaction.userIds.length}} andere User </ng-container>
+      </div>
+      <div *ngIf="(sortedReaction.userIds.length === 1) && (sortedReaction.userNames.includes(currentUserDefaultString))" class="reaction-text">hast reagiert</div>
+      <div *ngIf="(sortedReaction.userIds.length < 2) && (!sortedReaction.userNames.includes(currentUserDefaultString))" class="reaction-text">hat reagiert</div>
+      <div *ngIf="sortedReaction.userIds.length >= 2"class="reaction-text">haben reagiert</div>
+    </div>
+    <img src="../assets/images/emoji/emoji-{{ sortedReaction.reaction }}.png" alt="" />
+    <div class="reaction-count">{{ sortedReaction.userIds.length }}</div>
+  </div>
+</ng-container>

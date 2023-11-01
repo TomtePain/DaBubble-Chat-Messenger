@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'DA-BUBBLE'`, () => {
+  it(`should have as title 'dabubble'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('DA-BUBBLE');
+    expect(app.title).toEqual('dabubble');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('DA-BUBBLE app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('dabubble app is running!');
   });
 });

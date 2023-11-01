@@ -1,0 +1,29 @@
+<div class="header">
+    <img src="./assets/images/logo.png" alt="">
+    <div class="searchbar">
+        <mat-form-field appearance="fill">
+            <mat-label>DABubble durchsuchen</mat-label>
+            <input matInput>
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    <div class="profile" (click)="openMenu()">
+        <span class="login-name">{{ fullName }}</span>
+        <div class="profile-icon">
+            <img [src]="userProfileImage" alt="Profilbild">
+            <div class="status-activ"></div>
+        </div>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu" #profileMenuTrigger="matMenuTrigger">
+            <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-menu #profileMenu="matMenu" class="wasgeht">
+            <button mat-menu-item (click)="openDialog()">
+                <span>Profile</span>
+            </button>
+            <button mat-menu-item>
+                <span (click)="logOutUser()">Log out</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>
+

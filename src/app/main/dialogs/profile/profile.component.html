@@ -1,0 +1,50 @@
+<div class="profile-header">
+    <h2 *ngIf="!profileEdit">Profil</h2>
+    <h2 *ngIf="profileEdit">Dein Profil bearbeiten</h2>
+    <button mat-icon-button mat-dialog-close><mat-icon fontIcon="close"></mat-icon></button>
+</div>
+<div mat-dialog-content class="profile-img">
+    <img src='{{ userProfileImage }}'>
+</div>
+<div mat-dialog-content class="profile-info" *ngIf="!profileEdit">
+    <div class="name">
+        <h3>{{ userFullName }}</h3>
+        <button mat-button color="primary" (click)="editProfile()">Bearbeiten</button>
+    </div>
+    <div class="status">
+        <div class="status-icon"></div>
+        Aktive
+    </div>
+    <div class="mail-container">
+        <div class="mail-icon">
+            <mat-icon fontIcon="mail"></mat-icon>
+        </div>
+        <div class="mail-address">
+            <h4>E-Mail-Adresse</h4>
+            <a href='mailto:{{ userEmail }}'>{{ userEmail }}</a>
+        </div>
+    </div>
+</div>
+
+<div mat-dialog-content class="profile-edit" *ngIf="profileEdit">
+    <form [formGroup]="profileForm">
+        <div class="input-container">
+            <div class="label">
+                <mat-icon fontIcon="account_circle"></mat-icon>
+                <h3>Vollständiger Name</h3>
+            </div>
+            <input type="text" class="input-field" formControlName="fullNameFormControl" [ngClass]="{ 'is-invalid': f.fullNameFormControl.errors}">
+        </div>
+        <div class="input-container">
+            <div class="label">
+                <mat-icon fontIcon="mail"></mat-icon>
+                <h3>E-Mail-Adresse</h3>
+            </div>
+            <input type="email" formControlName="emailFormControl" class="input-field" [ngClass]="{ 'is-invalid': f.emailFormControl.errors}">
+        </div>
+    </form>
+</div>
+<div class="action-bar" mat-dialog-actions *ngIf="profileEdit">
+    <button mat-stroked-button color="primary" (click)="cancelEditProfile()">Abbrechen</button>
+    <button mat-raised-button color="primary" [disabled]="!profileForm.valid" (click)="saveUserData()">Speichern</button>
+</div>

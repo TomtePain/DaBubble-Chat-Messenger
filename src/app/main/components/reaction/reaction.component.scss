@@ -1,0 +1,64 @@
+.reaction-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1;
+    padding: 5px 10px 5px 10px;
+    border-radius: 20px;
+    border: 1px;
+    position: relative;
+
+    background: linear-gradient(0deg, #ffffff, #ffffff);
+
+    border: 1px solid rgba(173, 176, 217, 1);
+
+    img {
+      height: 24px;
+      width: 24px;
+    }
+
+    .reaction-count {
+      font-size: 16px;
+    }
+
+    &:hover {
+      border: 1px solid var(--purple-1);
+
+      .reaction-hover {
+        display: flex;
+      }
+    }
+  }
+
+  .reaction-hover {
+    position: absolute;
+    color: white;
+    // top: -105px;
+    bottom: 42px;
+    display: none;
+    z-index: 2;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    left: 32px;
+    padding: 16px 24px 16px 24px;
+    border-radius: 30px 30px 30px 0px;
+    gap: 5px;
+    background: rgba(68, 77, 242, 1);
+  
+    img {
+      height: 30px;
+      width: 30px;
+    }
+  
+    .reaction-username {
+      font-size: 18px;
+      font-weight: 700;
+    }
+  
+    .reaction-text {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }

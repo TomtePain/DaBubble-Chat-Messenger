@@ -1,0 +1,165 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    width: 420px;
+    height: 620px;
+    border-radius: 30px;
+    padding: 40px;
+    gap: 45px;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0px 24px;
+
+    h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+    }
+}
+
+.close {
+    background-image: url(/assets/images/close.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url(/assets/images/closehover.png);
+        background-color: var(--main-bg-color);
+        border-radius: 100%;
+    }
+}
+
+.profile-img {
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 200px;
+        height: 200px;
+        border-radius: 100%;
+        border: 1px solid lightgray;
+    }
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+
+    .name {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+
+        h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: black;
+        }
+    }
+
+    .status {
+        color: #92C83E;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .status-icon {
+            width: 16.667px;
+            height: 16.667px;
+            background-color: #92C83E;
+            border-radius: 100%;
+        }
+    }
+
+    .status-offline {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        color: var(--text-gray);
+
+        .status-icon-offline {
+            width: 16.667px;
+            height: 16.667px;
+            background-color: var(--text-gray);
+            border-radius: 100%;
+        }
+    }
+
+    .mail-container {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+        color: black;
+
+        .mail-address {
+
+            .mail-adress {
+                font-size: 20px;
+                font-weight: 700;
+                line-height: 27.28px;
+            }
+
+            .link-mail-adress {
+                text-decoration: none;
+                color: #1381FF;
+                font-size: 18px;
+                font-weight: 400;
+                line-height: 24.55px;
+
+                &:visited {
+                    color: #1381FF;
+                }
+
+                &:active {
+                    color: #0f6bd4;
+                }
+            }
+        }
+    }
+}
+
+.btn-profile {
+    width: 164px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24.55px;
+}
+
+@media (max-width: 500px) {
+    .profile {
+        width: auto;
+        height: auto;
+        padding: 40px 20px;
+        gap: 10px;
+    }
+
+    .profile-img {
+        img {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    .profile-info {
+        .name {
+            h3 {
+               font-size: 28px; 
+            }
+        }
+    }
+}

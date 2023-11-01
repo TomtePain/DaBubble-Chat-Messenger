@@ -1,0 +1,57 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DialogProfileviewOfOthersComponent } from 'src/app/main/dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
+import { ProfileComponent } from 'src/app/main/dialogs/profile/profile.component';
+import { CrudService } from 'src/app/main/services/crud.service';
+import { UserService } from 'src/app/main/services/user.service';
+import { environment } from 'src/environments/environment';
+
+@Component({
+  selector: 'app-dialog-show-channel-user',
+  templateUrl: './dialog-show-channel-user.component.html',
+  styleUrls: ['./dialog-show-channel-user.component.scss'],
+  host: {
+    'class': 'show-channel-user-content'
+  }
+})
+export class DialogShowChannelUserComponent implements OnInit {
+
+  channelUser: Array<any>;
+  allUserDataInfo: Array<any> = [];
+  existingUser?: string;
+
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<DialogShowChannelUserComponent>,
+    public dialog: MatDialog,
+    public firestore: Firestore,
+    public crud: CrudService,
+    public userData: UserService,
+    private route: ActivatedRoute,
+    private router: Router) {
+    this.channelUser = data.channelUser;
+  }
+
+
+  ngOnInit(): void {
+
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+  viewUsersProfile(userId:any) {
+    this.dialog.open(DialogProfileviewOfOthersComponent, {
+      data: {
+        userId: userId,
+        userInfo: this.channelUser
+      }
+    });
+  }
+
+
+}

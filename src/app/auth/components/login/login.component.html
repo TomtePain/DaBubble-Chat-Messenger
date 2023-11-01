@@ -1,0 +1,28 @@
+<div class="login-container">
+    <h2>Anmeldung</h2>
+    <p>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</p>
+
+    <form [formGroup]="loginForm" class="login-form" (keydown)="enterSubmit($event)">
+        <div class="input-box">
+            <mat-icon fontIcon="mail" class="icon"></mat-icon>
+            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com" [ngClass]="{'alert': submit && (loginForm.controls.email.errors)}">
+        </div>
+        <div class="input-box">
+            <mat-icon fontIcon="lock" class="icon"></mat-icon>
+            <input type="password" name="password" id="password" formControlName="password" placeholder="Passwort" [ngClass]="{'alert': submit && (loginForm.controls.password.errors)}">
+        </div>
+    </form>
+    <a routerLink="/auth/forgotpassword">Passwort vergessen?</a>
+    <div class="separate">
+        <p>ODER</p>
+    </div>
+
+    <div class="google-login-btn" (click)="googleWithAuth()">
+        <img src="./assets/images/google-icon.png" alt="google-icon">
+        Anmelden mit Google
+    </div>
+    <div class="login-btns">
+        <button mat-raised-button color="primary" (click)="login()">Anmelden</button>
+        <button mat-stroked-button color="primary" (click)="guestLogin()">Gäste-Login</button>
+    </div>
+</div>

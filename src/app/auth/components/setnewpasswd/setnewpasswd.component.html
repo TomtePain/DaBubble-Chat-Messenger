@@ -1,0 +1,20 @@
+<div class="restpwd-container">
+    <div class="head">
+        <mat-icon fontIcon="arrow_back" class="arrow-back" routerLink="/auth/login"></mat-icon>
+        <h2>Passwort zurücksetzen</h2>
+    </div>
+
+    <form [formGroup]="restpwdForm" class="reg-form">
+        <div class="input-box">
+            <mat-icon fontIcon="lock" class="icon"></mat-icon>
+            <input type="password" name="password" id="password" formControlName="password" placeholder="Neues Passwort">
+        </div>
+        <div class="input-box">
+            <mat-icon fontIcon="lock" class="icon"></mat-icon>
+            <input type="password" name="confirmPassword" id="confirmPassword" formControlName="confirmPassword" placeholder="Neues Passwort bestätigen" >
+        </div>
+    </form>
+    <div class="restpwd-btns">
+        <button mat-raised-button color="primary" [disabled]="restpwdForm.invalid" (click)="restPassword()">Passwort ändern</button>
+    </div>
+</div>

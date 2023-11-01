@@ -1,0 +1,38 @@
+<div class="profile">
+    <div class="profile-header">
+        <h2>Profil</h2>
+        <div class="close" (click)="closeDialog()"></div>
+    </div>
+
+    <div class="profile-img">
+        <img src='{{ existingUser.photoURL }}'>
+    </div>
+
+    <div class="profile-info">
+        <div class="name">
+            <h3>{{ existingUser.fullName }}</h3>
+            <div class="status" *ngIf="existingUser.isOnline">
+                <div class="status-icon"></div>
+                Aktiv
+            </div>
+            <div class="status-offline" *ngIf="!existingUser.isOnline">
+                <div class="status-icon-offline"></div>
+                Abwesend
+            </div>
+        </div>
+
+        <div class="mail-container">
+            <div class="mail-icon">
+                <mat-icon fontIcon="mail"></mat-icon>
+            </div>
+            <div class="mail-address">
+                <h4 class="mail-adress">E-Mail-Adresse</h4>
+                <a class="link-mail-adress" href='mailto:{{ existingUser.email }}'>{{ existingUser.email }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex">
+        <button class="btn-prime btn-profile" (click)="messagetoUser(existingUser)"><img src="/assets/images/mode_comment.png" alt="">Nachricht</button>
+    </div>
+</div>

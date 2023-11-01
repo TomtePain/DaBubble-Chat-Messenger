@@ -1,0 +1,48 @@
+    <!-- <div class="chat-top">
+        <div><img class="arrow-icon" src="/assets/images/arrow_left.png" alt=""><img class="thread-icon" src="/assets/images/workspace-logo.png" alt=""> Code Learning</div> <img class="thread-icon" src="/assets/images/profile-icons/avatar-1.png" alt="">
+  </div> -->
+    <div class="chat-container"> 
+
+        <div class="chat-header">
+
+            <div class="left">
+                <p>Thread <span># {{channelName}}</span></p>
+            </div>
+
+            <div class="right"(click)="closeThread()">
+                
+            </div>
+        </div>
+
+        <!-- All Messages -->
+        <div class="chat-content scroll"> 
+            <!-- Start Message starts here -->
+            <ng-container *ngIf="startMessageData$ | async as startMessageData; else noData">
+                <app-chat-message 
+                    [messageData]="startMessageData" 
+                    [userName]="startMessageData?.user" 
+                    [isThreadMessage]="true" 
+                    [channelID]="channelId" >
+                </app-chat-message>
+            </ng-container>
+            
+            <ng-template #noData>
+                <p>No start message data available</p>
+            </ng-template>
+            <!-- Start Message ends here -->
+            <div>{{allMessages.length}} Antworten</div>
+            <!-- Thread messages start here -->
+            <ng-container *ngFor="let message of allMessages; let i = index" >
+                <app-thread-message [messageData]="message" [messageDataIndex]="i" [threadId]="threadId"></app-thread-message>
+            </ng-container>
+            <div id="anchor-thread"></div>
+            <!-- Thread messages end here -->
+        </div>
+        <!-- Messages end-->
+        
+        <!-- Editor -->
+        <div class="editor-container">
+            <app-editor [isThreadArea]="true" [threadId]="threadId" [channelId]="channelId" [isNewThread]="isNew" [mainMessageId]="mainMessageId"></app-editor>
+        </div>
+    <!-- Editor ends-->
+  </div>

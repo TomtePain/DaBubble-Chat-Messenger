@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DA-BUBBLE": {
+    "dabubble": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/da-bubble",
+            "outputPath": "dist/dabubble",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -31,7 +31,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
+              "node_modules/@ctrl/ngx-emoji-mart/picker.css",
+              "src/styles.scss",
+              "src/assets/global-styles/fonts.scss"
             ],
             "scripts": []
           },
@@ -66,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "DA-BUBBLE:build:production"
+              "browserTarget": "dabubble:build:production"
             },
             "development": {
-              "browserTarget": "DA-BUBBLE:build:development"
+              "browserTarget": "dabubble:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DA-BUBBLE:build"
+            "browserTarget": "dabubble:build"
           }
         },
         "test": {
@@ -102,5 +104,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -1,0 +1,21 @@
+<div class="workspace-card " *ngIf="workspace">
+    <div class="workspace-header">
+        <div class="img-title">
+            <img src="assets/workspace-images/workspace-logo.svg" alt="">
+            <h3>Code learning</h3>
+        </div>
+        <div class="edit-container" (click)="createNewMessage()">
+            <button mat-icon-button>
+                <img src="assets/workspace-images/edit_square.svg" alt="">
+            </button>
+        </div>
+    </div>
+    <app-tree class="scroll"></app-tree>
+</div>
+<div class="workspace" (click)="toggleWorkspace()">
+    <div class="rotate">
+        Workspace-Menü schließen
+        <img class="rotate-90" src="assets/workspace-images/workspace-show-menu.svg" alt="">
+    </div>
+</div>
+

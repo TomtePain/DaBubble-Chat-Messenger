@@ -1,0 +1,30 @@
+<div class="search-container" *ngIf="this.tree.newMessage">
+    <app-new-message></app-new-message>
+</div>
+
+<div class="left" *ngIf="!this.tree.newMessage && channel && channel.type == 'channel'" (click)="openDialog()">
+    <p *ngIf="channel"># {{ channel.name }}</p>
+    <img src="assets/images/icons/keyboard_arrow_down.png" alt="">
+</div>
+
+<div class="right" *ngIf="!this.tree.newMessage && channel && channel.type == 'channel'">
+    <div class="members-icons-container" (click)="openDialogShowUser()">
+        <div class="members-icons" *ngIf="existingUser">
+            <img *ngFor="let user of existingUser.slice(0, 3);" src="{{ user.photoURL }}" alt="">
+        </div>
+        <p *ngIf="existingUser">{{ existingUser.length }}</p>
+    </div>
+
+    <div class="add-member"></div>
+</div>
+
+<div class="message-header" *ngIf="!this.tree.newMessage && channel && channel.type == 'message'">
+    <div class="user-container" *ngFor="let user of existingUser" (click)="viewUsersProfile(user.id)">
+        <div class="user-img-container" *ngIf="user.id != currentUser">
+            <img class="user-avatar"  src="{{ user.photoURL }}" alt="">
+            <img class="online-state" *ngIf="!user.isOnline" src="/assets/workspace-images/offline.svg" alt="">
+            <img class="online-state" *ngIf="user.isOnline" src="/assets/workspace-images/online.svg" alt="">
+        </div>
+        <span *ngIf="user.id != currentUser" class="user-name">{{ user.fullName }}</span>
+    </div>
+</div>
