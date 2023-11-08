@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../auth/components/alert/alert.service';
 import { CrudService } from '../main/services/crud.service';
+import { TreeService } from '../main/services/tree.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { CrudService } from '../main/services/crud.service';
 export class AuthService {
   loggedUserId: string = '';
 
-  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService) { }
+  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService ) { }
 
   regUser(regFormValue: any, photoURL: string, accessToChannel: any, isOnline: boolean) {
     const { email, password, fullName } = regFormValue.value;

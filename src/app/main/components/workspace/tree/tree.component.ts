@@ -105,6 +105,10 @@ export class TreeComponent implements OnInit {
       if (message.ids && Array.isArray(message.ids)) {
         const idsNotMatchingUid = message.ids.filter((id: any) => id !== this.uid);
         this.userDmData.push(...idsNotMatchingUid);
+        // //////////////////////////////////////////////////// ADDED 
+        let idIsUID = message.ids.filter((id: any) => id == this.uid);
+        this.userDmData.push(...idIsUID)
+        // //////////////////////////////////////////////////// ADDED 
       }
     });
     this.getUsers();
