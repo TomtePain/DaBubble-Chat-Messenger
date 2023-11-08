@@ -58,7 +58,6 @@ export class TreeComponent implements OnInit {
   dmUserId = '';
   dmIds = [];
   collection2 = environment.userDb;
- // collection3 = 'environment.channelDb';
 
   channelRef = query(
     collection(this.firestore, environment.channelDb),
@@ -96,9 +95,7 @@ export class TreeComponent implements OnInit {
     this.tree.userChannels = channels;
     this.dbChannels = channels;
     this.dmIds = messages;
-    //console.log(messages, ' filtered messages');
     this.updateChannels();
-    //console.log(channels, ' filtered channels');
     this.treeControl.expandAll();
   }
 
@@ -110,7 +107,6 @@ export class TreeComponent implements OnInit {
         this.userDmData.push(...idsNotMatchingUid);
       }
     });
-   // console.log(this.userDmData, 'user has dms with..');
     this.getUsers();
   }
 
@@ -136,14 +132,11 @@ export class TreeComponent implements OnInit {
         isOnline: data['isOnline'],
       };
     });
-    //console.log('Query Result:', this.dbMessages);
     this.updateMessages();
   }
 
 
   updateMessages() {
-    //console.log(this.dbMessages, 'update messages');
-
     const updatedMessages = [
       {
         name: 'Direktnachrichten',
@@ -157,8 +150,6 @@ export class TreeComponent implements OnInit {
         })),
       },
     ];
-    //console.log(updatedMessages, 'message data');
-
     this.messagesSource.data = updatedMessages as any[];
     this.treeControl.expandAll();
   }
@@ -176,9 +167,7 @@ export class TreeComponent implements OnInit {
       }
     ];
     this.channelSource.data = updatedChannels as ChannelNode[];
-    //console.log(this.channelSource.data, 'tree channel');
     this.treeControl.expandAll();
-
   }
 
 

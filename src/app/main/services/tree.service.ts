@@ -19,12 +19,10 @@ export class TreeService {
   userMessages: any = [];
   uid = this.user.userDBId;
   currentSelectedChannel: string | null = null;
-  own = false;
   search = false;
   newMessage = false;
 
   changeArrow(id: string, isTopArrow: boolean) {
-
     const element = document.querySelector(`#${id}`) as HTMLImageElement | null;
     if (element) {
       element.style.rotate = isTopArrow
@@ -42,25 +40,27 @@ export class TreeService {
     }
   }
 
+
   arrow(id: string,) {
     const element = document.querySelector(`#${id}`) as HTMLImageElement | null;
     if (element) {
       element.style.rotate = '90deg'
-
     }
   }
+
 
   openDialog() {
     this.dialog.open(DialogAddChannelComponent);
   }
 
+
   async routeToDmChannel(node: any) {
     if (node.id === this.uid) {
       console.log('Messaging oneself');
-      this.own = true;
-      // return;
+      // this.own = true;
+      return;
     } else {
-      this.own = false
+      // this.own = false
     }
   
     const dmChannelsRef = collection(this.firestore, environment.channelDb);
@@ -104,23 +104,27 @@ export class TreeService {
   }
   
 
-
-
   createNewDm(id: string) {
     const DM = {
       ids: [id, this.user.userDBId],
       type: 'message',
-      own: this.own
     };
-    // debugger
     this.crud.addItem(DM, environment.channelDb).then((docRef) => {
-      // debugger
       this.router.navigate(['/', docRef.id]);
       this.currentSelectedChannel = id;
       this.search = false;
     }).catch((error) => {
       console.error('Error creating DM:', error);
     });
+  }
+
+
+  createOwnDM(id: string) {
+    const DM = {
+      ids: [this.user.userDBId],
+      type: 'message',
+    };
+    this.crud.addItem(DM, environment.channelDb)
   }
 
 
