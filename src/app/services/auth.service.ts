@@ -22,8 +22,13 @@ export class AuthService {
     createUserWithEmailAndPassword(this.auth, email, password).then(resp => {
       const userId = resp.user.uid;
       const itemCollection = collection(this.firestore, environment.userDb);
+      let userData = { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email }
       sendEmailVerification(resp.user);
-      setDoc(doc(itemCollection), { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email });
+      // setDoc(doc(itemCollection), userData);
+      this.crud.addItem(userData, environment.userDb)
+        .then((docRef) => {
+          this.upDateChannelUser(docRef)
+        })
       this.alert('Konto erfolgreich erstellt!');
       this.route.navigateByUrl('auth/login');
     }).catch(err => {
@@ -50,16 +55,11 @@ export class AuthService {
       let userData = { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email };
 
       if (userIsReg.length > 0) {
-        setDoc(doc(itemCollection, userIsReg), { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email });
+        setDoc(doc(itemCollection, userIsReg), userData);
       } else {
-        // setDoc(doc(itemCollection), { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email }) //// CHANGED BY TOM
         this.crud.addItem(userData, environment.userDb)
           .then((docRef) => {
             this.upDateChannelUser(docRef)
-            // let updateItem = doc(collection(this.firestore, environment.channelDb), '8veqP2ohCvtLVgT46sP5');
-            // updateDoc(updateItem, {
-            //   ids: arrayUnion(docRef.id)
-            // });
           });
       }
       this.setUserDataToLocalStorage(userId)
@@ -68,7 +68,7 @@ export class AuthService {
   }
 
 
-  upDateChannelUser(docRef:any) {
+  upDateChannelUser(docRef: any) {
     let updateItem = doc(collection(this.firestore, environment.channelDb), '8veqP2ohCvtLVgT46sP5');
     updateDoc(updateItem, {
       ids: arrayUnion(docRef.id)
@@ -89,7 +89,6 @@ export class AuthService {
       let code = err.code;
       code = code.slice(5);
       this.alert(code);
-
     })
   }
 

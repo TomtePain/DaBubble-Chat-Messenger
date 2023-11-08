@@ -32,16 +32,15 @@
 
   <mat-tree [dataSource]="messagesSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node">
-      <div class="dm-container"  (click)="this.tree.routeToDmChannel(node)"
-      [class.selected]="this.tree.currentSelectedChannel === node.id" >
+      <div class="dm-container"  (click)="this.tree.routeToDmChannel(node)" [class.selected]="this.tree.currentSelectedChannel === node.id" >
         <div class="container-img">
           <img class="profile-img-container" src="{{node.img}}" alt="">
           <img class="online-state" [src]="node.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">
         </div>
         <p>{{node.name}}</p> 
       </div>
-  
     </mat-tree-node>
+
     <mat-tree-node  *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
       <button class="channel-interaction mb-20 mt-20" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="this.tree.changeArrow('arrow-2',false)">
         <div class="arrow-container">

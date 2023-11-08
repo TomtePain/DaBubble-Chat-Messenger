@@ -20,7 +20,7 @@ export class TreeComponent implements OnInit {
 
   private _transformer = (node: any, level: number) => {
     return {
-      expandable: !!node.children && node.children.length > 0,
+      expandable: !!node.children && node.children.length >= 0,
       name: node.name,
       id: node.id,
       img: node.img,
@@ -67,10 +67,10 @@ export class TreeComponent implements OnInit {
   );
 
 
-
   ngOnInit(): void {
     this.getChannels();
   }
+
 
   getChannels() {
     const unsubscribe = onSnapshot(this.channelRef, (querySnapshot) => {
@@ -88,6 +88,7 @@ export class TreeComponent implements OnInit {
     });
   }
 
+
   filterType(result: any) {
     const channels = result.filter((item: any) => item.type === 'channel');
     const messages = result.filter((item: any) => item.type === 'message');
@@ -101,6 +102,7 @@ export class TreeComponent implements OnInit {
     this.treeControl.expandAll();
   }
 
+
   findUsersFromMessageId(messages: any) {
     messages.forEach((message: any) => {
       if (message.ids && Array.isArray(message.ids)) {
@@ -110,8 +112,8 @@ export class TreeComponent implements OnInit {
     });
    // console.log(this.userDmData, 'user has dms with..');
     this.getUsers();
-
   }
+
 
   async getUsers() {
     const userRef = collection(this.firestore, environment.userDb);
@@ -138,6 +140,7 @@ export class TreeComponent implements OnInit {
     this.updateMessages();
   }
 
+
   updateMessages() {
     //console.log(this.dbMessages, 'update messages');
 
@@ -160,11 +163,11 @@ export class TreeComponent implements OnInit {
     this.treeControl.expandAll();
   }
 
+
   updateChannels() {
     const updatedChannels = [
       {
         name: 'Channels',
-        // children: [{ name: 'allgemein', img: 'assets/workspace-images/tag.svg', id: 'allgemein',Type:'channel' },
         children: [
         ...this.dbChannels.map
           (channel => ({
@@ -177,6 +180,7 @@ export class TreeComponent implements OnInit {
     this.treeControl.expandAll();
 
   }
+
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
