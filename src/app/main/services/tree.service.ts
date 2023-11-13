@@ -21,6 +21,7 @@ export class TreeService {
   currentSelectedChannel: string | null = null;
   search = false;
   newMessage = false;
+  own:boolean = false;
 
   changeArrow(id: string, isTopArrow: boolean) {
     const element = document.querySelector(`#${id}`) as HTMLImageElement | null;
@@ -55,11 +56,14 @@ export class TreeService {
 
 
   async routeToDmChannel(node: any) {
-    // if (node.id === this.uid) {
-    //   console.log('Messaging oneself');
-    //   // this.own = true;
-    //   // return;
-    // } 
+    if (node.id === this.uid) {
+      console.log('Messaging oneself');
+      console.log('this is the node id:', node.id)
+      this.own = true;
+      // return;
+    }else {
+      this.own = false;
+    }
 
     const dmChannelsRef = collection(this.firestore, environment.channelDb);
     const querySnapshot1 = await getDocs(
@@ -106,6 +110,7 @@ export class TreeService {
     const DM = {
       ids: [id, this.user.userDBId],
       type: 'message',
+      own: this.own
     };
     this.crud.addItem(DM, environment.channelDb).then((docRef) => {
       this.router.navigate(['/', docRef.id]);
@@ -121,6 +126,7 @@ export class TreeService {
     const DM = {
       ids: docRef.id,
       type: 'message',
+      own: this.own
     };
     this.crud.addItem(DM, environment.channelDb)
   }

@@ -80,7 +80,8 @@ export class TreeComponent implements OnInit {
           type: data['type'],
           name: data['name'],
           img: data['img'],
-          ids: data['ids']
+          ids: data['ids'],
+          own: data['own']
         };
       });
       this.filterType(result);
@@ -106,7 +107,7 @@ export class TreeComponent implements OnInit {
         const idsNotMatchingUid = message.ids.filter((id: any) => id !== this.uid);
         this.userDmData.push(...idsNotMatchingUid);
         // //////////////////////////////////////////////////// ADDED 
-        let idIsUID = message.ids.filter((id: any) => id == this.uid);
+        let idIsUID = message.ids.filter((id: any) => id == this.uid && message.own && message.ids.length == 1);
         this.userDmData.push(...idIsUID)
         // //////////////////////////////////////////////////// ADDED 
       }
