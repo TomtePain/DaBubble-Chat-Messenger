@@ -13,7 +13,7 @@
 
         <div class="chat-content scroll">
 
-            <div class="starter-info" *ngIf="userMessages.length <= 0 && channelType == 'message' && channelId != 'allgemein' ">
+            <div class="starter-info" *ngIf="userMessages.length <= 0 && channelType == 'message' ">
                 <div class="starter-info-container" *ngFor="let user of existingUser;">
                     <div class="starter-info-content" *ngIf="user.id != userName">
                         <img class="starter-info-avatar" src="{{ user.photoURL }}" alt="">

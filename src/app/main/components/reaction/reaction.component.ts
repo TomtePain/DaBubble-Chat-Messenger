@@ -22,7 +22,7 @@ export class ReactionComponent {
   currentUser!:string;
   currentUserDefaultString: string = 'Du';
   reactionUserListMaximum: number = 3;
-  private fetchAllUserDataSubscription!: Subscription;
+  // private fetchAllUserDataSubscription!: Subscription;
 
   constructor(
     public reactionservice: ReactionService,
@@ -36,10 +36,10 @@ export class ReactionComponent {
       this.sortReactions();
   }
 
-  ngOnDestroy() {
-    //Cleaning up the component to avoid memory leaks
-    this.fetchAllUserDataSubscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   //Cleaning up the component to avoid memory leaks
+  //   this.fetchAllUserDataSubscription.unsubscribe();
+  // }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['reactionData'] && !changes['reactionData'].firstChange) {
