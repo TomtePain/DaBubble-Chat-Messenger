@@ -20,8 +20,7 @@
 
   <div class="icon-area">
     <div>
-       <img class="icon" src="/assets/images/plus-icon.png" alt="" />
-      <!-- (click)="fileInput.click()" -->
+       <img class="icon" (click)="fileInput.click()" src="/assets/images/plus-icon.png" alt="" />
       <div class="vertical-separator"></div>
       <img class="icon" src="/assets/images/reaction-icon.png" alt="" (click)="toggleEmojiPicker()" />
       <img class="icon" src="/assets/images/add-icon.png" alt="" (click)="updateMessageAndSearch()" />
