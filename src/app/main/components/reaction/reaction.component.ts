@@ -1,5 +1,4 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CrudService } from '../../services/crud.service';
 import { ReactionService } from '../../services/reaction.service';
@@ -22,7 +21,6 @@ export class ReactionComponent {
   currentUser!:string;
   currentUserDefaultString: string = 'Du';
   reactionUserListMaximum: number = 3;
-  // private fetchAllUserDataSubscription!: Subscription;
 
   constructor(
     public reactionservice: ReactionService,
@@ -35,11 +33,6 @@ export class ReactionComponent {
     // fetch AllUserData onInit to avoid calling them multiple times
       this.sortReactions();
   }
-
-  // ngOnDestroy() {
-  //   //Cleaning up the component to avoid memory leaks
-  //   this.fetchAllUserDataSubscription.unsubscribe();
-  // }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['reactionData'] && !changes['reactionData'].firstChange) {

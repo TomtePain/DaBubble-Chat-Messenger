@@ -40,7 +40,7 @@
                 <mat-icon fontIcon="mail"></mat-icon>
                 <h3>E-Mail-Adresse</h3>
             </div>
-            <input type="email" formControlName="emailFormControl" class="input-field" [ngClass]="{ 'is-invalid': f.emailFormControl.errors}">
+            <input type="email" formControlName="emailFormControl" class="input-field" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngClass]="{ 'is-invalid': f.emailFormControl.errors}">
         </div>
     </form>
 </div>
