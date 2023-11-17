@@ -46,14 +46,14 @@ export class TreeComponent implements OnInit {
   messagesSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
 
-  constructor(private router: Router, public crud: CrudService, public tree: TreeService, private firestore: Firestore, private userid: UserService) {
+  constructor(private router: Router, public crud: CrudService, public tree: TreeService, private firestore: Firestore, private userservice: UserService) {
 
   }
   
   dbMessages: any[] = [];
   dbChannels: { name: string, type: string, id: string, img: string, ids: any[] }[] = [];
   user = [];
-  uid = this.userid.userDBId;
+  uid = this.userservice.userDBId;
   userDmData: any = [];
   dmUserId = '';
   dmIds = [];

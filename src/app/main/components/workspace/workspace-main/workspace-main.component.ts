@@ -12,11 +12,11 @@ import { UserService } from 'src/app/main/services/user.service';
   styleUrls: ['./workspace-main.component.scss']
 })
 export class WorkspaceMainComponent {
-  constructor(public firestore: Firestore, public crud: CrudService, public tree: TreeService, private user:UserService) {
+  constructor(public firestore: Firestore, public crud: CrudService, public tree: TreeService, private userservice:UserService) {
 
   }
 workspace:boolean=true;
-  channelPath = `MSuser/${this.user.userDBId}/channel`;
+  channelPath = `MSuser/${this.userservice.userDBId}/channel`;
   channelItem = {
     name: 'neuer Channel',
     messages: []

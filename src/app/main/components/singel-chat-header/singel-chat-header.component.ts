@@ -18,7 +18,7 @@ import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profile
 })
 export class SingelChatHeaderComponent implements OnInit {
 
-  constructor(public tree: TreeService, public firestore: Firestore, public crud: CrudService, public userData: UserService, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(public tree: TreeService, public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, public dialog: MatDialog) {
 
   }
 
@@ -38,7 +38,12 @@ export class SingelChatHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(() => {
       this.getCurrentChannelInfo();
-      this.checkUserDataFromDb();
+      
+      setTimeout(() => {
+        this.checkUserDataFromDb();
+      }, 2000);
+      
+      
     })
     
   }
@@ -65,19 +70,16 @@ export class SingelChatHeaderComponent implements OnInit {
 
   checkUserDataFromDb() {
     this.existingUser = [];
-    this.crud.getItem(environment.userDb).subscribe((result) => {
-      this.allUserDataInfo = result;
-      this.channelUser.forEach(element => {
-        let existUser = this.allUserDataInfo.find((exist) => exist.id == element);
-        this.existingUser.push(existUser);
-        this.arrayUpdated.emit(this.existingUser);
-      });
-      if (this.channel) {
-        let creator = this.allUserDataInfo.find((exist) => exist.id == this.channel.creator);
-        if (creator) { this.channelCreatorName = creator.fullName }
-        else { this.channelCreatorName = ''; }
-      }
+    this.allUserDataInfo = this.userservice.allUsers;
+    this.channelUser.forEach(element => {
+      let existUser = this.allUserDataInfo.find((exist) => exist.id == element);
+      this.existingUser.push(existUser);
     });
+    if (this.channel) {
+      let creator = this.allUserDataInfo.find((exist) => exist.id == this.channel.creator);
+      if (creator) { this.channelCreatorName = creator.fullName }
+      else { this.channelCreatorName = ''; }
+    }
   }
 
   openDialog() {

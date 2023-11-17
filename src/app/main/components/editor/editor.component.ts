@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { DocumentReference, Firestore, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
+import { DocumentReference, Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { CrudService } from '../../services/crud.service';
 import { UserService } from '../../services/user.service';
@@ -31,7 +31,7 @@ export class EditorComponent implements OnInit {
   searchUserInput: string = '';
   lastIndexOfAt: number = 0;
   timestamp: any;
-  userName: any = this.userService.userDBId;
+  userName: any = this.userservice.userDBId;
   user: Array<any> = [];
   channelUsers: Array<any> = [];
   showEmojiPicker = false;
@@ -39,7 +39,7 @@ export class EditorComponent implements OnInit {
   lastAtPosition = -1;
 
 
-  constructor(public firestore: Firestore, public crud: CrudService, public userService: UserService, private route: ActivatedRoute, private router: Router, private editorService: EditorService, public dialog: MatDialog) {}
+  constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, private editorService: EditorService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.editorService.subSingelData(this.channelId)

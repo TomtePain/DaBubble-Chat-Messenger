@@ -16,8 +16,8 @@ export class DialogAddChannelComponent {
   channelName='';
   description='';
   channelPath = environment.channelDb;
-  uid:any = this.user.userDBId;
-  constructor(private crud:CrudService, private formBuilder: FormBuilder,public dialog:MatDialog,private dialogRef: MatDialogRef<DialogAddChannelComponent>, private user:UserService){
+  uid:any = this.userservice.userDBId;
+  constructor(private crud:CrudService, private formBuilder: FormBuilder,public dialog:MatDialog,private dialogRef: MatDialogRef<DialogAddChannelComponent>, private userservice:UserService){
     this.channelForm = this.formBuilder.group({
       channelName: ['', [Validators.required, Validators.minLength(3)]],
       description: ['']

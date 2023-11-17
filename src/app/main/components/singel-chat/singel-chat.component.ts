@@ -35,7 +35,7 @@ export class SingelChatComponent implements OnInit {
   channelType:string = '';
   allgemein: string = '';
 
-  constructor(public tree:TreeService, public firestore: Firestore, public crud: CrudService, private elementRef: ElementRef, public userData: UserService, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(public tree:TreeService, public firestore: Firestore, public crud: CrudService, private elementRef: ElementRef, public userservice: UserService, private route: ActivatedRoute, public dialog: MatDialog) {
     registerLocaleData(localeDe, 'de-DE', localeDeExtra);
   }
 
@@ -62,7 +62,7 @@ export class SingelChatComponent implements OnInit {
   }
 
   getUserName() {
-    this.userName = this.userData.userDBId;
+    this.userName = this.userservice.userDBId;
   }
 
   getMessages() {

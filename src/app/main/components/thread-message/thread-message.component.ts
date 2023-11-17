@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ReactionService } from '../../services/reaction.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-thread-message',
@@ -24,7 +25,7 @@ export class ThreadMessageComponent implements OnInit{
   allUserDataInfo:Array<any> = [];
   existingUser:any;
 
-  constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog,) {}
+  constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService) {}
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -76,11 +77,9 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   checkUserDataFromDb() {
-    this.crud.getItem(environment.userDb).subscribe((result) => {
-      this.allUserDataInfo = result;
-      let existUser = this.allUserDataInfo.find(exist => exist.id == this.messageData['user']);
-      this.existingUser = existUser;
-    })
+    this.allUserDataInfo = this.userservice.allUsers;
+    let existUser = this.allUserDataInfo.find(exist => exist.id == this.messageData['user']);
+    this.existingUser = existUser;
   }
 
   toggleReaction(type: string, messageId: string, reactionData: any) {

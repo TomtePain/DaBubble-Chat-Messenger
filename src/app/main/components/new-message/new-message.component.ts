@@ -9,13 +9,12 @@ import { UserService} from '../../services/user.service';
   styleUrls: ['./new-message.component.scss']
 })
 export class NewMessageComponent {
-  messageUser: any = [];
+  messageUser: any = this.userservice.allUsers;
   channelsUser: any = [];
   selectedUser: any = [];
-  constructor(private crud: CrudService, public tree: TreeService, private user: UserService) {
-    this.crud.getItem('kwusers').subscribe((response)=>{
-      this.messageUser = response;      
-    })
+
+  constructor(private crud: CrudService, public tree: TreeService, private userservice: UserService) {
+   
   }
 
 

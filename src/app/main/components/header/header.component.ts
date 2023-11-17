@@ -6,7 +6,6 @@ import { UserService } from '../../services/user.service';
 import { Firestore } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { UserProfile } from 'src/app/interfaces/user-profile';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -17,20 +16,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild('profileMenuTrigger') profileMenuTrigger: MatMenuTrigger | undefined;
   fullName: string = '';
   userProfileImage: string = '';
-  subscribtion$: Subscription;
-  constructor(public dialog: MatDialog, private userService: UserService, public auth: Auth, private firestore: Firestore) {
-    this.subscribtion$ = this.userService.getUserData().subscribe(resp =>{});
-    this.fullName = '';
-    this.userProfileImage = '';
+
+  constructor(public dialog: MatDialog, private userservice: UserService, public auth: Auth, private firestore: Firestore) {
   }
 
 
   ngOnInit(): void {
-    this.setUserData();
+    setTimeout(() => {
+      this.setUserData();
+    }, 2000);
+
   }
 
   ngOnDestroy() {
-    this.subscribtion$.unsubscribe();
     this.fullName = '';
     this.userProfileImage = '';    
   }
@@ -47,15 +45,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logOutUser() {
-    this.userService.logOut();
+    this.userservice.logOut();
     window.location.reload();
   }
 
   setUserData() {
-    this.subscribtion$ = this.userService.getUserData().subscribe((resp) => {
-      let data:UserProfile = resp as UserProfile;
-      this.fullName = data.fullName;
-      this.userProfileImage = data.photoURL;      
-    })
+    let data: UserProfile = this.userservice.loginUser as UserProfile;
+    this.fullName = data.fullName;
+    this.userProfileImage = data.photoURL;
   }
 }

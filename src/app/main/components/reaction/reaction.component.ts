@@ -16,7 +16,7 @@ export class ReactionComponent {
   @Input() messageId: any;
   @Input() channelID!: string;
   @Input() threadId!: string;
-  allUserDataInfo: Array<any> = [];
+  allUserDataInfo: Array<any> = this.userservice.allUsers;
   sortedReactions: any[] = [];
   sortedReactionUserNamesModified: string[] = [];
   currentUser!:string;
@@ -27,17 +27,13 @@ export class ReactionComponent {
   constructor(
     public reactionservice: ReactionService,
     public crud: CrudService,
-    public userData: UserService
+    public userservice: UserService
   ) {}
 
   ngOnInit() {
     this.getCurrentUser();
     // fetch AllUserData onInit to avoid calling them multiple times
-    this.fetchAllUserDataSubscription = this.fetchAllUserData().subscribe((result) => {
-      this.allUserDataInfo = result;
       this.sortReactions();
-    });
-
   }
 
   ngOnDestroy() {

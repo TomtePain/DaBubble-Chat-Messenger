@@ -21,7 +21,7 @@ export class DialogChannelEditComponent implements OnInit {
   currentUser: string;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, public userData: UserService, private route: ActivatedRoute, private router: Router) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router) {
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescritpion;
     this.channelUser = data.channelUser;

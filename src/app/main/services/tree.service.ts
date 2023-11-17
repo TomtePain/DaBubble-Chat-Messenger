@@ -12,12 +12,12 @@ import { environment } from 'src/environments/environment';
 })
 export class TreeService {
 
-  constructor(public dialog: MatDialog, private firestore: Firestore, public router: Router, private user: UserService, private crud: CrudService) { }
+  constructor(public dialog: MatDialog, private firestore: Firestore, public router: Router, private userservice: UserService, private crud: CrudService) { }
   clickedTop: boolean = false;
   clickedBottom: boolean = false;
   userChannels: any = [];
   userMessages: any = [];
-  uid = this.user.userDBId;
+  uid = this.userservice.userDBId;
   currentSelectedChannel: string | null = null;
   search = false;
   newMessage = false;
@@ -108,7 +108,7 @@ export class TreeService {
 
   createNewDm(id: string) {
     const DM = {
-      ids: [id, this.user.userDBId],
+      ids: [id, this.userservice.userDBId],
       type: 'message',
       own: this.own
     };

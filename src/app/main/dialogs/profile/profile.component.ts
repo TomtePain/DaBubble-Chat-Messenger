@@ -24,7 +24,7 @@ export class ProfileComponent {
 
   });
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userService: UserService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService) {
     this.setData();
   }
   get f() { return this.profileForm.controls; }
@@ -37,22 +37,21 @@ export class ProfileComponent {
   }
 
   setData() {
-    this.userService.getUserData().subscribe(resp => {
-      let userData: UserProfile = resp as UserProfile;
+ 
+      let userData: UserProfile = this.userservice.loginUser as UserProfile;
       this.userFullName = userData.fullName;
       this.userEmail = userData.email;
       this.userProfileImage = userData.photoURL;
       this.profileForm.controls.emailFormControl.setValue(userData.email);
       this.profileForm.controls.fullNameFormControl.setValue(userData.fullName);
-    })
-    
   }
+  
 
   saveUserData() {
     let fromFullname = this.profileForm.controls.fullNameFormControl.value;
     let fromEmail = this.profileForm.controls.emailFormControl.value;
     if (fromFullname !== null && fromEmail !== null) {
-      this.userService.saveUserData(fromFullname, fromEmail);
+      this.userservice.saveUserData(fromFullname, fromEmail);
       this.profileEdit = false;
   } else {
       // TODO: die Werte null

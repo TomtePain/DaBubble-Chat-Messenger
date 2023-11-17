@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { user } from '@angular/fire/auth';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-chat-message',
@@ -42,6 +43,7 @@ export class ChatMessageComponent implements OnInit {
     public firestore: Firestore,
     public crud: CrudService,
     private reactionservice: ReactionService,
+    private userservice:UserService,
     private router: Router,
     public dialog: MatDialog,
   ) {}
@@ -195,11 +197,9 @@ export class ChatMessageComponent implements OnInit {
   }
 
   checkUserDataFromDb() {
-    this.crud.getItem(environment.userDb).subscribe((result) => {
-      this.allUserDataInfo = result;
-      let existUser = this.allUserDataInfo.find((exist) => exist.id == this.messageData['user']);
-      this.existingUser = existUser;
-    });
+    this.allUserDataInfo = this.userservice.allUsers;
+    let existUser = this.allUserDataInfo.find((exist) => exist.id == this.messageData['user']);
+    this.existingUser = existUser;
   }
 
   getCurrentUser() {

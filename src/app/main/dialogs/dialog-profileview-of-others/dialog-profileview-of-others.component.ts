@@ -24,7 +24,6 @@ export class DialogProfileviewOfOthersComponent implements OnInit {
     public dialog: MatDialog,
     public firestore: Firestore,
     public crud: CrudService,
-    public userData: UserService,
     public tree: TreeService) {
     this.channelUser = data.userInfo;
     this.userId = data.userId;

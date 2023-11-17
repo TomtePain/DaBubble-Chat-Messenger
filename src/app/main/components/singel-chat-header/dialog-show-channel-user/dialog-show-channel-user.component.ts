@@ -1,11 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 import { DialogProfileviewOfOthersComponent } from 'src/app/main/dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { ProfileComponent } from 'src/app/main/dialogs/profile/profile.component';
 import { CrudService } from 'src/app/main/services/crud.service';
-import { UserService } from 'src/app/main/services/user.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -28,10 +26,7 @@ export class DialogShowChannelUserComponent implements OnInit {
     private dialogRef: MatDialogRef<DialogShowChannelUserComponent>,
     public dialog: MatDialog,
     public firestore: Firestore,
-    public crud: CrudService,
-    public userData: UserService,
-    private route: ActivatedRoute,
-    private router: Router) {
+    public crud: CrudService) {
     this.channelUser = data.channelUser;
   }
 
