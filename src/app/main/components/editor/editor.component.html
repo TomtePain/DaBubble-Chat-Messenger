@@ -17,6 +17,10 @@
   <textarea type="text" placeholder="Antworten..." id="thread-text" *ngIf="(isThreadArea && !isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)"></textarea>
   <textarea type="text" placeholder="Antworten und Thread erstellen..." id="new-thread-text" *ngIf="(isThreadArea && isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)"></textarea>
   <input type="file" #fileInput (change)="onFileSelect($event)" accept=".pdf, image/*" style="display: none;" />
+  <div class="uploaded-file-container" *ngIf="uploadedData">
+    <img src="{{ editorService.fileUrl }}" alt="" style="width: 100px; border-radius: 10px;">
+    <span>{{ uploadedDataName }}</span>
+  </div>
 
   <div class="icon-area">
     <div>

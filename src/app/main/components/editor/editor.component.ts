@@ -37,9 +37,11 @@ export class EditorComponent implements OnInit {
   showEmojiPicker = false;
   message = '';
   lastAtPosition = -1;
+  uploadedData: boolean = false;
+  uploadedDataName:string = '';
 
 
-  constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, private editorService: EditorService, public dialog: MatDialog) {}
+  constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.editorService.subSingelData(this.channelId)
@@ -49,17 +51,26 @@ export class EditorComponent implements OnInit {
   addNewMessage() {
     let timeStamp = new Date();
     let content: any = document.getElementById('text');
+    let fileURL;
+
+    if(this.editorService.fileUrl == '') {
+      fileURL = false;
+    } else {
+      fileURL = this.editorService.fileUrl;
+    }
 
     let newMessage = {
       user: this.userName,
       timestamp: timeStamp.getTime(),
       message: content.value,
-      uploadFile: this.editorService.fileUrl,
+      uploadFile: fileURL,
     }
+
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.channelDb + '/' + this.channelId + '/' + 'messages');
       content.value = '';
       this.editorService.fileUrl = '';
+      this.uploadedDataName = '';
       setTimeout(() => {
         this.scrollToBottom.emit()
       }, 500)
@@ -300,6 +311,11 @@ export class EditorComponent implements OnInit {
         // Senden zum Server
         this.showUploadDialog('hochgeladen');
         this.editorService.uploadData(file);
+        this.uploadedData = true;
+        this.uploadedDataName = file.name;        
+        setTimeout(() => {
+          this.dialog.closeAll();
+        }, 500);
       } else {
         this.showUploadDialog('big data');
       }
