@@ -7,13 +7,14 @@ import { AlertService } from '../auth/components/alert/alert.service';
 import { CrudService } from '../main/services/crud.service';
 import { TreeService } from '../main/services/tree.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   loggedUserId: string = '';
 
-  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService ) { }
+  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService, private tree: TreeService ) { }
 
   regUser(regFormValue: any, photoURL: string, accessToChannel: any, isOnline: boolean) {
     const { email, password, fullName } = regFormValue.value;
@@ -28,7 +29,8 @@ export class AuthService {
       // setDoc(doc(itemCollection), userData);
       this.crud.addItem(userData, environment.userDb)
         .then((docRef) => {
-          this.upDateChannelUser(docRef)
+          this.upDateChannelUser(docRef);
+          this.tree.createOwnDM(docRef);
         })
       this.alert('Konto erfolgreich erstellt!');
       this.route.navigateByUrl('auth/login');
@@ -60,7 +62,8 @@ export class AuthService {
       } else {
         this.crud.addItem(userData, environment.userDb)
           .then((docRef) => {
-            this.upDateChannelUser(docRef)
+            this.upDateChannelUser(docRef);
+            this.tree.createOwnDM(docRef);
           });
       }
       this.setUserDataToLocalStorage(userId)

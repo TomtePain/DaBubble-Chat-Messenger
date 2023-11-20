@@ -59,8 +59,9 @@ export class TreeService {
     if (node.id === this.uid) {
       console.log('Messaging oneself');
       console.log('this is the node id:', node.id)
-      this.own = true;
-      // return;
+      // this.own = true;
+      this.routeToOwnDM();
+      return;
     }else {
       this.own = false;
     }
@@ -124,11 +125,19 @@ export class TreeService {
 
   createOwnDM(docRef: any) {
     const DM = {
-      ids: docRef.id,
+      ids: [docRef.id],
       type: 'message',
-      own: this.own
+      own: true
     };
     this.crud.addItem(DM, environment.channelDb)
+  }
+
+
+  routeToOwnDM() {
+    this.crud.getItem(environment.channelDb).subscribe((channel) => {
+      let ownMessage = channel.find((exist: { ids: string | null; }) => exist.ids == this.uid)
+      this.router.navigate(['/', ownMessage.id]);
+    })
   }
 
 
