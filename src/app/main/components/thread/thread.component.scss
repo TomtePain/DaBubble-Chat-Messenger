@@ -1,6 +1,8 @@
 .chat-container {
   background-color: white;
   height: 80vh;
+  min-width: 300px;
+  width: 100%;
   max-width: 500px;
   border-radius: 30px;
   overflow: hidden;
@@ -108,6 +110,27 @@
   height: inherit;
   overflow-x: hidden;
 }
+
+.separator {
+  color: var(--light-purple-thread);
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+
+  .threadanswers {
+    width: 33%;
+  }
+
+  .line {
+    border: 1px solid;
+    border-color: var(--light-purple-thread);
+    width: 66%;
+  }
+}
+
+
 
 @keyframes slideIn {
   from {

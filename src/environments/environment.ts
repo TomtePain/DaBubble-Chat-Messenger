@@ -11,6 +11,7 @@ export const environment = {
   userDb: 'user',
   channelDb: 'channel',
   threadDb: 'threads',
-  messagesDb: 'messages'
+  messagesDb: 'messages',
+  mainChannel: '/8veqP2ohCvtLVgT46sP5' //id of "Allgemein" channel
 };
 

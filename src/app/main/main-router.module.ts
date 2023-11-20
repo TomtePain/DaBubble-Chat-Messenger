@@ -6,9 +6,13 @@ import { DialogChannelEditComponent } from './components/singel-chat-header/dial
 import { DialogShowChannelUserComponent } from './components/singel-chat-header/dialog-show-channel-user/dialog-show-channel-user.component';
 import { CommonModule } from '@angular/common';
 import { UploadComponent } from './dialogs/upload/upload.component';
+import { environment } from 'src/environments/environment';
 
 const routes: Routes = [
-  {path:'', component: SingelChatComponent},
+  {path:'', 
+  redirectTo: environment.mainChannel , // specify your target route here
+  pathMatch: 'full'
+},
   {path:':id' , component:SingelChatComponent,
   children: [
     {

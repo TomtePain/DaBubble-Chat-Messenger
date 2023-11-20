@@ -30,7 +30,7 @@
                 <p>No start message data available</p>
             </ng-template>
             <!-- Start Message ends here -->
-            <div>{{allMessages.length}} Antworten</div>
+            <div class="separator"><div class="threadanswers">{{allMessages.length}} Antworten</div><div class="line"></div></div>
             <!-- Thread messages start here -->
             <ng-container *ngFor="let message of allMessages; let i = index" >
                 <app-thread-message [messageData]="message" [messageDataIndex]="i" [threadId]="threadId"></app-thread-message>
