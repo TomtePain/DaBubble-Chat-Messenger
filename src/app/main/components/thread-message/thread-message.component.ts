@@ -63,7 +63,7 @@ export class ThreadMessageComponent implements OnInit{
   showMoreEmojis(i: any) {
     console.log(this.sortedReactionTypes);
 
-    for (let j = 2; j < this.sortedReactionTypes.length; j++) {
+    for (let j = 0; j < this.sortedReactionTypes.length; j++) {
       let emojiElement = document.getElementById(
         `thread-emoji-${this.sortedReactionTypes[j]}${i}`
       );

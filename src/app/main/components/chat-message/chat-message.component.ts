@@ -177,12 +177,21 @@ export class ChatMessageComponent implements OnInit {
   showMoreEmojis(i: any) {
     console.log(this.sortedReactionTypes);
 
+    if(this.isThreadMessage) {
+    for (let j = 0; j < this.sortedReactionTypes.length; j++) {
+      let emojiElement = document.getElementById(
+        `emoji-${this.sortedReactionTypes[j]}${i}`
+      );
+      emojiElement?.classList.toggle('d-none');
+    }
+  } else {
     for (let j = 2; j < this.sortedReactionTypes.length; j++) {
       let emojiElement = document.getElementById(
         `emoji-${this.sortedReactionTypes[j]}${i}`
       );
       emojiElement?.classList.toggle('d-none');
     }
+  }
   }
 
   showEmojiBubble(i: any) {
