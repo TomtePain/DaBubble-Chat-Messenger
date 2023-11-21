@@ -40,7 +40,11 @@
           <p>{{ messageData.timestamp | date : 'shortTime' : 'de-DE' }} Uhr</p>
       </div>
       <div class="message-chat-info-content" *ngIf="!editActive" #messageChatContent>
-          {{ messageData.message }} <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
+          {{ messageData.message }} 
+        <div class="show-uploaded-file" *ngIf="messageData.uploadFile">
+          <a href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
+        </div>
+        <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
       </div>
 
       <div *ngIf="editActive" class="editor-container">

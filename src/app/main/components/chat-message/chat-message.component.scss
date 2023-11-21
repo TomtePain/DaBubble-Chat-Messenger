@@ -168,9 +168,9 @@
         margin-right: 30px;
         margin-left: unset;
 
-        display: flex;          // ///////////////////////////////////////// NEW ADDED
+        display: flex; // ///////////////////////////////////////// NEW ADDED
         flex-direction: column; // ///////////////////////////////////////// NEW ADDED
-        align-items: flex-end;  // ///////////////////////////////////////// NEW ADDED
+        align-items: flex-end; // ///////////////////////////////////////// NEW ADDED
 
         .message-chat-info-header {
             flex-direction: row-reverse;
@@ -281,7 +281,7 @@
             line-height: 24.55px;
         }
 
-        h3:hover{
+        h3:hover {
             cursor: pointer;
             color: var(--purple-3);
         }
@@ -309,6 +309,20 @@
         .updated-mark {
             color: lightgray;
             font-size: 12px;
+        }
+
+        .show-uploaded-file {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            border-radius: 15px;
+            border: 1px solid;
+            overflow: hidden;
+
+            img {
+                width: 100px;
+                height: 100px;
+            }
         }
     }
 
@@ -475,8 +489,8 @@
         margin-left: 10px; //////////////////////////// ADDED BY TOM
 
         .reaction-view {
-            flex-direction: column;  //////////////////////////// ADDED BY TOM
-            align-items: flex-start;  //////////////////////////// ADDED BY TOM
+            flex-direction: column; //////////////////////////// ADDED BY TOM
+            align-items: flex-start; //////////////////////////// ADDED BY TOM
         }
 
         // .message-chat-info-header {
@@ -499,6 +513,7 @@
             h3 {
                 font-size: 16px;
             }
+
             p {
                 font-size: 12px;
             }
