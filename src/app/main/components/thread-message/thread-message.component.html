@@ -1,6 +1,6 @@
 <div class="message-chat" [class.own]="messageData.user == userName">
   <div class="reaction-bar">
-    <div *ngFor="let sortedReaction of sortedReactionTypes; let i = index" class="emoji" [ngClass]="{'d-none': i >= 2}" id="thread-emoji-{{sortedReaction}}{{messageDataIndex}}" (click)="toggleReaction(sortedReaction, messageData.id, messageData.reaction)">
+    <div *ngFor="let sortedReaction of sortedReactionTypes; let i = index" class="emoji" [ngClass]="{'d-none': i >= 0}" id="thread-emoji-{{sortedReaction}}{{messageDataIndex}}" (click)="toggleReaction(sortedReaction, messageData.id, messageData.reaction)">
         <img src="assets/images/emoji/emoji-{{sortedReaction}}.png" alt="">
     </div>
     <div id="add-reaction-icon" (click)="showMoreEmojis(messageDataIndex)"></div>
