@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { DocumentReference, Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 import { CrudService } from '../../services/crud.service';
@@ -8,7 +8,8 @@ import { UserProfile } from 'src/app/interfaces/user-profile';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadComponent } from '../../dialogs/upload/upload.component';
 import { File } from '../../interfaces/editor';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -35,17 +36,28 @@ export class EditorComponent implements OnInit {
   user: Array<any> = [];
   channelUsers: Array<any> = [];
   showEmojiPicker = false;
-  message = '';
+  message: any = '';
   lastAtPosition = -1;
   uploadedData: boolean = false;
   uploadedDataName:string = '';
+  private routerSubscription: Subscription;
 
-
-  constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {}
+  constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
+    //Clears the editor in Single Chat and Editor everytime a route changes.
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.message = '';
+      }
+    });
+  }
+  
 
   ngOnInit(): void {
     this.editorService.subSingelData(this.channelId)
+  }
 
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
   }
 
   addNewMessageKeyBoard(event: Event): void {
