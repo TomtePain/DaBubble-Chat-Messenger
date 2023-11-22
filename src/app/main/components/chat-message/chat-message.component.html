@@ -48,9 +48,10 @@
       </div>
 
       <div *ngIf="editActive" class="editor-container">
-        <div class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent" contentEditable=plaintext-only>
-            {{ messageData.message }}
-        </div>
+        <!-- <div class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent">  contentEditable=plaintext-only -->
+            <!-- {{ messageData.message }}
+        </div> -->
+        <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent" value="{{ messageData.message }}">
         <div class="icon-area">
             <div class="icon" id="smiley"></div>
             <div class="edit-button-container">

@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
+import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-delete-message.component';
 
 @Component({
   selector: 'app-chat-message',
@@ -147,10 +148,18 @@ export class ChatMessageComponent implements OnInit {
     const docInstance = doc(this.firestore, path, message.id);
     let changes: any = document.getElementById('messageChatContent');
     let updateData = {
-      message: changes.innerHTML,
+      message: changes.value,
       updated: true,
     };
-    this.updateDataInDb(docInstance, updateData);
+
+    if(changes.value == ''){
+      console.log('eintrag leer')
+      this.showDeleteMessageDialog();
+    } else {
+      console.log('eintrag nicht leer')
+      this.updateDataInDb(docInstance, updateData);
+    }
+    
   }
 
   updateDataInDb(docInstance: DocumentReference, updatedData: any) {
@@ -223,6 +232,10 @@ export class ChatMessageComponent implements OnInit {
         userInfo: this.allUserDataInfo
       }
     });
+  }
+
+  showDeleteMessageDialog() {
+    this.dialog.open(DialogDeleteMessageComponent)
   }
 
 }
