@@ -224,4 +224,5 @@ export class ChatMessageComponent implements OnInit {
       }
     });
   }
+
 }
