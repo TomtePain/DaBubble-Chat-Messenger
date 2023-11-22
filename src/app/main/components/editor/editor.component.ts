@@ -48,6 +48,30 @@ export class EditorComponent implements OnInit {
 
   }
 
+  addNewMessageKeyBoard(event: Event): void {
+    const keyboardEvent = event as KeyboardEvent;
+    if (!keyboardEvent.shiftKey) {
+    event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
+    this.addNewMessage();
+  }
+  }
+
+  addNewMessageThreadKeyBoard(event: Event): void {
+    const keyboardEvent = event as KeyboardEvent;
+    if (!keyboardEvent.shiftKey) {
+    event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
+    this.addNewMessageThread();
+  }
+  }
+
+  addNewThreadKeyBoard(event: Event): void {
+    const keyboardEvent = event as KeyboardEvent;
+    if (!keyboardEvent.shiftKey) {
+    event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
+    this.addNewThread();
+  }
+  }
+
   addNewMessage() {
     let timeStamp = new Date();
     let content: any = document.getElementById('text');
