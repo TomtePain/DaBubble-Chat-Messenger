@@ -235,7 +235,13 @@ export class ChatMessageComponent implements OnInit {
   }
 
   showDeleteMessageDialog() {
-    this.dialog.open(DialogDeleteMessageComponent)
+    this.dialog.open(DialogDeleteMessageComponent, {
+      data: {
+        messageData: this.messageData,
+        existingUser : this.existingUser,
+        channelID : this.channelID
+      }
+    })
   }
 
 }

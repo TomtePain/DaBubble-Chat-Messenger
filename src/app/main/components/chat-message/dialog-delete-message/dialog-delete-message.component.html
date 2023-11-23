@@ -1,1 +1,32 @@
+<div class="delete-message-container">
+    <header>
+        <h1>Nachricht löschen</h1>
+        <img src="/assets/images/close.png" alt="">
+    </header>
+    <div>
+        Bist du sicher, dass du diese Nachricht löschen möchtest? Das kann nicht rückgängig gemacht werden.
+    </div>
+    <div class="content">
+        <img class="avatar" src="{{ existingUser.photoURL }}" alt="">
+        <div class="message-chat-info">
+            <div class="message-chat-info-header">
+                <h3>{{ existingUser.fullName }}</h3>
+                <p>{{ messageData.timestamp | date : 'shortTime' : 'de-DE' }} Uhr</p>
+            </div>
 
+            <div class="message-content">
+                {{ messageData.message }}
+            </div>
+
+            <div class="show-uploaded-file" *ngIf="messageData.uploadFile">
+                <img style="width: 50px;" src="{{ messageData.uploadFile }}" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button class="btn-secondary" (click)="closeDialog()">Abbrechen</button>
+        <button class="btn-prime warn"(click)="deleteMessage()" >LÖSCHEN</button>
+    </div>
+
+</div>
