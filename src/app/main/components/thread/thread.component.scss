@@ -203,3 +203,9 @@
       }
   }
 }
+
+@media (max-width: 1122px) {
+  .chat-container {
+      max-width: none;
+  }
+}

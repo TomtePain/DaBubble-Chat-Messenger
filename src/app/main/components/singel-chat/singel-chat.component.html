@@ -6,7 +6,7 @@
             src="/assets/images/profile-icons/avatar-1.png" alt="">
     </div> -->
 
-    <div class="chat-container">
+    <div class="chat-container" [ngClass]="{'hide-tablet': hideMainChatOnSmallerScreens}">
         <app-singel-chat-header class="chat-header" [channelID]="channelId" [currentUser]="userName"
             (arrayUpdated)="onArrayUpdated($event)"></app-singel-chat-header>
 
