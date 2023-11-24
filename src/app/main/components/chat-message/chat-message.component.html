@@ -42,6 +42,12 @@
       <div class="message-chat-info-content" *ngIf="!editActive" #messageChatContent>
           {{ messageData.message }} 
         <div class="show-uploaded-file" *ngIf="messageData.uploadFile">
+
+          <div class="delete-upload-file">
+            <img  src="/assets/images/close.png" alt="">
+          </div>
+        
+          
           <a href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
         </div>
         <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>

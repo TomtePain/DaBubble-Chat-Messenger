@@ -318,10 +318,28 @@
             border-radius: 15px;
             border: 1px solid;
             overflow: hidden;
+            position: relative;
 
             img {
                 width: 100px;
                 height: 100px;
+            }
+
+            .delete-upload-file {
+                display: none;
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                right: 0px;
+                cursor: pointer;
+                border-radius: 100%;
+                border: 1px solid lightgrey;
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                }
+
             }
         }
     }
