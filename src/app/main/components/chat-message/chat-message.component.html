@@ -47,24 +47,23 @@
             <img  src="/assets/images/close.png" alt="">
           </div>
         
-          
-          <a href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
+          <a *ngIf="!messageData.uploadFile.includes('pdf')" href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
+          <a *ngIf="messageData.uploadFile.includes('pdf')" href="{{ messageData.uploadFile }}" target="_blank"><img src="/assets/images/icons/pdf-128.png" alt=""></a>
         </div>
+        <span style="font-size: 10px;">{{ messageData.uploadFileName }}</span>
         <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
       </div>
 
       <div *ngIf="editActive" class="editor-container">
-        <!-- <div class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent">  contentEditable=plaintext-only -->
-            <!-- {{ messageData.message }}
-        </div> -->
         <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent" value="{{ messageData.message }}">
-        <div style="display: flex; align-items: center;" *ngIf="messageData.uploadFile">
-          <img style="width: 50px; height: 50px; border-radius: 10px;" src="{{ messageData.uploadFile }}" alt="" >
+        <div class="delete-file-block" *ngIf="messageData.uploadFile">
+          <img src="{{ messageData.uploadFile }}" alt="" *ngIf="!messageData.uploadFile.includes('pdf')">
+          <img src="/assets/images/icons/pdf-128.png" alt="" *ngIf="messageData.uploadFile.includes('pdf')">
           <div style="display: flex; flex-direction: column;">
-            <img style="align-self: flex-start; cursor: pointer;" src="/assets/images/close.png" alt="" (click)="deleteUploadedFile()">
-            <span style="margin-left: 5px;">{{ messageData.uploadFileName }}</span>
-          </div>
-          
+            <!-- <img style="align-self: flex-start; cursor: pointer;" src="/assets/images/close.png" alt="" (click)="deleteUploadedFile()"> -->
+            <div class="delete-btn" (click)="deleteUploadedFile()"></div>
+            <span style="margin-left: 5px; font-size: 10px;">{{ messageData.uploadFileName }}</span>
+          </div>          
         </div>
         <div class="icon-area">
             <div class="icon" id="smiley"></div>

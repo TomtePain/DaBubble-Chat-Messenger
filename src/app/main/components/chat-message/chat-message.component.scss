@@ -480,6 +480,35 @@
     }
 }
 
+.delete-btn {
+    height: 18px;
+    width: 18px;
+    align-self: flex-start;
+    cursor: pointer;
+    background-image: url(/assets/images/delete-24.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    &:hover {
+        background-image: url(/assets/images/delete-24hover.png);
+    }
+}
+
+.delete-file-block {
+    display: flex;
+    align-items: center;
+    background-color: var(--light-purple-bg);
+    padding: 5px;
+    border-radius: 15px;
+
+    img {
+        width: 50px;
+        height: 50px; 
+        border-radius: 10px;
+    }
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(-20px);
