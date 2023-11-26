@@ -15,6 +15,7 @@ import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profile
 import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
 import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-delete-message.component';
+import { getStorage, ref, deleteObject } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-chat-message',
@@ -153,10 +154,8 @@ export class ChatMessageComponent implements OnInit {
     };
 
     if(changes.value == ''){
-      console.log('eintrag leer')
       this.showDeleteMessageDialog();
     } else {
-      console.log('eintrag nicht leer')
       this.updateDataInDb(docInstance, updateData);
     }
     
@@ -243,5 +242,22 @@ export class ChatMessageComponent implements OnInit {
       }
     })
   }
+
+  deleteUploadedFile() {
+    const storage = getStorage();
+    const spaceRef = ref(storage, 'upload/test/' + this.messageData.uploadFileName);
+    let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';
+    const docInstance = doc(this.firestore, path, this.messageData.id);
+
+    deleteObject(spaceRef).then(() => {
+      let updateData = {
+        uploadFile: false,
+        uploadFileName: false,
+      };
+      this.updateDataInDb(docInstance, updateData);
+    })
+  }
+
+  
 
 }

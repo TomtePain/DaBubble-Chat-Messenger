@@ -20,13 +20,14 @@
 
             <div class="show-uploaded-file" *ngIf="messageData.uploadFile">
                 <img style="width: 50px;" src="{{ messageData.uploadFile }}" alt="">
+                <p> {{messageData.uploadFileName}} </p>
             </div>
         </div>
     </div>
 
     <div class="button-container">
         <button class="btn-secondary" (click)="closeDialog()">Abbrechen</button>
-        <button class="btn-prime warn"(click)="deleteMessage()" >LÖSCHEN</button>
+        <button class="btn-prime warn"(click)="deleteMessage()">LÖSCHEN</button>
     </div>
 
 </div>

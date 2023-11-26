@@ -13,6 +13,7 @@ export class EditorService {
   usersId!: Array<string>;
   usersData: Array<UserProfile> = [];
   fileUrl: string = '';
+  fileName: string = '';
 
   constructor(private firestore: Firestore, private storage: Storage) { }
 
@@ -62,6 +63,7 @@ export class EditorService {
     uploadTask.subscribe(() => {
       getDownloadURL(storageRef).then(resp => {
         this.fileUrl = resp;
+        this.fileName = file.name;
       }
       )
     })

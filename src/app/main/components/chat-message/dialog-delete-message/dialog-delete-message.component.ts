@@ -3,8 +3,9 @@ import { Firestore } from '@angular/fire/firestore';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CrudService } from 'src/app/main/services/crud.service';
 import { TreeService } from 'src/app/main/services/tree.service';
-import { ChatMessageComponent } from '../chat-message.component';
 import { environment } from 'src/environments/environment';
+import { getStorage, ref, deleteObject } from '@angular/fire/storage';
+
 
 
 @Component({
@@ -18,13 +19,16 @@ export class DialogDeleteMessageComponent implements OnInit {
   existingUser;
   channelId;
 
+  storage = getStorage();
+  
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<DialogDeleteMessageComponent>,
     public dialog: MatDialog,
     public firestore: Firestore,
     public crud: CrudService,
-    public tree: TreeService) 
+    public tree: TreeService,) 
     {
       this.messageData = data.messageData;
       this.existingUser = data.existingUser;
@@ -33,9 +37,8 @@ export class DialogDeleteMessageComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('these is the messsageData you will delete:', this.messageData);
-    console.log('these is the id you will delete:', this.messageData.id);
-    console.log('these is the channelID with message:', this.channelId)
+
+
   }
 
   closeDialog() {
@@ -45,7 +48,19 @@ export class DialogDeleteMessageComponent implements OnInit {
   deleteMessage() {
     this.crud.deleteItem(environment.channelDb + '/' + this.channelId + '/' + 'messages' + '/' + this.messageData.id)
     .then(() => {
+      this.deleteUploadedFile();
       this.closeDialog();
+    });
+  }
+
+
+  deleteUploadedFile() {
+    const spaceRef = ref(this.storage, 'upload/test/' + this.messageData.uploadFileName);
+
+    deleteObject(spaceRef).then(() => {
+      console.log('File deleted successfully')
+    }).catch((error) => {
+      console.log('// Uh-oh, an error occurred!', error)
     });
   }
 

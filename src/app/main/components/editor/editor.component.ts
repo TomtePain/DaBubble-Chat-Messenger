@@ -88,11 +88,13 @@ export class EditorComponent implements OnInit {
     let timeStamp = new Date();
     let content: any = document.getElementById('text');
     let fileURL;
+    let fileName;
 
     if(this.editorService.fileUrl == '') {
       fileURL = false;
     } else {
       fileURL = this.editorService.fileUrl;
+      fileName = this.editorService.fileName
     }
 
     let newMessage = {
@@ -100,6 +102,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       uploadFile: fileURL,
+      uploadFileName: fileName 
     }
 
     if (content.value != '') {
