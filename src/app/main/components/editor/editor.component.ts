@@ -382,5 +382,12 @@ openThread(threadId:string) {
   this.router.navigate([this.channelId, "thread", threadId]);
 }
 
+checkForPDF() {
+  let name:string = this.editorService.fileName;
+  let splitedName: string[] = name.split('.');
+  let lastPc: string = splitedName[splitedName.length - 1];
+  return lastPc
+}
+
 }
 
