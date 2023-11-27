@@ -42,14 +42,33 @@
       <div class="message-chat-info-content" *ngIf="!editActive" #messageChatContent>
           {{ messageData.message }} 
         <div class="show-uploaded-file" *ngIf="messageData.uploadFile">
-          <a href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
+
+          <div class="delete-upload-file">
+            <img  src="/assets/images/close.png" alt="">
+          </div>
+        
+          <a *ngIf="checkForPDF() != 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
+          <a *ngIf="checkForPDF() == 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="/assets/images/icons/pdf-128.png" alt=""></a>
         </div>
+        <span style="font-size: 10px;">{{ messageData.uploadFileName }}</span>
         <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
       </div>
 
       <div *ngIf="editActive" class="editor-container">
-        <div class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent" contentEditable=plaintext-only>
-            {{ messageData.message }}
+
+        <div class="options-for-delete" (click)="openHidedDeleteBtn(messageDataIndex)">
+          <button class="btn-prime red-btn d-none" id="openHidedDeleteBtn{{messageDataIndex}}" (click)="showDeleteMessageDialog()">Nachricht löschen</button>
+        </div>
+        
+
+        <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent" value="{{ messageData.message }}">
+        <div class="delete-file-block" *ngIf="messageData.uploadFile">
+          <img src="{{ messageData.uploadFile }}" alt="" *ngIf="checkForPDF() != 'pdf'">
+          <img src="/assets/images/icons/pdf-128.png" alt="" *ngIf="checkForPDF() == 'pdf'">
+          <div style="display: flex; flex-direction: column;">
+            <div class="delete-btn" (click)="deleteUploadedFile()"></div>
+            <span style="margin-left: 5px; font-size: 10px;">{{ messageData.uploadFileName }}</span>
+          </div>          
         </div>
         <div class="icon-area">
             <div class="icon" id="smiley"></div>

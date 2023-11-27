@@ -14,6 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
+import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-delete-message.component';
+import { getStorage, ref, deleteObject } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-chat-message',
@@ -133,6 +135,11 @@ export class ChatMessageComponent implements OnInit {
     options?.classList.toggle('d-none');
   }
 
+  openHidedDeleteBtn(i:any) {
+    let open = document.getElementById(`openHidedDeleteBtn${i}`);
+    open?.classList.toggle('d-none');
+  }
+
   openEditMessage(message: any, i: any) {
     this.editActive = true;
     this.bubbleEdit(i);
@@ -147,10 +154,16 @@ export class ChatMessageComponent implements OnInit {
     const docInstance = doc(this.firestore, path, message.id);
     let changes: any = document.getElementById('messageChatContent');
     let updateData = {
-      message: changes.innerHTML,
+      message: changes.value,
       updated: true,
     };
-    this.updateDataInDb(docInstance, updateData);
+
+    if(changes.value == ''){
+      this.showDeleteMessageDialog();
+    } else {
+      this.updateDataInDb(docInstance, updateData);
+    }
+    
   }
 
   updateDataInDb(docInstance: DocumentReference, updatedData: any) {
@@ -224,5 +237,39 @@ export class ChatMessageComponent implements OnInit {
       }
     });
   }
+
+  showDeleteMessageDialog() {
+    this.dialog.open(DialogDeleteMessageComponent, {
+      data: {
+        messageData: this.messageData,
+        existingUser : this.existingUser,
+        channelID : this.channelID
+      }
+    })
+  }
+
+  deleteUploadedFile() {
+    const storage = getStorage();
+    const spaceRef = ref(storage, 'upload/test/' + this.messageData.uploadFileName);
+    let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';
+    const docInstance = doc(this.firestore, path, this.messageData.id);
+
+    deleteObject(spaceRef).then(() => {
+      let updateData = {
+        uploadFile: false,
+        uploadFileName: false,
+      };
+      this.updateDataInDb(docInstance, updateData);
+    })
+  }
+
+
+  checkForPDF() {
+    let name:string = this.messageData.uploadFileName;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 1];
+    return lastPc
+  }
+  
 
 }

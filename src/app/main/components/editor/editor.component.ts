@@ -88,11 +88,13 @@ export class EditorComponent implements OnInit {
     let timeStamp = new Date();
     let content: any = document.getElementById('text');
     let fileURL;
+    let fileName;
 
     if(this.editorService.fileUrl == '') {
       fileURL = false;
     } else {
       fileURL = this.editorService.fileUrl;
+      fileName = this.editorService.fileName
     }
 
     let newMessage = {
@@ -100,6 +102,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       uploadFile: fileURL,
+      uploadFileName: fileName 
     }
 
     if (content.value != '') {
@@ -377,6 +380,13 @@ openThread(threadId:string) {
   console.log(this.channelId, "thread", threadId);
   
   this.router.navigate([this.channelId, "thread", threadId]);
+}
+
+checkForPDF() {
+  let name:string = this.editorService.fileName;
+  let splitedName: string[] = name.split('.');
+  let lastPc: string = splitedName[splitedName.length - 1];
+  return lastPc
 }
 
 }
