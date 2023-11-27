@@ -7,23 +7,25 @@ import localeDeExtra from '@angular/common/locales/extra/de';
 import { environment } from 'src/environments/environment';
 import { UserService } from '../../services/user.service';
 import { TreeService } from '../../services/tree.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogChannelEditComponent } from '../singel-chat-header/dialog-channel-edit/dialog-channel-edit.component';
 import { SingelChatHeaderComponent } from '../singel-chat-header/singel-chat-header.component';
-
+import { Subscription, filter } from 'rxjs';
 
 @Component({
   selector: 'app-singel-chat',
   templateUrl: './singel-chat.component.html',
-  styleUrls: ['./singel-chat.component.scss']
+  styleUrls: ['./singel-chat.component.scss'],
 })
-
 export class SingelChatComponent implements OnInit {
-  @ViewChild(SingelChatHeaderComponent) singelChatheaderfunction: SingelChatHeaderComponent | undefined;
+  @ViewChild(SingelChatHeaderComponent) singelChatheaderfunction:
+    | SingelChatHeaderComponent
+    | undefined;
   isChatArea: boolean = true;
   isThread: boolean = false;
+  hideMainChatOnSmallerScreens: boolean = false;
   userMessages: Array<any> = [];
   threadId: string = 'todelete';
   chatDays: Array<any> = [];
@@ -32,15 +34,30 @@ export class SingelChatComponent implements OnInit {
   channelId!: string;
   currentChannel: Array<any> = [];
   existingUser: Array<any> = [];
-  channelType:string = '';
+  channelType: string = '';
   allgemein: string = '';
+  private routerSubscription!: Subscription;
 
-  constructor(public tree:TreeService, public firestore: Firestore, public crud: CrudService, private elementRef: ElementRef, public userservice: UserService, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(
+    public tree: TreeService,
+    public firestore: Firestore,
+    public crud: CrudService,
+    public userservice: UserService,
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private router: Router
+  ) {
     registerLocaleData(localeDe, 'de-DE', localeDeExtra);
+
+    //check if it is a channel or a thread URL to handle the smaller desktop behaviour of how thread and main chat are displayed
+    if (this.route.children.length > 0) {
+      this.hideMainChatOnSmallerScreens = true;
+    }
   }
 
-
   ngOnInit(): void {
+    this.subscribeToRouterEvents(); // to detect if the URL changes
+
     this.route.params.subscribe((params) => {
       this.channelId = params['id'];
       this.getCurrentChannelInfo();
@@ -49,15 +66,24 @@ export class SingelChatComponent implements OnInit {
       setTimeout(() => {
         this.scrollToBottom();
       }, 2000);
-    })
+    });
   }
 
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
 
   sortArray() {
     this.userMessages = this.userMessages.sort((a, b) => {
-      if (a.timestamp < b.timestamp) { return -1 }
-      if (a.timestamp > b.timestamp) { return 1 }
-      return 0
+      if (a.timestamp < b.timestamp) {
+        return -1;
+      }
+      if (a.timestamp > b.timestamp) {
+        return 1;
+      }
+      return 0;
     });
   }
 
@@ -74,6 +100,21 @@ export class SingelChatComponent implements OnInit {
     });
   }
 
+  subscribeToRouterEvents() {
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        // Check the length of the route's children at the end of navigation
+        if (this.route.children.length > 0) {
+          console.log('Child route is active');
+          this.hideMainChatOnSmallerScreens = true;
+        } else {
+          console.log('No child route active');
+          this.hideMainChatOnSmallerScreens = false;
+        }
+      });
+  }
+
   getChatDays() {
     this.chatDays = [];
     for (let i = 0; i < this.userMessages.length; i++) {
@@ -84,38 +125,42 @@ export class SingelChatComponent implements OnInit {
       let chatDay = {
         day: timeSepertor,
         timestamp: element,
-        today: ''
-      }
+        today: '',
+      };
 
-      let existDay = this.chatDays.find(exist => exist.day == chatDay.day);
-      if (!existDay) { this.chatDays.push(chatDay) }
+      let existDay = this.chatDays.find((exist) => exist.day == chatDay.day);
+      if (!existDay) {
+        this.chatDays.push(chatDay);
+      }
       this.checkForToday();
     }
   }
 
   checkForToday() {
-    let today = this.chatDays.find(c => c.day == this.timestamp);
-    if (today) { today.today = 'Heute'; }
+    let today = this.chatDays.find((c) => c.day == this.timestamp);
+    if (today) {
+      today.today = 'Heute';
+    }
   }
 
   scrollToBottom(): void {
     let anchor: any = document.getElementById('anchor');
-    anchor.scrollIntoView({ behavior: "smooth" });
+    anchor.scrollIntoView({ behavior: 'smooth' });
   }
 
-
   getCurrentChannelInfo() {
-    let allChannels:Array<any> = [];
+    let allChannels: Array<any> = [];
     this.crud.getItem(environment.channelDb).subscribe((result) => {
       allChannels = result;
-      let currentChannel = allChannels.find(exist => exist.id == this.channelId);
+      let currentChannel = allChannels.find(
+        (exist) => exist.id == this.channelId
+      );
       this.currentChannel = [];
       // this.currentChannel = currentChannel;
       this.currentChannel.push(currentChannel);
-      if(currentChannel){
+      if (currentChannel) {
         this.channelType = currentChannel.type;
       }
-      
     });
   }
 
@@ -123,17 +168,16 @@ export class SingelChatComponent implements OnInit {
     this.existingUser = newArray;
   }
 
-  viewUsersProfile(userId:any) {
+  viewUsersProfile(userId: any) {
     this.dialog.open(DialogProfileviewOfOthersComponent, {
       data: {
         userId: userId,
-        userInfo: this.existingUser
-      }
+        userInfo: this.existingUser,
+      },
     });
   }
 
   showChannelDialog() {
     this.singelChatheaderfunction?.openDialog();
   }
-  
 }

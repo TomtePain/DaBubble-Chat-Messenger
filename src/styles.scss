@@ -140,3 +140,10 @@ app-singel-chat {
 
 
 }
+
+@media (max-width: 1122px) {
+  app-thread {
+    width: 100%;
+    z-index: 10;
+  }
+}
