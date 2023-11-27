@@ -19,7 +19,8 @@
             </div>
 
             <div class="show-uploaded-file" *ngIf="messageData.uploadFile">
-                <img style="width: 50px;" src="{{ messageData.uploadFile }}" alt="">
+                <img style="width: 50px;" src="{{ messageData.uploadFile }}" alt="" *ngIf="checkForPDF() != 'pdf'">
+                <img style="width: 35px;" src="/assets/images/icons/pdf-128.png" alt="" *ngIf="checkForPDF() == 'pdf'">
                 <p> {{messageData.uploadFileName}} </p>
             </div>
         </div>

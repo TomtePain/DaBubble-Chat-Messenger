@@ -37,8 +37,7 @@ export class DialogDeleteMessageComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-
+    this.checkForPDF();
   }
 
   closeDialog() {
@@ -62,6 +61,13 @@ export class DialogDeleteMessageComponent implements OnInit {
     }).catch((error) => {
       console.log('// Uh-oh, an error occurred!', error)
     });
+  }
+
+  checkForPDF() {
+    let name:string = this.messageData.uploadFileName;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 1];
+    return lastPc
   }
 
 }

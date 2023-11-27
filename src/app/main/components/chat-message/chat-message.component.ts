@@ -135,6 +135,11 @@ export class ChatMessageComponent implements OnInit {
     options?.classList.toggle('d-none');
   }
 
+  openHidedDeleteBtn(i:any) {
+    let open = document.getElementById(`openHidedDeleteBtn${i}`);
+    open?.classList.toggle('d-none');
+  }
+
   openEditMessage(message: any, i: any) {
     this.editActive = true;
     this.bubbleEdit(i);
@@ -258,6 +263,13 @@ export class ChatMessageComponent implements OnInit {
     })
   }
 
+
+  checkForPDF() {
+    let name:string = this.messageData.uploadFileName;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 1];
+    return lastPc
+  }
   
 
 }
