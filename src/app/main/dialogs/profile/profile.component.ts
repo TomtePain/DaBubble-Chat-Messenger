@@ -27,6 +27,7 @@ export class ProfileComponent {
   constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService) {
     this.setData();
   }
+
   get f() { return this.profileForm.controls; }
 
   editProfile() {
@@ -52,9 +53,13 @@ export class ProfileComponent {
     let fromEmail = this.profileForm.controls.emailFormControl.value;
     if (fromFullname !== null && fromEmail !== null) {
       this.userservice.saveUserData(fromFullname, fromEmail);
-      this.profileEdit = false;
+      setTimeout(() => {
+        this.setData();
+        this.profileEdit = false;
+      }, 50);
   } else {
-      // TODO: die Werte null
+      console.warn('An error occurred', "fromFullname", fromFullname,"fromEmail", fromEmail);
+      
   }
   }
   updateLocal() {
