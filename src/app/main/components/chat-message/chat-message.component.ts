@@ -240,14 +240,15 @@ export class ChatMessageComponent implements OnInit {
       data: {
         messageData: this.messageData,
         existingUser : this.existingUser,
-        channelID : this.channelID
+        channelID : this.channelID,
+        userID: this.userservice.userDBId
       }
     })
   }
 
   deleteUploadedFile() {
     const storage = getStorage();
-    const spaceRef = ref(storage, 'upload/test/' + this.messageData.uploadFileName);
+    const spaceRef = ref(storage, `/upload/${this.userservice.userDBId}/` + this.messageData.uploadFileName);
     let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';
     const docInstance = doc(this.firestore, path, this.messageData.id);
 

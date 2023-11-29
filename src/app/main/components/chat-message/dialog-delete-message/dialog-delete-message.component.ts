@@ -19,6 +19,7 @@ export class DialogDeleteMessageComponent implements OnInit {
   messageData;
   existingUser;
   channelId;
+  userDBId;
 
   storage = getStorage();
 
@@ -33,6 +34,7 @@ export class DialogDeleteMessageComponent implements OnInit {
     this.messageData = data.messageData;
     this.existingUser = data.existingUser;
     this.channelId = data.channelID;
+    this.userDBId = data.userID;
   }
 
 
@@ -58,7 +60,7 @@ export class DialogDeleteMessageComponent implements OnInit {
 
 
   deleteUploadedFile() {
-    const spaceRef = ref(this.storage, 'upload/test/' + this.messageData.uploadFileName);
+    const spaceRef = ref(this.storage, `/upload/${this.userDBId}/` + this.messageData.uploadFileName);
 
     deleteObject(spaceRef).then(() => {
       this.showUploadDialog('delete data');

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Storage, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
 import { File } from '../interfaces/editor';
 import { from } from 'rxjs';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class EditorService {
   fileUrl: string = '';
   fileName: string = '';
 
-  constructor(private firestore: Firestore, private storage: Storage) { }
+  constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService) { }
 
   /**
    * Retrieves and populates user data for a single document identified by 'docId' from Firestore.
@@ -58,7 +59,7 @@ export class EditorService {
   }
 
   uploadData(file: any) {
-    const storageRef = ref(this.storage, '/upload/test/' + file.name);
+    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + file.name);
     const uploadTask = from(uploadBytes(storageRef, file));
     uploadTask.subscribe(() => {
       getDownloadURL(storageRef).then(resp => {
