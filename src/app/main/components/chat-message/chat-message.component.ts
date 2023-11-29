@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import {
   Firestore,
   doc,
@@ -16,6 +16,7 @@ import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
 import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-delete-message.component';
 import { getStorage, ref, deleteObject } from '@angular/fire/storage';
+import { UploadComponent } from '../../dialogs/upload/upload.component';
 
 @Component({
   selector: 'app-chat-message',
@@ -260,6 +261,7 @@ export class ChatMessageComponent implements OnInit {
         uploadFileName: false,
       };
       this.updateDataInDb(docInstance, updateData);
+      this.showUploadDialog('delete data');
     })
   }
 
@@ -269,6 +271,12 @@ export class ChatMessageComponent implements OnInit {
     let splitedName: string[] = name.split('.');
     let lastPc: string = splitedName[splitedName.length - 1];
     return lastPc
+  }
+
+  showUploadDialog(msg: string) {
+    const dialogRef = this.dialog.open(UploadComponent, {
+      data: { typeOfMessage: msg },
+    });
   }
   
 

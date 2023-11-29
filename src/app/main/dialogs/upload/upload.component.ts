@@ -28,6 +28,16 @@ export class UploadComponent {
 
   setText() {
     switch (this.data.typeOfMessage) {
+      case 'delete msg':
+        this.text.header = 'Erfolgreich gelöscht';
+        this.text.body = 'Wir freuen uns, Ihnen mitteilen zu können, dass Ihre Nachricht erfolgreich von unserem Server gelöscht wurde';
+        break;
+
+      case 'delete data':
+        this.text.header = 'Erfolgreich gelöscht';
+        this.text.body = 'Wir freuen uns, Ihnen mitteilen zu können, dass Ihre Datei erfolgreich von unserem Server gelöscht wurde';
+        break
+
       case 'big data':
         this.text.header = 'Größenbeschränkung';
         this.text.body = 'Die maximale Größenbeschränkung für das Hochladen von Dateien auf unserer Plattform bei 500 KB liegt. Wenn Sie versuchen, eine Datei hochzuladen, die diese Beschränkung überschreitet, wird der Upload nicht erfolgreich sein.'
@@ -45,5 +55,8 @@ export class UploadComponent {
       default:
         break;
     }
+    setTimeout(() => {
+      this.dialogRef.close()
+    }, 1500);
   }
 }

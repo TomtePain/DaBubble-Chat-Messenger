@@ -92,6 +92,7 @@ export class EditorComponent implements OnInit {
 
     if(this.editorService.fileUrl == '') {
       fileURL = false;
+      fileName = false;
     } else {
       fileURL = this.editorService.fileUrl;
       fileName = this.editorService.fileName
@@ -106,13 +107,15 @@ export class EditorComponent implements OnInit {
     }
 
     if (content.value != '') {
-      this.crud.addItem(newMessage, environment.channelDb + '/' + this.channelId + '/' + 'messages');
-      content.value = '';
-      this.editorService.fileUrl = '';
-      this.uploadedDataName = '';
-      setTimeout(() => {
-        this.scrollToBottom.emit()
-      }, 500)
+      this.crud.addItem(newMessage, environment.channelDb + '/' + this.channelId + '/' + 'messages').then(() => {
+        content.value = '';
+        this.editorService.fileUrl = '';
+        this.uploadedDataName = '';
+        this.uploadedData = false;
+        setTimeout(() => {
+          this.scrollToBottom.emit()
+        }, 500);
+      });
     }
   }
 
@@ -352,9 +355,6 @@ export class EditorComponent implements OnInit {
         this.editorService.uploadData(file);
         this.uploadedData = true;
         this.uploadedDataName = file.name;        
-        setTimeout(() => {
-          this.dialog.closeAll();
-        }, 500);
       } else {
         this.showUploadDialog('big data');
       }

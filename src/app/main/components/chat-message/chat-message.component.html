@@ -50,7 +50,7 @@
           <a *ngIf="checkForPDF() != 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
           <a *ngIf="checkForPDF() == 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="/assets/images/icons/pdf-128.png" alt=""></a>
         </div>
-        <span style="font-size: 10px;">{{ messageData.uploadFileName }}</span>
+        <span style="font-size: 10px;" *ngIf="messageData.uploadFileName" >{{ messageData.uploadFileName }}</span>
         <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
       </div>
 
