@@ -41,6 +41,8 @@ export class ChatMessageComponent implements OnInit {
   amountThreadMessages!: number;
   lastThreadTimeStamp!: number;
   private destroy$ = new Subject<void>();
+  showEmojiPicker = false;
+  message: any = '';
 
   constructor(
     public firestore: Firestore,
@@ -168,13 +170,7 @@ export class ChatMessageComponent implements OnInit {
   }
 
   updateDataInDb(docInstance: DocumentReference, updatedData: any) {
-    updateDoc(docInstance, updatedData)
-      .then(() => {
-        console.log('data updated', updatedData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    updateDoc(docInstance, updatedData);
   }
 
   toggleReaction(type: string, messageId: string, reactionData: any) {
@@ -279,5 +275,21 @@ export class ChatMessageComponent implements OnInit {
     });
   }
   
+
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    let input:any = document.getElementById('messageChatContent');
+    const text = `${input.value}${event.emoji.native}`;
+    input.value = text;
+    this.showEmojiPicker = false;
+  }
+
+  hideBoxes() {
+    this.showEmojiPicker = false;
+  }
+
 
 }
