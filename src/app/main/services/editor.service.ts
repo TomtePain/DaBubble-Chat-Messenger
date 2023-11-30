@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DocumentData, DocumentSnapshot, Firestore, doc, docData, getDoc } from '@angular/fire/firestore';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { environment } from 'src/environments/environment';
-import { Storage, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
+import { Storage, getDownloadURL, getStorage, listAll, ref, uploadBytes } from '@angular/fire/storage';
 import { File } from '../interfaces/editor';
 import { from } from 'rxjs';
 import { UserService } from './user.service';
@@ -15,6 +15,7 @@ export class EditorService {
   usersData: Array<UserProfile> = [];
   fileUrl: string = '';
   fileName: string = '';
+  newFileName: string = '';
 
   constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService) { }
 
@@ -58,15 +59,67 @@ export class EditorService {
     }
   }
 
-  uploadData(file: any) {
-    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + file.name);
+  // uploadData(file: any) {
+  //   const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + file.name);
+  //   const uploadTask = from(uploadBytes(storageRef, file));
+  //   uploadTask.subscribe(() => {
+  //     getDownloadURL(storageRef).then(resp => {
+  //       this.fileUrl = resp;
+  //       this.fileName = file.name;
+  //     })
+  //   })
+  // }
+
+
+  uploadDataToStore(file: any) {
+    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + this.newFileName);
     const uploadTask = from(uploadBytes(storageRef, file));
     uploadTask.subscribe(() => {
       getDownloadURL(storageRef).then(resp => {
         this.fileUrl = resp;
-        this.fileName = file.name;
-      }
-      )
+        this.fileName = this.newFileName;
+      })
     })
+  }
+
+
+  uploadData(file: any) {
+    const listRef = ref(this.storage, `/upload/${this.userservice.userDBId}/`);
+    let uploadedFiles: Array<any> = [];
+    let counter = 0;
+    listAll(listRef).then((uploads) => {
+      uploads.items.forEach((item) => {
+        uploadedFiles.push(item.name);
+      })
+      let exist = uploadedFiles.find((f) => f == file.name);
+      if (exist) {
+        counter++;
+        this.newFileName = this.splitName(file) + `(${counter})` + '.' + this.splitFileType(file);
+        let newExistCheck = uploadedFiles.find((nec) => nec == this.newFileName)
+        if (newExistCheck) {
+          counter++;
+          this.newFileName = this.splitName(file) + `(${counter})` + '.' + this.splitFileType(file);
+          this.uploadDataToStore(file);
+          return
+        } else { this.uploadDataToStore(file) }
+      } else { 
+        this.newFileName = file.name;
+        this.uploadDataToStore(file);
+      }
+    })
+  }
+
+  splitName(file: any) {
+    let name: string = file.name;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 2];
+    return lastPc
+  }
+
+  splitFileType(file: any) {
+    let name: string = file.name;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 1];
+    return lastPc
   }
 }
