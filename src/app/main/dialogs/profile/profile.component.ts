@@ -1,13 +1,10 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user.service';
 import { UserProfile } from 'src/app/interfaces/user-profile';
-import { object } from '@angular/fire/database';
 import { from } from 'rxjs';
-import { Storage, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
-
-
+import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +17,6 @@ export class ProfileComponent {
   userEmail:string = '';
   userProfileImage:string = '';
   profileImageEdit: boolean = false;
-  // fullName: any = 'Test Name';
   profileImage = './assets/images/profile-icons/person.png';
 
   profileForm = this.fb.group({
@@ -45,14 +41,11 @@ export class ProfileComponent {
   }
 
   chooseProfile() {
-    this.profileImageEdit = !this.profileImageEdit;
-    console.log("this.userProfileImage", this.userProfileImage);
-    
+    this.profileImageEdit = !this.profileImageEdit;    
   }
 
   setProfileImage(path: any) {
     this.userProfileImage = path;
-    console.log("this.userProfileImage", this.userProfileImage);
   }
 
   triggerInput() {
@@ -70,8 +63,6 @@ export class ProfileComponent {
   }
 
   saveProfileImageChange() {
-    console.log("Profile image change saved");
-    //TODO save the change profile image
     this.userservice.saveUserImage(this.userProfileImage);
     setTimeout(() => {
       this.setData();

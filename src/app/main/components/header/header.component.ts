@@ -23,10 +23,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.setUserData();
-    }, 2000);
-
+      console.log("this.userservice.loginUser", this.userservice.loginUser);
+      if (this.userservice.loginUser === undefined) {
+        console.log("reload");
+        window.location.reload();
+      } else {
+        this.setUserData();
+      }
+    }, 250);
   }
+
 
   ngOnDestroy() {
     this.fullName = '';
@@ -35,7 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   openDialog() {
     this.dialog.open(ProfileComponent, {
-      width: '400px',
+      width: '500px',
       autoFocus: false,
     });
   }
