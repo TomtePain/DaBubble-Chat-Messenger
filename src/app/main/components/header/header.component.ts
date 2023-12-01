@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       } else {
         this.setUserData();
       }
-    }, 250);
+    }, 500);
   }
 
 
