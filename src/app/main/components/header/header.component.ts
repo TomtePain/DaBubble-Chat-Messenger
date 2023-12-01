@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   openDialog() {
     this.dialog.open(ProfileComponent, {
-      width: '400px',
+      width: '500px',
       autoFocus: false,
     });
   }

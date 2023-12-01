@@ -78,9 +78,23 @@
     }
 }
 
-::ng-deep .wasgeht {
+::ng-deep .profile-dialog {
     border-radius: 30px 0px 30px 30px !important;
+    padding: 30px;
+    gap: 15px;
 }
+
+
+.mat-mdc-menu-item:not([disabled]):hover {
+    padding: 10px, 45px, 10px, 45px;
+    border-radius: 100px;
+    gap: 15px;
+    background-color: rgba(236, 238, 254, 1) !important;
+
+    span {
+        color: var(--purple-3)
+    }
+  }
 
 @media (max-width: 1122px) {
     .header {.profile {
