@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, DocumentSnapshot, Firestore, doc, docData, getDoc } from '@angular/fire/firestore';
+import { DocumentData, DocumentSnapshot, Firestore, doc, docData, getDoc, updateDoc } from '@angular/fire/firestore';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { environment } from 'src/environments/environment';
 import { Storage, getDownloadURL, getStorage, listAll, ref, uploadBytes } from '@angular/fire/storage';
@@ -59,18 +59,6 @@ export class EditorService {
     }
   }
 
-  // uploadData(file: any) {
-  //   const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + file.name);
-  //   const uploadTask = from(uploadBytes(storageRef, file));
-  //   uploadTask.subscribe(() => {
-  //     getDownloadURL(storageRef).then(resp => {
-  //       this.fileUrl = resp;
-  //       this.fileName = file.name;
-  //     })
-  //   })
-  // }
-
-
   uploadDataToStore(file: any) {
     const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + this.newFileName);
     const uploadTask = from(uploadBytes(storageRef, file));
@@ -84,42 +72,20 @@ export class EditorService {
 
 
   uploadData(file: any) {
-    const listRef = ref(this.storage, `/upload/${this.userservice.userDBId}/`);
-    let uploadedFiles: Array<any> = [];
-    let counter = 0;
-    listAll(listRef).then((uploads) => {
-      uploads.items.forEach((item) => {
-        uploadedFiles.push(item.name);
-      })
-      let exist = uploadedFiles.find((f) => f == file.name);
-      if (exist) {
-        counter++;
-        this.newFileName = this.splitName(file) + `(${counter})` + '.' + this.splitFileType(file);
-        let newExistCheck = uploadedFiles.find((nec) => nec == this.newFileName)
-        if (newExistCheck) {
-          counter++;
-          this.newFileName = this.splitName(file) + `(${counter})` + '.' + this.splitFileType(file);
-          this.uploadDataToStore(file);
-          return
-        } else { this.uploadDataToStore(file) }
-      } else { 
-        this.newFileName = file.name;
-        this.uploadDataToStore(file);
-      }
-    })
+    let counter = this.userservice.loginUser.uploadFileCounter;
+    counter++;
+    this.updateUploadCounter(counter);
+    this.newFileName = counter + '-' + file.name;
+    this.uploadDataToStore(file);
   }
 
-  splitName(file: any) {
-    let name: string = file.name;
-    let splitedName: string[] = name.split('.');
-    let lastPc: string = splitedName[splitedName.length - 2];
-    return lastPc
+  updateUploadCounter(counter:number) {
+    const docInstance = doc(this.firestore, environment.userDb, this.userservice.userDBId as string);
+    let updateCounter = {
+      uploadFileCounter : counter
+    };
+    updateDoc(docInstance, updateCounter);
   }
 
-  splitFileType(file: any) {
-    let name: string = file.name;
-    let splitedName: string[] = name.split('.');
-    let lastPc: string = splitedName[splitedName.length - 1];
-    return lastPc
-  }
+
 }

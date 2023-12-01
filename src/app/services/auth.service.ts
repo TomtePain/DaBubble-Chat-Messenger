@@ -24,7 +24,7 @@ export class AuthService {
     createUserWithEmailAndPassword(this.auth, email, password).then(resp => {
       const userId = resp.user.uid;
       const itemCollection = collection(this.firestore, environment.userDb);
-      let userData = { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email }
+      let userData = { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email, uploadFileCounter: 0 }
       sendEmailVerification(resp.user);
       // setDoc(doc(itemCollection), userData);
       this.crud.addItem(userData, environment.userDb)
@@ -55,7 +55,7 @@ export class AuthService {
       const email = resp.user.email;
       const itemCollection = collection(this.firestore, environment.userDb);
       let userIsReg = await this.isRegUser(userId);
-      let userData = { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email };
+      let userData = { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email, uploadFileCounter: 0};
 
       if (userIsReg.length > 0) {
         setDoc(doc(itemCollection, userIsReg), userData);
