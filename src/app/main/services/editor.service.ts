@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, DocumentSnapshot, Firestore, doc, docData, getDoc } from '@angular/fire/firestore';
+import { DocumentData, DocumentSnapshot, Firestore, doc, docData, getDoc, updateDoc } from '@angular/fire/firestore';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { environment } from 'src/environments/environment';
-import { Storage, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
+import { Storage, getDownloadURL, getStorage, listAll, ref, uploadBytes } from '@angular/fire/storage';
 import { File } from '../interfaces/editor';
 import { from } from 'rxjs';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,9 @@ export class EditorService {
   usersData: Array<UserProfile> = [];
   fileUrl: string = '';
   fileName: string = '';
+  newFileName: string = '';
 
-  constructor(private firestore: Firestore, private storage: Storage) { }
+  constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService) { }
 
   /**
    * Retrieves and populates user data for a single document identified by 'docId' from Firestore.
@@ -57,15 +59,33 @@ export class EditorService {
     }
   }
 
-  uploadData(file: any) {
-    const storageRef = ref(this.storage, '/upload/test/' + file.name);
+  uploadDataToStore(file: any) {
+    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + this.newFileName);
     const uploadTask = from(uploadBytes(storageRef, file));
     uploadTask.subscribe(() => {
       getDownloadURL(storageRef).then(resp => {
         this.fileUrl = resp;
-        this.fileName = file.name;
-      }
-      )
+        this.fileName = this.newFileName;
+      })
     })
   }
+
+
+  uploadData(file: any) {
+    let counter = this.userservice.loginUser.uploadFileCounter;
+    counter++;
+    this.updateUploadCounter(counter);
+    this.newFileName = counter + '-' + file.name;
+    this.uploadDataToStore(file);
+  }
+
+  updateUploadCounter(counter:number) {
+    const docInstance = doc(this.firestore, environment.userDb, this.userservice.userDBId as string);
+    let updateCounter = {
+      uploadFileCounter : counter
+    };
+    updateDoc(docInstance, updateCounter);
+  }
+
+
 }

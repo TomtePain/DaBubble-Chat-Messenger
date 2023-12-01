@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import {
   Firestore,
   doc,
@@ -16,6 +16,7 @@ import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
 import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-delete-message.component';
 import { getStorage, ref, deleteObject } from '@angular/fire/storage';
+import { UploadComponent } from '../../dialogs/upload/upload.component';
 
 @Component({
   selector: 'app-chat-message',
@@ -40,6 +41,8 @@ export class ChatMessageComponent implements OnInit {
   amountThreadMessages!: number;
   lastThreadTimeStamp!: number;
   private destroy$ = new Subject<void>();
+  showEmojiPicker = false;
+  message: any = '';
 
   constructor(
     public firestore: Firestore,
@@ -167,13 +170,7 @@ export class ChatMessageComponent implements OnInit {
   }
 
   updateDataInDb(docInstance: DocumentReference, updatedData: any) {
-    updateDoc(docInstance, updatedData)
-      .then(() => {
-        console.log('data updated', updatedData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    updateDoc(docInstance, updatedData);
   }
 
   toggleReaction(type: string, messageId: string, reactionData: any) {
@@ -243,14 +240,15 @@ export class ChatMessageComponent implements OnInit {
       data: {
         messageData: this.messageData,
         existingUser : this.existingUser,
-        channelID : this.channelID
+        channelID : this.channelID,
+        userID: this.userservice.userDBId
       }
     })
   }
 
   deleteUploadedFile() {
     const storage = getStorage();
-    const spaceRef = ref(storage, 'upload/test/' + this.messageData.uploadFileName);
+    const spaceRef = ref(storage, `/upload/${this.userservice.userDBId}/` + this.messageData.uploadFileName);
     let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';
     const docInstance = doc(this.firestore, path, this.messageData.id);
 
@@ -260,6 +258,7 @@ export class ChatMessageComponent implements OnInit {
         uploadFileName: false,
       };
       this.updateDataInDb(docInstance, updateData);
+      this.showUploadDialog('delete data');
     })
   }
 
@@ -270,6 +269,28 @@ export class ChatMessageComponent implements OnInit {
     let lastPc: string = splitedName[splitedName.length - 1];
     return lastPc
   }
+
+  showUploadDialog(msg: string) {
+    const dialogRef = this.dialog.open(UploadComponent, {
+      data: { typeOfMessage: msg },
+    });
+  }
   
+
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    let input:any = document.getElementById('messageChatContent');
+    const text = `${input.value}${event.emoji.native}`;
+    input.value = text;
+    this.showEmojiPicker = false;
+  }
+
+  hideBoxes() {
+    this.showEmojiPicker = false;
+  }
+
 
 }

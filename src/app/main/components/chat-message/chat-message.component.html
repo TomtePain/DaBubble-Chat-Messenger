@@ -50,7 +50,7 @@
           <a *ngIf="checkForPDF() != 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
           <a *ngIf="checkForPDF() == 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="/assets/images/icons/pdf-128.png" alt=""></a>
         </div>
-        <span style="font-size: 10px;">{{ messageData.uploadFileName }}</span>
+        <span style="font-size: 10px;" *ngIf="messageData.uploadFileName" >{{ messageData.uploadFileName }}</span>
         <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
       </div>
 
@@ -71,7 +71,7 @@
           </div>          
         </div>
         <div class="icon-area">
-            <div class="icon" id="smiley"></div>
+            <div class="icon" id="smiley" (click)="toggleEmojiPicker()"></div>
             <div class="edit-button-container">
                 <button class="btn-secondary" (click)="closeEditMessage()">Abbrechen</button>
                 <button class="btn-prime" (click)="saveEditMessage(messageData)">Speichern</button>
@@ -118,3 +118,7 @@
   </div>
 
 </div>
+
+
+<emoji-mart class="emoji-mart" *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"
+  [darkMode]="false"></emoji-mart>
