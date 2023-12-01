@@ -4,6 +4,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user.service';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { object } from '@angular/fire/database';
+import { from } from 'rxjs';
+import { Storage, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
 
 
 
@@ -17,6 +19,9 @@ export class ProfileComponent {
   userFullName:string = '';
   userEmail:string = '';
   userProfileImage:string = '';
+  profileImageEdit: boolean = false;
+  // fullName: any = 'Test Name';
+  profileImage = './assets/images/profile-icons/person.png';
 
   profileForm = this.fb.group({
     fullNameFormControl: new FormControl('', [Validators.required]),
@@ -24,7 +29,7 @@ export class ProfileComponent {
 
   });
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService, private storage: Storage) {
     this.setData();
   }
 
@@ -34,11 +39,52 @@ export class ProfileComponent {
     this.profileEdit = true;
   }
   cancelEditProfile() {
-    this.dialogRef.close()
+    this.profileEdit = false;
+    this.profileImageEdit = false;
+    this.setData();
+  }
+
+  chooseProfile() {
+    this.profileImageEdit = !this.profileImageEdit;
+    console.log("this.userProfileImage", this.userProfileImage);
+    
+  }
+
+  setProfileImage(path: any) {
+    this.userProfileImage = path;
+    console.log("this.userProfileImage", this.userProfileImage);
+  }
+
+  triggerInput() {
+    document.getElementById('getFile')?.click();
+  }
+
+  upload(event: any) {
+    const storageRef = ref(this.storage, '/upload/userIcons/' + event.target.files[0].name);
+    const uploadTask = from(uploadBytes(storageRef, event.target.files[0]));
+    uploadTask.subscribe(() => {
+      getDownloadURL(storageRef).then(resp =>
+        this.setProfileImage(resp)
+      )
+    })
+  }
+
+  saveProfileImageChange() {
+    console.log("Profile image change saved");
+    //TODO save the change profile image
+    this.userservice.saveUserImage(this.userProfileImage);
+    setTimeout(() => {
+      this.setData();
+      this.profileImageEdit = false;
+    }, 150);
+  }
+
+  cancelProfileImageChange() {
+    this.profileImageEdit = false;
+    this.userProfileImage = this.userservice.loginUser.photoURL; //reset profile image to last saved one
   }
 
   setData() {
- 
       let userData: UserProfile = this.userservice.loginUser as UserProfile;
       this.userFullName = userData.fullName;
       this.userEmail = userData.email;
@@ -49,16 +95,16 @@ export class ProfileComponent {
   
 
   saveUserData() {
-    let fromFullname = this.profileForm.controls.fullNameFormControl.value;
-    let fromEmail = this.profileForm.controls.emailFormControl.value;
-    if (fromFullname !== null && fromEmail !== null) {
-      this.userservice.saveUserData(fromFullname, fromEmail);
+    let formFullname = this.profileForm.controls.fullNameFormControl.value;
+    let formEmail = this.profileForm.controls.emailFormControl.value;
+    if (formFullname !== null && formEmail !== null) {
+      this.userservice.saveUserData(formFullname, formEmail);
       setTimeout(() => {
         this.setData();
         this.profileEdit = false;
       }, 50);
   } else {
-      console.warn('An error occurred', "fromFullname", fromFullname,"fromEmail", fromEmail);
+      console.warn('An error occurred', "fromFullname", formFullname,"fromEmail", formEmail);
       
   }
   }

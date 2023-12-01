@@ -51,6 +51,12 @@ export class UserService {
     })
   }
 
+  saveUserImage(imagepath: string) {
+    updateDoc(this.documentRef, {
+      photoURL: imagepath,
+    })
+  }
+
   logOut() {
     localStorage.removeItem('userId');
     signOut(this.auth);

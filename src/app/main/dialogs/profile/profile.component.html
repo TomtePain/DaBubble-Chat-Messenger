@@ -1,12 +1,14 @@
 <div class="profile-header">
-    <h2 *ngIf="!profileEdit">Profil</h2>
+    <h2 *ngIf="!profileEdit && !profileImageEdit">Profil</h2>
     <h2 *ngIf="profileEdit">Dein Profil bearbeiten</h2>
+    <h2 *ngIf="profileImageEdit">Dein Profilbild bearbeiten</h2>
     <button mat-icon-button mat-dialog-close><mat-icon fontIcon="close"></mat-icon></button>
 </div>
-<div mat-dialog-content class="profile-img">
-    <img src='{{ userProfileImage }}'>
+<div mat-dialog-content class="profile-img" *ngIf="!profileImageEdit">
+    <img src='{{ userProfileImage }}' *ngIf="!profileEdit" (click)="chooseProfile()" class="pointer">
+    <img src='{{ userProfileImage }}' *ngIf="profileEdit">
 </div>
-<div mat-dialog-content class="profile-info" *ngIf="!profileEdit">
+<div mat-dialog-content class="profile-info" *ngIf="!profileEdit && !profileImageEdit">
     <div class="name">
         <h3>{{ userFullName }}</h3>
         <button mat-button color="primary" (click)="editProfile()">Bearbeiten</button>
@@ -44,6 +46,34 @@
         </div>
     </form>
 </div>
+
+<div mat-dialog-content class="profile-icon-container" *ngIf="profileImageEdit">
+    <div class="head">
+        <h2>Wähle deinen Avatar</h2>
+    </div>
+    <div class="person-icon">
+        <img src="{{userProfileImage}}" alt="">
+
+    </div>
+    <h3>{{ userFullName }}</h3>
+   
+    <div class="chooseImage-container">
+        <p>Aus der Liste wählen</p>
+        <div class="images">
+            <img src='{{"./assets/images/profile-icons/big/avatar-" +(i+1) + ".png"}}' alt="" *ngFor="let _ of [].constructor(6), let i = index" (click)="setProfileImage('./assets/images/profile-icons/big/avatar-' +(i+1) + '.png')">
+        </div>
+        <div class="uploadImage-container">
+            eigenes Bild verwenden
+            <button mat-stroked-button color="primary" (click)="triggerInput()">Datei hochladen</button>
+            <input type='file' id="getFile" style="display:none" (change)="upload($event)" accept=".png,.jpg">
+        </div>
+    </div>
+    <div class="reg-btns">
+        <button mat-stroked-button color="primary" (click)="cancelEditProfile()">Abbrechen</button>
+        <button mat-raised-button color="primary" (click)="saveProfileImageChange()">Speichern</button>
+    </div>
+</div>
+
 <div class="action-bar" mat-dialog-actions *ngIf="profileEdit">
     <button mat-stroked-button color="primary" (click)="cancelEditProfile()">Abbrechen</button>
     <button mat-raised-button color="primary" [disabled]="!profileForm.valid" (click)="saveUserData()">Speichern</button>
