@@ -28,15 +28,12 @@ export class UserService {
   getAllUsers() {
     this.crud.getItem(environment.userDb).subscribe((resp) => {
       this.allUsers = resp;
-      // console.info('All Users,',resp);
     })
   }
 
   saveLoginUserData() {
     this.getUserData().subscribe(resp => {
-      this.loginUser = resp;
-      // console.log('saveLoginUserData',resp);
-      
+      this.loginUser = resp;      
     })
   }
 
