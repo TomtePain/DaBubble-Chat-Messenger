@@ -22,6 +22,7 @@ export class TreeService {
   search = false;
   newMessage = false;
   own:boolean = false;
+  allChannels: Array<any> = [];
 
   changeArrow(id: string, isTopArrow: boolean) {
     const element = document.querySelector(`#${id}`) as HTMLImageElement | null;
@@ -51,7 +52,11 @@ export class TreeService {
 
 
   openDialog() {
-    this.dialog.open(DialogAddChannelComponent);
+    this.dialog.open(DialogAddChannelComponent, {
+      data: {
+        channels: this.allChannels
+      }
+    });
   }
 
 

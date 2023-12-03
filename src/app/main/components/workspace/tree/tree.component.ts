@@ -95,6 +95,7 @@ export class TreeComponent implements OnInit {
     this.findUsersFromMessageId(messages);
     this.tree.userChannels = channels;
     this.dbChannels = channels;
+    this.tree.allChannels = channels;
     this.dmIds = messages;
     this.updateChannels();
     this.treeControl.expandAll();
