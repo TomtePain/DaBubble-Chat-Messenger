@@ -23,8 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => {
-      console.log("this.userservice.loginUser", this.userservice.loginUser);
       if (this.userservice.loginUser === undefined) {
+        console.log("this.userservice.loginUser", this.userservice.loginUser);
         console.log("reload");
         window.location.reload();
       } else {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
-import { DocumentReference, Firestore, arrayUnion, collection, doc, docData, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { Firestore, arrayUnion, collection, doc, docData, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../auth/components/alert/alert.service';
@@ -24,7 +24,7 @@ export class AuthService {
     createUserWithEmailAndPassword(this.auth, email, password).then(resp => {
       const userId = resp.user.uid;
       const itemCollection = collection(this.firestore, environment.userDb);
-      let userData = { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email, uploadFileCounter: 0 }
+      let userData = { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email }
       sendEmailVerification(resp.user);
       // setDoc(doc(itemCollection), userData);
       this.crud.addItem(userData, environment.userDb)
@@ -55,7 +55,7 @@ export class AuthService {
       const email = resp.user.email;
       const itemCollection = collection(this.firestore, environment.userDb);
       let userIsReg = await this.isRegUser(userId);
-      let userData = { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email, uploadFileCounter: 0};
+      let userData = { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email };
 
       if (userIsReg.length > 0) {
         setDoc(doc(itemCollection, userIsReg), userData);

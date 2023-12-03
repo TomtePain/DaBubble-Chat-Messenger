@@ -53,7 +53,9 @@ export class ProfileComponent {
   }
 
   upload(event: any) {
-    const storageRef = ref(this.storage, '/upload/userIcons/' + event.target.files[0].name);
+    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}//userIcons/` + event.target.files[0].name);
+    console.log("event.target.files[0].name", event.target.files[0].name);
+    
     const uploadTask = from(uploadBytes(storageRef, event.target.files[0]));
     uploadTask.subscribe(() => {
       getDownloadURL(storageRef).then(resp =>

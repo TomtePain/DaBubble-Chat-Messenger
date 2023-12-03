@@ -37,6 +37,11 @@
                 <h3>Vollständiger Name</h3>
             </div>
             <input type="text" class="input-field" formControlName="fullNameFormControl" [ngClass]="{ 'is-invalid': f.fullNameFormControl.errors}">
+            <div *ngIf="profileForm.controls.fullNameFormControl.errors && (profileForm.controls.fullNameFormControl.dirty || profileForm.controls.fullNameFormControl.touched)">
+                <div *ngIf="profileForm.controls.fullNameFormControl.errors['required']" class="validation-error-msg">
+                    Ein Name ist erforderlich.
+                </div>
+            </div>
         </div>
         <div class="input-container">
             <div class="label">
@@ -44,6 +49,14 @@
                 <h3>E-Mail-Adresse</h3>
             </div>
             <input type="email" formControlName="emailFormControl" class="input-field" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$" [ngClass]="{ 'is-invalid': f.emailFormControl.errors}">
+            <div *ngIf="profileForm.controls.emailFormControl.errors && (profileForm.controls.emailFormControl.dirty || profileForm.controls.emailFormControl.touched)">
+                <div *ngIf="profileForm.controls.emailFormControl.errors['required']" class="validation-error-msg">
+                    Deine E-Mail-Adresse ist erforderlich.
+                </div>
+                <div *ngIf="profileForm.controls.emailFormControl.errors['pattern']" class="validation-error-msg">
+                    Bitte gib eine gültige E-Mail-Adresse ein.
+                </div>
+            </div>
         </div>
     </form>
 </div>
