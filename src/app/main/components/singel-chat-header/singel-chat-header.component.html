@@ -15,7 +15,7 @@
         <p *ngIf="existingUser">{{ existingUser.length }}</p>
     </div>
 
-    <div class="add-member"></div>
+    <div class="add-member" (click)="openAddUserDialog()"></div>
 </div>
 
 <div class="message-header" *ngIf="!this.tree.newMessage && channel && channel.type == 'message'">

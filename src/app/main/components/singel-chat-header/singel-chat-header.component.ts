@@ -9,6 +9,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogChannelEditComponent } from './dialog-channel-edit/dialog-channel-edit.component';
 import { DialogShowChannelUserComponent } from './dialog-show-channel-user/dialog-show-channel-user.component';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
+import { AddPeopleToChannelComponent } from '../workspace/add-people-to-channel/add-people-to-channel.component';
+import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
 
 
 @Component({
@@ -38,14 +40,14 @@ export class SingelChatHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(() => {
       this.getCurrentChannelInfo();
-      
+
       setTimeout(() => {
         this.checkUserDataFromDb();
       }, 2000);
-      
-      
+
+
     })
-    
+
   }
 
 
@@ -103,7 +105,7 @@ export class SingelChatHeaderComponent implements OnInit {
     });
   }
 
-  viewUsersProfile(userId:any) {
+  viewUsersProfile(userId: any) {
     this.dialog.open(DialogProfileviewOfOthersComponent, {
       data: {
         userId: userId,
@@ -112,5 +114,9 @@ export class SingelChatHeaderComponent implements OnInit {
     });
   }
 
+
+  openAddUserDialog() {
+    this.dialog.open(DialogAddUserComponent)
+  }
 
 }
