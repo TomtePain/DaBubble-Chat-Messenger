@@ -22,8 +22,8 @@ export class ProfileComponent {
 
   profileForm = this.fb.group({
     fullNameFormControl: new FormControl('', [Validators.required]),
-    // emailFormControl: new FormControl('', [Validators.required, Validators.email]),
-    emailFormControl: new FormControl({value: '', disabled: true})
+    // emailFormControl: new FormControl('', [Validators.required, Validators.email]) //Activate to enable email change option
+    emailFormControl: new FormControl({value: '', disabled: true}) //Activate to disable email change option
 
   });
 
@@ -91,10 +91,9 @@ export class ProfileComponent {
 
   saveUserData() {
     let formFullname = this.profileForm.controls.fullNameFormControl.value;
-    let formEmail = this.profileForm.controls.emailFormControl.value;
+    let formEmail = this.profileForm.controls.emailFormControl.value as string;
     if (formFullname !== null && formEmail !== null) {
       this.userservice.saveUserData(formFullname, formEmail);
-      let user = this.userservice.loginUser.uid;
       this.authservice.sendEmailAfterChange(formEmail);
       setTimeout(() => {
         this.setData();

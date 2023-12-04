@@ -48,7 +48,7 @@
                 <mat-icon fontIcon="mail"></mat-icon>
                 <h3>E-Mail-Adresse (nicht änderbar)</h3>
             </div>
-            <input [disabled]="true" type="email" formControlName="emailFormControl" class="input-field" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$" [ngClass]="{ 'is-invalid': f.emailFormControl.errors}">
+            <input type="email" formControlName="emailFormControl" class="input-field" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$" [ngClass]="{ 'is-invalid': f.emailFormControl.errors}">
             <div *ngIf="profileForm.controls.emailFormControl.errors && (profileForm.controls.emailFormControl.dirty || profileForm.controls.emailFormControl.touched)">
                 <div *ngIf="profileForm.controls.emailFormControl.errors['required']" class="validation-error-msg">
                     Deine E-Mail-Adresse ist erforderlich.

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, User, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut, verifyBeforeUpdateEmail } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, User, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
 import { Firestore, arrayUnion, collection, doc, docData, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../auth/components/alert/alert.service';
 import { CrudService } from '../main/services/crud.service';
 import { TreeService } from '../main/services/tree.service';
+import { getAuth, updateEmail  } from 'firebase/auth';
 
 
 @Injectable({
@@ -13,6 +14,7 @@ import { TreeService } from '../main/services/tree.service';
 })
 export class AuthService {
   loggedUserId: string = '';
+  
 
   constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService, private tree: TreeService ) { }
 
@@ -155,35 +157,32 @@ export class AuthService {
   }
 
 
-  sendEmailAfterChange(newEmail: string,) {
+  sendEmailAfterChange(newEmail: string) {
     let previousUserEmail = this.auth.currentUser?.email;
-    let user = this.auth.currentUser?.toJSON() as User;
-    // console.log("user", user);
 
     if (previousUserEmail != newEmail) {
       console.log("Different emails", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+      //Final logic to be added here
     }
-
-    // let userData = {
-    //   email: this.auth.currentUser?.email,
-    //   emailVerified: this.auth.currentUser?.emailVerified,
-    //   isAnonymous: this.auth.currentUser?.isAnonymous,
-    //   uid: this.auth.currentUser?.uid
-    // }
-
-    // console.log("userId", id);
-    // console.log("previousUserEmail", previousUserEmail);
-    // console.log("newEmail", newEmail);
-    // console.log("this.auth", this.auth.currentUser);
-    // console.log("user", userData);
-
-    // let user:User = this.auth.currentUser
-
-    // this.user.uid = id;
-    // verifyBeforeUpdateEmail(user, newEmail)
-    // this.alert('Konto erfolgreich geändert!');
-    // console.log("verifyBeforeUpdateEmail", this.user);
     
+    const authentication = getAuth();
+    const user = authentication.currentUser;
+  
+    if (user) {
+      updateEmail(user, newEmail).then(() => {
+        // Email updated!
+        console.log("Email updated", newEmail, user);
+        sendEmailVerification(user) //sends email to verify email to new email address
+        // ...
+      }).catch((error) => {
+        // An error occurred
+        let code = error.code;
+        code = code.slice(5);
+        this.alert(code);
+      });
+    } else {
+      console.error('No user is currently signed in.');
+    }
   }
 
 }
