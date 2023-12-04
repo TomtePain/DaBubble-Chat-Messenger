@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Auth, signOut } from '@angular/fire/auth';
-import { Firestore, collection, doc, docData, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { CrudService } from './crud.service';
 

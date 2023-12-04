@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { from } from 'rxjs';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,11 +22,12 @@ export class ProfileComponent {
 
   profileForm = this.fb.group({
     fullNameFormControl: new FormControl('', [Validators.required]),
-    emailFormControl: new FormControl('', [Validators.required, Validators.email]),
+    // emailFormControl: new FormControl('', [Validators.required, Validators.email]),
+    emailFormControl: new FormControl({value: '', disabled: true})
 
   });
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService, private storage: Storage) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService, private storage: Storage, private authservice: AuthService) {
     this.setData();
   }
 
@@ -53,7 +55,7 @@ export class ProfileComponent {
   }
 
   upload(event: any) {
-    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}//userIcons/` + event.target.files[0].name);
+    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/userIcons/` + event.target.files[0].name);
     console.log("event.target.files[0].name", event.target.files[0].name);
     
     const uploadTask = from(uploadBytes(storageRef, event.target.files[0]));
@@ -92,15 +94,17 @@ export class ProfileComponent {
     let formEmail = this.profileForm.controls.emailFormControl.value;
     if (formFullname !== null && formEmail !== null) {
       this.userservice.saveUserData(formFullname, formEmail);
+      let user = this.userservice.loginUser.uid;
+      this.authservice.sendEmailAfterChange(formEmail);
       setTimeout(() => {
         this.setData();
         this.profileEdit = false;
-      }, 50);
+      }, 250);
   } else {
-      console.warn('An error occurred', "fromFullname", formFullname,"fromEmail", formEmail);
-      
+      console.warn('An error occurred', "formFullname", formFullname,"formEmail", formEmail);  
   }
   }
+
   updateLocal() {
     let userData = JSON.parse(localStorage.getItem('activUser') || '{}');
     userData.fullName = 'TEste mich'

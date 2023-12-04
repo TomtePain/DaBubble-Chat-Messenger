@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, User, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { Firestore, arrayUnion, collection, doc, docData, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -153,4 +153,37 @@ export class AuthService {
     })
     return isReg
   }
+
+
+  sendEmailAfterChange(newEmail: string,) {
+    let previousUserEmail = this.auth.currentUser?.email;
+    let user = this.auth.currentUser?.toJSON() as User;
+    // console.log("user", user);
+
+    if (previousUserEmail != newEmail) {
+      console.log("Different emails", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+    }
+
+    // let userData = {
+    //   email: this.auth.currentUser?.email,
+    //   emailVerified: this.auth.currentUser?.emailVerified,
+    //   isAnonymous: this.auth.currentUser?.isAnonymous,
+    //   uid: this.auth.currentUser?.uid
+    // }
+
+    // console.log("userId", id);
+    // console.log("previousUserEmail", previousUserEmail);
+    // console.log("newEmail", newEmail);
+    // console.log("this.auth", this.auth.currentUser);
+    // console.log("user", userData);
+
+    // let user:User = this.auth.currentUser
+
+    // this.user.uid = id;
+    // verifyBeforeUpdateEmail(user, newEmail)
+    // this.alert('Konto erfolgreich geändert!');
+    // console.log("verifyBeforeUpdateEmail", this.user);
+    
+  }
+
 }
