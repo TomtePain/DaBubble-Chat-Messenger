@@ -172,7 +172,7 @@ export class AuthService {
       updateEmail(user, newEmail).then(() => {
         // Email updated!
         console.log("Email updated", newEmail, user);
-        sendEmailVerification(user) //sends email to verify email to new email address
+        // sendEmailVerification(user) //sends email to verify email to new email address
         // ...
       }).catch((error) => {
         // An error occurred
