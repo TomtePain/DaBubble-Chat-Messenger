@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CrudService } from 'src/app/main/services/crud.service';
@@ -31,6 +31,7 @@ export class DialogAddUserComponent implements OnInit {
   searchUser: boolean = false;
   uid: string = '';
   placeholder: boolean = true;
+  @ViewChild('addBtn') addBtn!: ElementRef | any;
 
 
   ngOnInit(): void {
@@ -56,6 +57,7 @@ export class DialogAddUserComponent implements OnInit {
       if (index === -1) {
         this.addedToChannel.push(addedUser);
         this.addedToChannelIds.push(addedUser.uid);
+        this.addBtn.removeAttribute('disabled');
       }
     }
     searchUser.value = '';
@@ -93,5 +95,9 @@ export class DialogAddUserComponent implements OnInit {
     return doc.fullName.toLowerCase().includes(searchTerm.toLowerCase());
   }
 
+  addUserToExistChannel() {
+    console.log('click')
+    this.addBtn.setAttribute('disabled', '');
+  }
 
 }

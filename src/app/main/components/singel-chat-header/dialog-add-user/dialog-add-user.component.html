@@ -8,7 +8,7 @@
     <div class="round-input" (click)="setPlaceholder()">
         <input type="text" id="searchUserNew" (keyup)="searchUserNew($event)" placeholder="Name eingeben" class="search-user-input-field">
         <div class="added-to-channel-container" *ngFor="let added of addedToChannel;let i = index">
-            <div class="added-to-channel-users ">
+            <div class="added-to-channel-users">
                 <img class="added-to-channel-img" src="{{added.photoURL}}" alt="profile-img">
                 <p>{{added.fullName}}</p>
                 <img class="added-user-close" src="assets/add-channel/close.svg" alt="close" (click)="removeFromAddList(i)">
@@ -27,6 +27,10 @@
                 <p>{{user.fullName}}</p>
             </div>
         </div>
+    </div>
+
+    <div>
+        <button #addBtn class="btn-prime" disabled (click)="addUserToExistChannel()">Hinzufügen</button>
     </div>
 
 
