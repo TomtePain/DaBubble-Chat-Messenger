@@ -10,15 +10,32 @@
         </div>
         <div class="input-box">
             <mat-icon fontIcon="mail" class="icon"></mat-icon>
-            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com">
+            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$">
+            <div *ngIf="regForm.controls.email.errors && (regForm.controls.email.dirty || regForm.controls.email.touched)">
+                <div *ngIf="regForm.controls.email.errors['required']" class="validation-error-msg">
+                    Deine E-Mail-Adresse ist erforderlich.
+                </div>
+                <div *ngIf="regForm.controls.email.errors['pattern']" class="validation-error-msg">
+                    Bitte gib eine gültige E-Mail-Adresse ein.
+                </div>
+            </div>
         </div>
         <div class="input-box">
             <mat-icon fontIcon="lock" class="icon"></mat-icon>
             <input type="password" name="password" id="password" formControlName="password" placeholder="Passwort">
+            <div *ngIf="regForm.controls.password.errors && (regForm.controls.password.dirty || regForm.controls.password.touched)">
+                <div *ngIf="regForm.controls.password.errors['required']" class="validation-error-msg">
+                    Ein Passwort ist erforderlich.
+                </div>
+                <div *ngIf="regForm.controls.password.errors['minlength']" class="validation-error-msg">
+                    Das Passwort muss mindestens {{ regForm.controls.password.errors['minlength'].requiredLength }} Zeichen lang sein.
+                </div>
+            </div>
         </div>
+
         <div class="input-box">
             <mat-checkbox color="primary" formControlName="acceptTerms">Ich stimme der <a
-                    href="#">Datenschutzerklärung</a> zu.</mat-checkbox>
+                    href="#">Datenschutzerklärung</a> zu.</mat-checkbox> 
         </div>
     </form>
     <div class="reg-btns">

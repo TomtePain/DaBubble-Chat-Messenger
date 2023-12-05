@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { Auth, GoogleAuthProvider, createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, user } from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
-import { Storage, getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
+import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Observable, from, switchMap } from 'rxjs';
+import { from } from 'rxjs';
+import { UserService } from 'src/app/main/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -16,14 +17,15 @@ export class RegisterComponent {
   regForm = this.fb.group({
     fullName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     acceptTerms: new FormControl('', [Validators.required, Validators.requiredTrue])
   })
   fullName: any = 'Test Name';
   profileImage = './assets/images/profile-icons/person.png';
+  users: any;
 
-  constructor(public fb: FormBuilder, public auth: Auth, private firestore: Firestore, private userAuth: AuthService, private storage: Storage) { }
-
+  constructor(public fb: FormBuilder, public auth: Auth, private firestore: Firestore, private userAuth: AuthService, private storage: Storage, public user:UserService) {
+  }
   chooseProfile() {
     this.showChooseProfile = !this.showChooseProfile;
     this.fullName = this.regForm.value.fullName;
@@ -35,6 +37,7 @@ export class RegisterComponent {
 
   triggerInput() {
     document.getElementById('getFile')?.click();
+    //TODO chooseProfile() wenn successful
   }
 
   regUser() {

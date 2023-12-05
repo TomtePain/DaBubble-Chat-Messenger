@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, DocumentSnapshot, Firestore, doc, docData, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { environment } from 'src/environments/environment';
-import { Storage, getDownloadURL, getStorage, listAll, ref, uploadBytes } from '@angular/fire/storage';
-import { File } from '../interfaces/editor';
+import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { from } from 'rxjs';
 import { UserService } from './user.service';
 

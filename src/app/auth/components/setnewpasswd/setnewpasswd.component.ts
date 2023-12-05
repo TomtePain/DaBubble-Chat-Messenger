@@ -21,5 +21,9 @@ export class SetnewpasswdComponent {
     }, {validators:matchpassword})
   }
 
-  restPassword(){}
+  resetPassword(){
+    //TODO update password in firebase
+    console.log("Passwort geändert");
+    
+  }
 }
