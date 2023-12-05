@@ -7,6 +7,7 @@ import { AlertService } from '../auth/components/alert/alert.service';
 import { CrudService } from '../main/services/crud.service';
 import { TreeService } from '../main/services/tree.service';
 import { getAuth, updateEmail  } from 'firebase/auth';
+import { UserService } from '../main/services/user.service';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class AuthService {
   loggedUserId: string = '';
   
 
-  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService, private tree: TreeService ) { }
+  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService, private tree: TreeService, private userservice: UserService ) { }
 
   regUser(regFormValue: any, photoURL: string, accessToChannel: any, isOnline: boolean) {
     const { email, password, fullName } = regFormValue.value;
@@ -34,8 +35,9 @@ export class AuthService {
           this.upDateChannelUser(docRef);
           this.tree.createOwnDM(docRef);
         })
-      this.alert('Konto erfolgreich erstellt!');
-      this.route.navigateByUrl('auth/login');
+      this.alert('Konto erfolgreich erstellt, bitte verifiziere Deine Email-Adresse.');
+      this.setUserDataToLocalStorage(userId)
+      // this.route.navigateByUrl('auth/login');
     }).catch(err => {
       this.alert(err.code);
     })
@@ -75,7 +77,7 @@ export class AuthService {
 
 
   upDateChannelUser(docRef: any) {
-    let updateItem = doc(collection(this.firestore, environment.channelDb), '8veqP2ohCvtLVgT46sP5');
+    let updateItem = doc(collection(this.firestore, environment.channelDb), environment.mainChannel);
     updateDoc(updateItem, {
       ids: arrayUnion(docRef.id)
     });
@@ -89,7 +91,7 @@ export class AuthService {
       if (resp.user.emailVerified) {
         setTimeout(() => { this.route.navigateByUrl(''); }, 900)
       } else {
-        this.alert('Verifiziere Ihre E-Mail-Adresse!')
+        this.alert('Verifiziere Deine E-Mail-Adresse!')
       }
     }).catch(err => {
       let code = err.code;
@@ -128,6 +130,7 @@ export class AuthService {
         let userDbId = doc.docs[0].id;
         this.loggedUserId = userDbId;
         localStorage.setItem('userId', userDbId);
+        this.userservice.userDBId = userDbId;
       }
     })
   }

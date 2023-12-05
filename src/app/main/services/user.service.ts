@@ -51,6 +51,14 @@ export class UserService {
     })
   }
 
+  saveUserImageOnRegistration(imagepath: string) {
+    this.userDBId = localStorage.getItem('userId')
+    this.documentRef = doc(this.firestore, environment.userDb + `/` + this.userDBId)
+    updateDoc(this.documentRef, {
+      photoURL: imagepath,
+    })
+  }
+
   logOut() {
     localStorage.removeItem('userId');
     signOut(this.auth);

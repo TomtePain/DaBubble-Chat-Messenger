@@ -39,14 +39,15 @@
         </div>
     </form>
     <div class="reg-btns">
-        <button mat-raised-button color="primary" [disabled]="!regForm.valid" (click)="chooseProfile()">Weiter</button>
+        <button mat-raised-button color="primary" [disabled]="!regForm.valid" (click)="regUser()">Weiter</button>
     </div>
 </div>
 
 <div class="profile-icon-container" *ngIf="showChooseProfile">
     <div class="head">
-        <mat-icon fontIcon="arrow_back" class="arrow-back" (click)="chooseProfile()"></mat-icon>
+        <!-- <mat-icon fontIcon="arrow_back" class="arrow-back" (click)="chooseProfile()"></mat-icon> -->
         <h2>Wähle deinen Avatar</h2>
+        <p>Wähle ein Profilbild aus der Liste aus, lade ein eigenes Bild hoch oder klicke auf "Weiter".</p>
     </div>
     <div class="person-icon">
         <img src="{{profileImage}}" alt="">
@@ -65,7 +66,8 @@
             <input type='file' id="getFile" style="display:none" (change)="upload($event)" accept=".png,.jpg">
         </div>
         <div class="reg-btns">
-            <button mat-raised-button color="primary" (click)="regUser()">Weiter</button>
+            <button mat-stroked-button color="primary" (click)="finalizeRegistration()">Überspringen</button>
+            <button mat-raised-button color="primary" (click)="setProfileImageAndFinalizeRegistration()">Weiter</button>
         </div>
     </div>
 </div>
