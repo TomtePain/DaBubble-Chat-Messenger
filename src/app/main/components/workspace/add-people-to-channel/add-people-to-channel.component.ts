@@ -104,7 +104,7 @@ export class AddPeopleToChannelComponent {
 
   removeFromAddList(i: number) {
     this.addedToChannel.splice(i, 1);
-    console.log(this.addedToChannel);
+    console.log('test:',this.addedToChannel);
 
   }
 
@@ -112,7 +112,7 @@ export class AddPeopleToChannelComponent {
     const searchTerm = event.target.value;
     this.dmUsers = [];
 
-    const userDocRef = this.crud.getItem('kwusers');
+    const userDocRef = this.crud.getItem(environment.userDb);
     userDocRef.subscribe((response: any[]) => {
       if (searchTerm !== '') {
         this.searchUser = true;
@@ -128,7 +128,7 @@ export class AddPeopleToChannelComponent {
   }
   
   private checkFieldsContainSearchTerm(doc: any, searchTerm: string): boolean {
-    console.log('Search term is', searchTerm, 'Doc full name is', doc.fullName);
+    // console.log('Search term is', searchTerm, 'Doc full name is', doc.fullName);
     return doc.fullName.toLowerCase().includes(searchTerm.toLowerCase());
   }
 

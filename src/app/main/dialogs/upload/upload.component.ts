@@ -28,6 +28,11 @@ export class UploadComponent {
 
   setText() {
     switch (this.data.typeOfMessage) {
+      case 'channel exist':
+        this.text.header = 'Channel existiert bereits';
+        this.text.body = 'Der Channelname ist bereits vergeben, bitte wählen Sie einen anderen Namen für Ihren Channel aus.';
+        break;
+
       case 'delete msg':
         this.text.header = 'Erfolgreich gelöscht';
         this.text.body = 'Wir freuen uns, Ihnen mitteilen zu können, dass Ihre Nachricht erfolgreich von unserem Server gelöscht wurde';
@@ -57,6 +62,6 @@ export class UploadComponent {
     }
     setTimeout(() => {
       this.dialogRef.close()
-    }, 1500);
+    }, 3000);
   }
 }

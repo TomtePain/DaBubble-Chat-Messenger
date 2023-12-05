@@ -5,6 +5,7 @@ import { DialogProfileviewOfOthersComponent } from 'src/app/main/dialogs/dialog-
 import { ProfileComponent } from 'src/app/main/dialogs/profile/profile.component';
 import { CrudService } from 'src/app/main/services/crud.service';
 import { environment } from 'src/environments/environment';
+import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 
 @Component({
   selector: 'app-dialog-show-channel-user',
@@ -48,5 +49,8 @@ export class DialogShowChannelUserComponent implements OnInit {
     });
   }
 
+  openAddUserDialog() {
+    this.dialog.open(DialogAddUserComponent);
+  }
 
 }
