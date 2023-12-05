@@ -1,9 +1,10 @@
 <div class="add-user-to-channel-container"> 
     <header>
         <h1>Leute hinzufügen</h1>
-        <div class="close"></div>
+        <div class="close" (click)="closeDialog()"></div>
     </header>
-    
+
+    <div class="channel-name">#{{ channelName }}</div>
 
     <div class="round-input" (click)="setPlaceholder()">
         <input type="text" id="searchUserNew" (keyup)="searchUserNew($event)" placeholder="Name eingeben" class="search-user-input-field">
@@ -21,16 +22,15 @@
                 <div class="image-container">
                     <img src="{{user.photoURL}}" alt="">
                     <img class="online-state"
-                        [src]="user.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'"
-                        alt="">
+                        [src]="user.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">
                 </div>
                 <p>{{user.fullName}}</p>
             </div>
         </div>
     </div>
 
-    <div>
-        <button #addBtn class="btn-prime" disabled (click)="addUserToExistChannel()">Hinzufügen</button>
+    <div class="button-container">
+        <button #addingBtn class="btn-prime" disabled (click)="addUserToExistChannel()">Hinzufügen</button>
     </div>
 
 

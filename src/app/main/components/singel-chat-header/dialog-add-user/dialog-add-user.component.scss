@@ -33,3 +33,18 @@ header {
     width: unset !important;
 }
 
+.round-input {
+    margin-bottom: 20px;
+}
+
+.channel-name {
+    font-size: 14px;
+    color: var(--purple-2);
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}

@@ -17,7 +17,9 @@ export class DialogAddUserComponent implements OnInit {
     private dialogRef: MatDialogRef<DialogAddUserComponent>,
     public dialog: MatDialog,
     public firestore: Firestore,
-    public crud: CrudService) { }
+    public crud: CrudService) {
+      this.channelName = data.channelName;
+    }
 
   channelName: string = '';
   description: string = '';
@@ -31,11 +33,11 @@ export class DialogAddUserComponent implements OnInit {
   searchUser: boolean = false;
   uid: string = '';
   placeholder: boolean = true;
-  @ViewChild('addBtn') addBtn!: ElementRef | any;
+  @ViewChild('addingBtn') addBtn!: any;
 
 
   ngOnInit(): void {
-
+    console.log('this is the channelname:', this.channelName)
   }
 
 
@@ -57,7 +59,7 @@ export class DialogAddUserComponent implements OnInit {
       if (index === -1) {
         this.addedToChannel.push(addedUser);
         this.addedToChannelIds.push(addedUser.uid);
-        this.addBtn.removeAttribute('disabled');
+        this.addBtn.nativeElement.removeAttribute('disabled');
       }
     }
     searchUser.value = '';
@@ -66,6 +68,9 @@ export class DialogAddUserComponent implements OnInit {
 
   removeFromAddList(i: number) {
     this.addedToChannel.splice(i, 1);
+    if(this.addedToChannel.length == 0) {
+      this.addBtn.nativeElement.setAttribute('disabled', '');
+    }
   }
 
   setPlaceholder() {
@@ -96,8 +101,11 @@ export class DialogAddUserComponent implements OnInit {
   }
 
   addUserToExistChannel() {
-    console.log('click')
-    this.addBtn.setAttribute('disabled', '');
+    this.closeDialog();
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
 }

@@ -116,7 +116,11 @@ export class SingelChatHeaderComponent implements OnInit {
 
 
   openAddUserDialog() {
-    this.dialog.open(DialogAddUserComponent)
+    this.dialog.open(DialogAddUserComponent, {
+      data: {
+        channelName: this.channel.name
+      }
+    });
   }
 
 }
