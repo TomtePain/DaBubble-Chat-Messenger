@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userProfileImage: string = '';
 
   constructor(public dialog: MatDialog, private userservice: UserService, public auth: Auth, private firestore: Firestore, private refreshService: RefreshService) {
-    console.log("this.userservice.loginUser in constructor", this.userservice.loginUser);
   }
 
 
