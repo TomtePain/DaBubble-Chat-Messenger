@@ -1,0 +1,31 @@
+.add-user-to-channel-container {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+header {
+    display: flex;
+    align-items: center;
+
+    h1 {
+        margin: 0;
+    }
+    
+}
+
+.close {
+    background-image: url(/assets/images/close.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url(/assets/images/closehover.png);
+        background-color: var(--main-bg-color);
+        border-radius: 100%;
+    }
+}
