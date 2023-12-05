@@ -39,6 +39,7 @@ export class DialogAddUserComponent implements OnInit {
 
 
   addUserToChannel(img: string, name: string, id: string) {
+    let searchUser:any = document.getElementById('searchUserNew');
     if (img && name && id) {
       const addedUser = {
         photoURL: img,
@@ -54,14 +55,15 @@ export class DialogAddUserComponent implements OnInit {
 
       if (index === -1) {
         this.addedToChannel.push(addedUser);
+        this.addedToChannelIds.push(addedUser.uid);
       }
     }
+    searchUser.value = '';
+    this.searchUser = false;
   }
 
   removeFromAddList(i: number) {
     this.addedToChannel.splice(i, 1);
-    console.log('test:', this.addedToChannel);
-
   }
 
   setPlaceholder() {
@@ -88,7 +90,6 @@ export class DialogAddUserComponent implements OnInit {
 
 
   private checkFieldsContainSearchTerm(doc: any, searchTerm: string): boolean {
-    // console.log('Search term is', searchTerm, 'Doc full name is', doc.fullName);
     return doc.fullName.toLowerCase().includes(searchTerm.toLowerCase());
   }
 

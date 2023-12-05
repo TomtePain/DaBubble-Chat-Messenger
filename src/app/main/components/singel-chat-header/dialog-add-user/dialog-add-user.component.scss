@@ -1,18 +1,17 @@
 .add-user-to-channel-container {
     padding: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    width: 315px;
 }
 
 header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
 
     h1 {
         margin: 0;
     }
-    
 }
 
 .close {
@@ -28,4 +27,8 @@ header {
         background-color: var(--main-bg-color);
         border-radius: 100%;
     }
+}
+
+.add-person-container {
+    width: unset !important;
 }
