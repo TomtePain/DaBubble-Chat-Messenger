@@ -37,6 +37,7 @@ export class RegisterComponent {
 
   triggerInput() {
     document.getElementById('getFile')?.click();
+    //TODO chooseProfile() wenn successful
   }
 
   regUser() {
