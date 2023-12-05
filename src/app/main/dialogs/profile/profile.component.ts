@@ -6,6 +6,7 @@ import { UserProfile } from 'src/app/interfaces/user-profile';
 import { from } from 'rxjs';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { AuthService } from 'src/app/services/auth.service';
+import { RefreshService } from '../../services/refresh.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,7 +28,7 @@ export class ProfileComponent {
 
   });
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService, private storage: Storage, private authservice: AuthService) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService, private storage: Storage, private authservice: AuthService, private refreshService:RefreshService) {
     this.setData();
   }
 
@@ -98,6 +99,7 @@ export class ProfileComponent {
       setTimeout(() => {
         this.setData();
         this.profileEdit = false;
+        this.refreshService.triggerRefresh();
       }, 250);
   } else {
       console.warn('An error occurred', "formFullname", formFullname,"formEmail", formEmail);  

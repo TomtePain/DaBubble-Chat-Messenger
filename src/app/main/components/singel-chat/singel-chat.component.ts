@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogChannelEditComponent } from '../singel-chat-header/dialog-channel-edit/dialog-channel-edit.component';
 import { SingelChatHeaderComponent } from '../singel-chat-header/singel-chat-header.component';
 import { Subscription, filter } from 'rxjs';
+import { RefreshService } from '../../services/refresh.service';
 
 @Component({
   selector: 'app-singel-chat',
@@ -45,7 +46,8 @@ export class SingelChatComponent implements OnInit {
     public userservice: UserService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private refreshService: RefreshService
   ) {
     registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
@@ -56,6 +58,9 @@ export class SingelChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.refreshService.refreshObservable.subscribe(() => {
+      this.refreshData();
+    });
     this.subscribeToRouterEvents(); // to detect if the URL changes
 
     this.route.params.subscribe((params) => {
@@ -73,6 +78,10 @@ export class SingelChatComponent implements OnInit {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
+  }
+
+  refreshData() {
+      this.getMessages();
   }
 
   sortArray() {

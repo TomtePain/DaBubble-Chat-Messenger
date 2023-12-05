@@ -11,6 +11,7 @@ import { DialogShowChannelUserComponent } from './dialog-show-channel-user/dialo
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { AddPeopleToChannelComponent } from '../workspace/add-people-to-channel/add-people-to-channel.component';
 import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
+import { RefreshService } from '../../services/refresh.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.compon
 })
 export class SingelChatHeaderComponent implements OnInit {
 
-  constructor(public tree: TreeService, public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(public tree: TreeService, public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, public dialog: MatDialog, private refreshService: RefreshService) {
 
   }
 
@@ -38,18 +39,20 @@ export class SingelChatHeaderComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.refreshService.refreshObservable.subscribe(() => {
+      this.refreshData();
+    });
     this.route.params.subscribe(() => {
       this.getCurrentChannelInfo();
-
       setTimeout(() => {
         this.checkUserDataFromDb();
       }, 2000);
-
-
     })
-
   }
 
+  refreshData() {
+    this.checkUserDataFromDb();
+  }
 
   getCurrentChannelInfo() {
     let allChannels: Array<any> = [];

@@ -9,6 +9,7 @@ import { catchError } from 'rxjs';
 import { UserService } from 'src/app/main/services/user.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { RefreshService } from 'src/app/main/services/refresh.service';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class TreeComponent implements OnInit {
   messagesSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
 
-  constructor(private router: Router, public crud: CrudService, public tree: TreeService, private firestore: Firestore, private userservice: UserService) {
+  constructor(private router: Router, public crud: CrudService, public tree: TreeService, private firestore: Firestore, private userservice: UserService, private refreshService: RefreshService) {
 
   }
   
@@ -67,6 +68,13 @@ export class TreeComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.refreshService.refreshObservable.subscribe(() => {
+      this.refreshData();
+    });
+    this.getChannels();
+  }
+
+  refreshData() {
     this.getChannels();
   }
 

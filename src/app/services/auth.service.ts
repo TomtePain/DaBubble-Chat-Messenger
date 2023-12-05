@@ -162,27 +162,28 @@ export class AuthService {
 
     if (previousUserEmail != newEmail) {
       console.log("Different emails", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+      const authentication = getAuth();
+      const user = authentication.currentUser;
+    
+      if (user) {
+        updateEmail(user, newEmail).then(() => {
+          // Email updated!
+          console.log("Email updated", newEmail, user);
+          // sendEmailVerification(user) //sends email to verify email to new email address
+          // ...
+        }).catch((error) => {
+          // An error occurred
+          let code = error.code;
+          code = code.slice(5);
+          this.alert(code);
+        });
+      } else {
+        console.error('No user is currently signed in.');
+      }
       //Final logic to be added here
     }
     
-    const authentication = getAuth();
-    const user = authentication.currentUser;
-  
-    if (user) {
-      updateEmail(user, newEmail).then(() => {
-        // Email updated!
-        console.log("Email updated", newEmail, user);
-        // sendEmailVerification(user) //sends email to verify email to new email address
-        // ...
-      }).catch((error) => {
-        // An error occurred
-        let code = error.code;
-        code = code.slice(5);
-        this.alert(code);
-      });
-    } else {
-      console.error('No user is currently signed in.');
-    }
+   
   }
 
 }

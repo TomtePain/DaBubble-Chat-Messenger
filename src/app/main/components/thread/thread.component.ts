@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { ReactionService } from '../../services/reaction.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RefreshService } from '../../services/refresh.service';
 
 @Component({
   selector: 'app-thread',
@@ -28,10 +29,13 @@ export class ThreadComponent implements OnInit, OnChanges {
   private destroy$ = new Subject<void>();
   isNew!: boolean;
 
-  constructor(public firestore: Firestore, public crud: CrudService, private reactionservice: ReactionService, private route: ActivatedRoute, private router: Router) {
+  constructor(public firestore: Firestore, public crud: CrudService, private reactionservice: ReactionService, private route: ActivatedRoute, private router: Router, private refreshService: RefreshService) {
   }
 
   ngOnInit(): void {
+    this.refreshService.refreshObservable.subscribe(() => {
+      this.refreshData();
+    });
     this.staticReactionTypes = this.reactionservice.staticReactionTypes;
     this.sortedReactionTypes = this.reactionservice.sortedReactionTypes;
     this.channelId = this.route.parent?.snapshot.paramMap.get('id') as string;
@@ -54,6 +58,10 @@ export class ThreadComponent implements OnInit, OnChanges {
     this.destroy$.next();
     this.destroy$.complete();
     this.routeSub?.unsubscribe();
+  }
+
+  refreshData() {
+    this.loadThreadContent();
   }
 
   loadThreadContent() {
