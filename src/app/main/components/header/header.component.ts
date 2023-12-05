@@ -27,14 +27,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.refreshService.refreshObservable.subscribe(() => {
       this.refreshData();
     });
-    console.log("this.userservice.loginUser", this.userservice.loginUser);
+    // console.log("this.userservice.loginUser", this.userservice.loginUser);
     setTimeout(() => {
       if (this.userservice.loginUser === undefined) {
-        console.log("this.userservice.loginUser is undefined", this.userservice.loginUser);
-        console.log("reload");
+        // console.log("this.userservice.loginUser is undefined", this.userservice.loginUser);
+        // console.log("reload");
         window.location.reload();
       } else {
-        console.log("this.userservice.loginUser is defined", this.userservice.loginUser);
+        // console.log("this.userservice.loginUser is defined", this.userservice.loginUser);
         this.setUserData();
       }
     }, 500);

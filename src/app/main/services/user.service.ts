@@ -17,9 +17,7 @@ export class UserService {
   loginUser:any;
 
   constructor(public auth: Auth, private firestore: Firestore, private route: Router, private crud:CrudService) {
-    //this.userDBId = this.authService.loggedUserId;
     this.documentRef = doc(this.firestore, environment.userDb + `/` + this.userDBId);
-    // this.alluserRef = doc(this.firestore, environment.userDb);
     this.getAllUsers();
     this.saveLoginUserData();
   }
