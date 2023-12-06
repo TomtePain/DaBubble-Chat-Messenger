@@ -101,6 +101,7 @@ export class SingelChatHeaderComponent implements OnInit {
     this.dialog.open(DialogShowChannelUserComponent, {
       data: {
         channelUser: this.existingUser,
+        channelName: this.channel.name
       }
     });
   }
@@ -118,7 +119,8 @@ export class SingelChatHeaderComponent implements OnInit {
   openAddUserDialog() {
     this.dialog.open(DialogAddUserComponent, {
       data: {
-        channelName: this.channel.name
+        channelName: this.channel.name,
+        channelUser: this.channel.ids
       }
     });
   }

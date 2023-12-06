@@ -19,11 +19,13 @@ export class DialogAddUserComponent implements OnInit {
     public firestore: Firestore,
     public crud: CrudService) {
       this.channelName = data.channelName;
+      this.existingChannelUser = data.channelUser
     }
 
   channelName: string = '';
   description: string = '';
   channelPath: string = '';
+  existingChannelUser: Array<any> = [];
 
   addPeople: boolean = false;
   searchTerm: string = '';
@@ -37,7 +39,9 @@ export class DialogAddUserComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('this is the channelname:', this.channelName)
+    console.log('this is the channelname:', this.channelName);
+    console.log('Start this are the user in current Channel:', this.existingChannelUser) 
+    
   }
 
 
@@ -55,8 +59,9 @@ export class DialogAddUserComponent implements OnInit {
         user.fullName === addedUser.fullName &&
         user.uid === addedUser.uid
       ));
-
-      if (index === -1) {
+       
+      if (index === -1 && this.checkUserInChannel(addedUser)) {
+        // console.log('this are user:', this.checkUserInChannel(addedUser))
         this.addedToChannel.push(addedUser);
         this.addedToChannelIds.push(addedUser.uid);
         this.addBtn.nativeElement.removeAttribute('disabled');
@@ -93,6 +98,11 @@ export class DialogAddUserComponent implements OnInit {
         this.searchUser = false;
       }
     });
+  }
+
+  checkUserInChannel(addedUser:any) {
+    let exist = this.existingChannelUser.filter((user) => user.id != addedUser.uid);
+    return exist
   }
 
 
