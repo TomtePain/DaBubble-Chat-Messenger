@@ -15,7 +15,7 @@ import { UserService } from '../main/services/user.service';
 })
 export class AuthService {
   loggedUserId: string = '';
-  
+  error:boolean = false;
 
   constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService, private tree: TreeService, private userservice: UserService ) { }
 
@@ -36,10 +36,11 @@ export class AuthService {
           this.tree.createOwnDM(docRef);
         })
       this.alert('Konto erfolgreich erstellt, bitte verifiziere Deine Email-Adresse.');
-      this.setUserDataToLocalStorage(userId)
-      // this.route.navigateByUrl('auth/login');
+      this.setUserDataToLocalStorage(userId);
+      this.error = false;
     }).catch(err => {
       this.alert(err.code);
+      this.error = true;      
     })
   }
 
