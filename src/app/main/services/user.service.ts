@@ -17,9 +17,7 @@ export class UserService {
   loginUser:any;
 
   constructor(public auth: Auth, private firestore: Firestore, private route: Router, private crud:CrudService) {
-    //this.userDBId = this.authService.loggedUserId;
     this.documentRef = doc(this.firestore, environment.userDb + `/` + this.userDBId);
-    // this.alluserRef = doc(this.firestore, environment.userDb);
     this.getAllUsers();
     this.saveLoginUserData();
   }
@@ -48,6 +46,14 @@ export class UserService {
   }
 
   saveUserImage(imagepath: string) {
+    updateDoc(this.documentRef, {
+      photoURL: imagepath,
+    })
+  }
+
+  saveUserImageOnRegistration(imagepath: string) {
+    this.userDBId = localStorage.getItem('userId')
+    this.documentRef = doc(this.firestore, environment.userDb + `/` + this.userDBId)
     updateDoc(this.documentRef, {
       photoURL: imagepath,
     })
