@@ -54,7 +54,7 @@ export class AuthComponent implements OnInit {
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((ev: NavigationEnd) => {
         let url = ev.url;
-        if (url === '/auth/register') {
+        if (url.startsWith('/auth/register') || url.startsWith('/auth/setnewpassword')) {
           this.hideRegister = true
         } else {
           this.hideRegister = false
