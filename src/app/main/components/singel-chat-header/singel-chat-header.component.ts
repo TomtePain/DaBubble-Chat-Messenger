@@ -101,7 +101,8 @@ export class SingelChatHeaderComponent implements OnInit {
     this.dialog.open(DialogShowChannelUserComponent, {
       data: {
         channelUser: this.existingUser,
-        channelName: this.channel.name
+        channelName: this.channel.name,
+        channelId: this.channelID
       }
     });
   }
@@ -120,9 +121,31 @@ export class SingelChatHeaderComponent implements OnInit {
     this.dialog.open(DialogAddUserComponent, {
       data: {
         channelName: this.channel.name,
-        channelUser: this.channel.ids
+        channelUser: this.channel.ids,
+        channelId: this.channelID
       }
     });
   }
+
+
+  // clearFakeUser() {
+  //   let fakeIds:any = [];
+  //   let trueUser:Array<any> = [];
+  //   let exist:any = this.existingUser.filter((user) => user != undefined);
+  //   exist.forEach((exist:any) => {
+  //     let userID = exist.id
+  //     trueUser.push(userID);
+  //   })
+  //   console.log('tureUSer:', trueUser)
+
+  //   trueUser.forEach((check) => {
+  //     let index = this.channelUser.indexOf(check);
+
+  //     if(index !== 1) {
+  //       let fakes = this.channelUser.splice(index, 1);
+  //     }
+  //   })
+  //   fakeIds = this.channelUser;
+  // }
 
 }
