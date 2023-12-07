@@ -41,7 +41,7 @@ export class DialogAddUserComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('this is the currentchannelis:', this.channelPath)
+    
   }
 
 
