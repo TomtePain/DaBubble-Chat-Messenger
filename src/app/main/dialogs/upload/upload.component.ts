@@ -28,6 +28,11 @@ export class UploadComponent {
 
   setText() {
     switch (this.data.typeOfMessage) {
+      case 'user exist':
+        this.text.header = 'User existiert bereits';
+        this.text.body = 'Der User befindet sich bereits im Channel.';
+      break;
+
       case 'channel exist':
         this.text.header = 'Channel existiert bereits';
         this.text.body = 'Der Channelname ist bereits vergeben, bitte wählen Sie einen anderen Namen für Ihren Channel aus.';

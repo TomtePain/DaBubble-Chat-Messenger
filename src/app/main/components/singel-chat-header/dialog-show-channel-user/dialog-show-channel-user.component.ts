@@ -20,6 +20,9 @@ export class DialogShowChannelUserComponent implements OnInit {
   channelUser: Array<any>;
   allUserDataInfo: Array<any> = [];
   existingUser?: string;
+  channelName: string;
+  channelUserIds: Array<any> = [];
+  channelId: string = '';
 
 
   constructor(
@@ -29,11 +32,13 @@ export class DialogShowChannelUserComponent implements OnInit {
     public firestore: Firestore,
     public crud: CrudService) {
     this.channelUser = data.channelUser;
+    this.channelName = data.channelName;
+    this.channelId = data.channelId;
   }
 
 
   ngOnInit(): void {
-
+    this.getOnlyUserIds();
   }
 
   closeDialog() {
@@ -50,7 +55,20 @@ export class DialogShowChannelUserComponent implements OnInit {
   }
 
   openAddUserDialog() {
-    this.dialog.open(DialogAddUserComponent);
+    this.dialog.open(DialogAddUserComponent, {
+      data: {
+        channelName: this.channelName,
+        channelUser: this.channelUserIds,
+        channelId: this.channelId
+      }
+    });
+  }
+
+  getOnlyUserIds() { 
+    this.channelUser.forEach((user) => {
+      let userID = user.id
+      this.channelUserIds.push(userID);
+    })
   }
 
 }

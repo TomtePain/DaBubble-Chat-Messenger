@@ -2,6 +2,13 @@
     <app-new-message></app-new-message>
 </div>
 
+
+<!--  ONLY FOR PROGRAMMNG -->
+<!-- <button (click)="clearFakeUser()">clear</button> -->
+<!--  ONLY FOR PROGRAMMNG -->
+
+
+
 <div class="left" *ngIf="!this.tree.newMessage && channel && channel.type == 'channel'" (click)="openDialog()">
     <p *ngIf="channel"># {{ channel.name }}</p>
     <img src="assets/images/icons/keyboard_arrow_down.png" alt="">
