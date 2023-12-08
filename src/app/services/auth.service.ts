@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   Auth,
   GoogleAuthProvider,
+  applyActionCode,
+  getAuth,
   confirmPasswordReset,
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -10,6 +12,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateEmail
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -28,7 +31,7 @@ import { environment } from 'src/environments/environment';
 import { AlertService } from '../auth/components/alert/alert.service';
 import { CrudService } from '../main/services/crud.service';
 import { TreeService } from '../main/services/tree.service';
-import { getAuth, updateEmail } from 'firebase/auth';
+// import { getAuth, updateEmail } from 'firebase/auth';
 import { UserService } from '../main/services/user.service';
 
 @Injectable({
@@ -214,23 +217,31 @@ export class AuthService {
     return isReg;
   }
 
-  sendEmailAfterChange(newEmail: string) {
+  handleEmailChange(newEmail: string) {
     let previousUserEmail = this.auth.currentUser?.email;
 
     if (previousUserEmail != newEmail) {
-      // console.log("Different emails", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
-      const authentication = getAuth();
-      const user = authentication.currentUser;
+      console.log("Different emails", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+      const auth = getAuth();
+      const user = auth.currentUser;
+      console.log("auth", auth);
+      console.log("user", user);
+      
 
       if (user) {
-        updateEmail(user, newEmail)
-          .then(() => {
+        console.log("Going to update email");
+        
+        updateEmail(user, newEmail).then(() => {
             // Email updated!
-            // console.log("Email updated", newEmail, user);
-            // sendEmailVerification(user) //sends email to verify email to new email address
-            // ...
+            console.log("Email updated", newEmail, user);
+            // Send email to verify email to new email address
+            // sendEmailVerification(user).then(() => {
+            // console.log("Email verification sent", user);
+            // }); 
           })
           .catch((error) => {
+            console.log("Error", error);
+            
             // An error occurred
             let code = error.code;
             code = code.slice(5);
@@ -239,7 +250,9 @@ export class AuthService {
       } else {
         console.error('No user is currently signed in.');
       }
-      //Final logic to be added here
+    } else {
+      console.log("Email adresses are not different", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+      
     }
   }
 
@@ -270,5 +283,39 @@ export class AuthService {
           this.alert('code');
         }
       });
+  }
+
+  handleVerifyEmail(actionCode: string) {
+    // Try to apply the email verification code.
+    const auth = getAuth();
+    applyActionCode(auth, actionCode).then((resp) => {
+      // Email address has been verified.
+      this.alert(
+        'Email erfolgreich verifiziert. Du wirst zum Login weitergeleitet.'
+      );
+      setTimeout(() => {
+        this.route.navigateByUrl('auth/login');
+      }, 4000);
+    // })
+    }).catch((error) => {
+      let code = error.code;
+      code = code.slice(5);
+      console.error("code", code);
+      setTimeout(() => {
+        this.alert('Es ist ein Fehler bei der Verifizierung aufgetreten. Bitte wende Dich an den Administrator.');
+      }, 2500);
+
+
+      // if (code === 'invalid-action-code') {
+      //   this.alert(
+      //     'Dein Link ist abgelaufen. Frage einen neuen Link über "Passwort vergessen" an'
+      //   );
+      //   setTimeout(() => {
+      //     this.route.navigateByUrl('auth/forgotpassword');
+      //   }, 4000);
+      // } else {
+    //     this.alert('code');
+    //   }
+    });
   }
 }

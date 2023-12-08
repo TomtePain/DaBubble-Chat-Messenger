@@ -35,7 +35,8 @@
 
     &>p {
         color: var(--black, #000);
-        text-align: center;
+        text-align: left;
+        width: 100%;
         font-size: 20px;
         font-weight: 400;
     }

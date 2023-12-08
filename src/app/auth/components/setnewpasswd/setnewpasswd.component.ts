@@ -47,6 +47,12 @@ export class SetnewpasswdComponent {
     );
   }
 
+  ngOnInit() {
+    if (this.mode === 'verifyEmail') {
+      this.verifyEmail();
+    }
+  }
+
   resetPassword() {
     const passwordControl = this.restpwdForm.get('password');
     if (passwordControl) {
@@ -59,6 +65,7 @@ export class SetnewpasswdComponent {
 
   verifyEmail() {
     //TODO check if something needs to be done to verify email in firebase or if click on email is already doing the required signal.
-    console.log('Email verifiziert');
+    this.auth.handleVerifyEmail(this.actionCode)
+    console.log('Email wird verifiziert');
   }
 }

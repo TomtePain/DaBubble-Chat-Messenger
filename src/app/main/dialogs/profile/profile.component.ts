@@ -95,7 +95,9 @@ export class ProfileComponent {
     let formEmail = this.profileForm.controls.emailFormControl.value as string;
     if (formFullname !== null && formEmail !== null) {
       this.userservice.saveUserData(formFullname, formEmail);
-      this.authservice.sendEmailAfterChange(formEmail);
+      this.authservice.handleEmailChange(formEmail);
+      console.log("Data sent to authservice", formEmail);
+      
       setTimeout(() => {
         this.setData();
         this.profileEdit = false;
