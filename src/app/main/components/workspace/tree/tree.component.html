@@ -32,7 +32,7 @@
 
   <mat-tree [dataSource]="messagesSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node">
-      <div class="dm-container"  (click)="this.tree.routeToDmChannel(node)" [class.selected]="this.tree.currentSelectedChannel === node.id" >
+      <div class="dm-container"  (click)="this.tree.routeToDmChannel(node)" id="{{node.id}}" [class.selected]="this.tree.currentSelectedChannel === node.id"> 
         <div class="container-img">
           <img class="profile-img-container" src="{{node.img}}" alt="">
           <img class="online-state" [src]="node.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">

@@ -187,6 +187,6 @@ export class TreeComponent implements OnInit {
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
-
+  
 
 }

@@ -62,10 +62,8 @@ export class TreeService {
 
   async routeToDmChannel(node: any) {
     if (node.id === this.uid) {
-      console.log('Messaging oneself');
-      console.log('this is the node id:', node.id)
-      // this.own = true;
       this.routeToOwnDM();
+      this.currentSelectedChannel = node.id;
       return;
     }else {
       this.own = false;
@@ -164,6 +162,11 @@ export class TreeService {
     this.newMessage = false;
   }
 
+  focusSelected(node: any) {
+    let userDmSel = document.getElementById(`${node}`);
+    userDmSel?.classList.toggle('selected');
+    console.log('this is the id of :', userDmSel)
+  }
 
 
 }
