@@ -39,7 +39,7 @@ export class SetnewpasswdComponent {
 
     this.restpwdForm = new FormGroup(
       {
-        password: new FormControl('', [Validators.required]),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
         confirmPassword: new FormControl(''),
       },
       { validators: matchpassword }

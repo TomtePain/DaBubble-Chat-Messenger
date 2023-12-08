@@ -100,3 +100,13 @@
         }
     }
 }
+
+.validation-error-msg {
+    color: red;
+    position: relative;
+    margin-top: -16px;
+    margin-bottom: 16px;
+    padding-left: 16px;
+    font-size: 14px;
+    font-weight: 600;
+  }

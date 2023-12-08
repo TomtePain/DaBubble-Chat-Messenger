@@ -8,12 +8,24 @@
         <div class="input-box">
             <mat-icon fontIcon="lock" class="icon"></mat-icon>
             <input type="password" name="password" id="password" formControlName="password" placeholder="Neues Passwort">
+            <div *ngIf="restpwdForm.controls['password'].errors && (restpwdForm.controls['password'].dirty || restpwdForm.controls['password'].touched)">
+                <div *ngIf="restpwdForm.controls['password'].errors['required']" class="validation-error-msg">
+                    Ein Passwort ist erforderlich.
+                </div>
+                <div *ngIf="restpwdForm.controls['password'].errors['minlength']" class="validation-error-msg">
+                    Das Passwort muss mindestens {{ restpwdForm.controls['password'].errors['minlength'].requiredLength }} Zeichen lang sein.
+                </div>
+            </div>
         </div>
         <div class="input-box">
             <mat-icon fontIcon="lock" class="icon"></mat-icon>
-            <input type="password" name="confirmPassword" id="confirmPassword" formControlName="confirmPassword" placeholder="Neues Passwort bestätigen" >
+            <input type="password" name="confirmPassword" id="confirmPassword" formControlName="confirmPassword" placeholder="Neues Passwort bestätigen">
+        </div>
+        <div *ngIf="restpwdForm.invalid && restpwdForm.controls['password'].valid" class="validation-error-msg">
+            Die Passwörter müssen übereinstimmen.
         </div>
     </form>
+
     <div class="restpwd-btns">
         <button mat-raised-button color="primary" [disabled]="restpwdForm.invalid" (click)="resetPassword()">Passwort ändern</button>
     </div>
