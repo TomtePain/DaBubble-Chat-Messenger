@@ -105,7 +105,8 @@ export class SingelChatHeaderComponent implements OnInit {
       data: {
         channelUser: this.existingUser,
         channelName: this.channel.name,
-        channelId: this.channelID
+        channelId: this.channelID,
+        refreshData: this.ngOnInit.bind(this)
       }
     });
   }
@@ -125,7 +126,8 @@ export class SingelChatHeaderComponent implements OnInit {
       data: {
         channelName: this.channel.name,
         channelUser: this.channel.ids,
-        channelId: this.channelID
+        channelId: this.channelID,
+        refreshData: this.ngOnInit.bind(this)
       }
     });
   }

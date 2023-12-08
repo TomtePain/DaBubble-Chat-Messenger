@@ -59,7 +59,8 @@ export class DialogShowChannelUserComponent implements OnInit {
       data: {
         channelName: this.channelName,
         channelUser: this.channelUserIds,
-        channelId: this.channelId
+        channelId: this.channelId,
+        refreshData: this.data.refreshData.bind(this)
       }
     });
   }
