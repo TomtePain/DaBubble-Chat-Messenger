@@ -23,8 +23,8 @@ export class ProfileComponent {
 
   profileForm = this.fb.group({
     fullNameFormControl: new FormControl('', [Validators.required]),
-    emailFormControl: new FormControl('', [Validators.required, Validators.email]) //Activate to enable email change option
-    // emailFormControl: new FormControl({value: '', disabled: true}) //Activate to disable email change option
+    // emailFormControl: new FormControl('', [Validators.required, Validators.email]) //Activate to enable email change option
+    emailFormControl: new FormControl({value: '', disabled: true}) //Activate to disable email change option
 
   });
 
@@ -95,8 +95,8 @@ export class ProfileComponent {
     let formEmail = this.profileForm.controls.emailFormControl.value as string;
     if (formFullname !== null && formEmail !== null) {
       this.userservice.saveUserData(formFullname, formEmail);
-      this.authservice.handleEmailChange(formEmail);
-      console.log("Data sent to authservice", formEmail);
+      // this.authservice.handleEmailChange(formEmail);
+      // console.log("Data sent to authservice", formEmail);
       
       setTimeout(() => {
         this.setData();

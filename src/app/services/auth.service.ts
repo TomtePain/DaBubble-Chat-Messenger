@@ -219,7 +219,7 @@ export class AuthService {
     return isReg;
   }
 
-  handleReauthentication(email: string, password: string, newEmail: string) {
+  handleReauthenticationAndChangeEmail(email: string, password: string, newEmail: string) {
     const auth = getAuth();
     const user = auth.currentUser;
     if (user) {
