@@ -1,4 +1,4 @@
-<div *ngIf="isPwdReset" class="restpwd-container">
+<div *ngIf="mode === 'resetPassword'" class="restpwd-container">
     <div class="head">
         <mat-icon fontIcon="arrow_back" class="arrow-back" routerLink="/auth/login"></mat-icon>
         <h2>Passwort zurücksetzen</h2>
@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div *ngIf="isEmailVerify" class="restpwd-container">
+<div *ngIf="mode === 'verifyEmail'" class="restpwd-container">
     <div class="head">
         <mat-icon fontIcon="arrow_back" class="arrow-back" routerLink="/auth/login"></mat-icon>
         <h2>Deine E-Mail Adresse wurde bestätigt</h2>
