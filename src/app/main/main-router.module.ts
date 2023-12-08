@@ -12,7 +12,7 @@ import { DialogAddUserComponent } from './components/singel-chat-header/dialog-a
 
 const routes: Routes = [
   {path:'', 
-  redirectTo: environment.mainChannel , // specify your target route here
+  redirectTo: "/" + environment.mainChannel , // specify your target route here
   pathMatch: 'full'
 },
   {path:':id' , component:SingelChatComponent,

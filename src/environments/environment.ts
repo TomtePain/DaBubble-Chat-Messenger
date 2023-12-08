@@ -12,6 +12,6 @@ export const environment = {
   channelDb: 'channel',
   threadDb: 'threads',
   messagesDb: 'messages',
-  mainChannel: '/8veqP2ohCvtLVgT46sP5' //id of "Allgemein" channel
+  mainChannel: '8veqP2ohCvtLVgT46sP5' //id of "Allgemein" channel
 };
 

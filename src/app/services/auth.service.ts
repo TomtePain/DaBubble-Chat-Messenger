@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
-import { DocumentReference, Firestore, arrayUnion, collection, doc, docData, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { Auth, GoogleAuthProvider, User, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
+import { Firestore, arrayUnion, collection, doc, docData, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AlertService } from '../auth/components/alert/alert.service';
 import { CrudService } from '../main/services/crud.service';
 import { TreeService } from '../main/services/tree.service';
+import { getAuth, updateEmail  } from 'firebase/auth';
+import { UserService } from '../main/services/user.service';
 
 
 @Injectable({
@@ -13,8 +15,9 @@ import { TreeService } from '../main/services/tree.service';
 })
 export class AuthService {
   loggedUserId: string = '';
+  error:boolean = false;
 
-  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService, private tree: TreeService ) { }
+  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private alertService: AlertService, private crud: CrudService, private tree: TreeService, private userservice: UserService ) { }
 
   regUser(regFormValue: any, photoURL: string, accessToChannel: any, isOnline: boolean) {
     const { email, password, fullName } = regFormValue.value;
@@ -24,7 +27,7 @@ export class AuthService {
     createUserWithEmailAndPassword(this.auth, email, password).then(resp => {
       const userId = resp.user.uid;
       const itemCollection = collection(this.firestore, environment.userDb);
-      let userData = { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email, uploadFileCounter: 0 }
+      let userData = { uid: userId, fullName: fullName, photoURL: photoURL, accessToChannel: [], isOnline: false, email: email }
       sendEmailVerification(resp.user);
       // setDoc(doc(itemCollection), userData);
       this.crud.addItem(userData, environment.userDb)
@@ -32,10 +35,12 @@ export class AuthService {
           this.upDateChannelUser(docRef);
           this.tree.createOwnDM(docRef);
         })
-      this.alert('Konto erfolgreich erstellt!');
-      this.route.navigateByUrl('auth/login');
+      this.alert('Konto erfolgreich erstellt, bitte verifiziere Deine Email-Adresse.');
+      this.setUserDataToLocalStorage(userId);
+      this.error = false;
     }).catch(err => {
       this.alert(err.code);
+      this.error = true;      
     })
   }
 
@@ -55,7 +60,7 @@ export class AuthService {
       const email = resp.user.email;
       const itemCollection = collection(this.firestore, environment.userDb);
       let userIsReg = await this.isRegUser(userId);
-      let userData = { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email, uploadFileCounter: 0};
+      let userData = { uid: userId, fullName: fullName, photoURL: userPhotoURL, accessToChannel: [], isOnline: false, email: email };
 
       if (userIsReg.length > 0) {
         setDoc(doc(itemCollection, userIsReg), userData);
@@ -73,7 +78,7 @@ export class AuthService {
 
 
   upDateChannelUser(docRef: any) {
-    let updateItem = doc(collection(this.firestore, environment.channelDb), '8veqP2ohCvtLVgT46sP5');
+    let updateItem = doc(collection(this.firestore, environment.channelDb), environment.mainChannel);
     updateDoc(updateItem, {
       ids: arrayUnion(docRef.id)
     });
@@ -87,7 +92,7 @@ export class AuthService {
       if (resp.user.emailVerified) {
         setTimeout(() => { this.route.navigateByUrl(''); }, 900)
       } else {
-        this.alert('Verifiziere Ihre E-Mail-Adresse!')
+        this.alert('Verifiziere Deine E-Mail-Adresse!')
       }
     }).catch(err => {
       let code = err.code;
@@ -126,6 +131,7 @@ export class AuthService {
         let userDbId = doc.docs[0].id;
         this.loggedUserId = userDbId;
         localStorage.setItem('userId', userDbId);
+        this.userservice.userDBId = userDbId;
       }
     })
   }
@@ -153,4 +159,35 @@ export class AuthService {
     })
     return isReg
   }
+
+
+  sendEmailAfterChange(newEmail: string) {
+    let previousUserEmail = this.auth.currentUser?.email;
+
+    if (previousUserEmail != newEmail) {
+      console.log("Different emails", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+      const authentication = getAuth();
+      const user = authentication.currentUser;
+    
+      if (user) {
+        updateEmail(user, newEmail).then(() => {
+          // Email updated!
+          console.log("Email updated", newEmail, user);
+          // sendEmailVerification(user) //sends email to verify email to new email address
+          // ...
+        }).catch((error) => {
+          // An error occurred
+          let code = error.code;
+          code = code.slice(5);
+          this.alert(code);
+        });
+      } else {
+        console.error('No user is currently signed in.');
+      }
+      //Final logic to be added here
+    }
+    
+   
+  }
+
 }

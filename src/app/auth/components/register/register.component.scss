@@ -103,6 +103,7 @@
         justify-content: flex-end;
         align-items: flex-end;
         width: 100%;
+        gap: 8px;
 
         .mat-mdc-raised-button,
         .mat-mdc-outlined-button {
@@ -114,6 +115,7 @@
 .profile-icon-container {
     .head {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         position: relative;
@@ -130,6 +132,13 @@
             font-weight: 700;
             line-height: 55px;
             margin: 0;
+        }
+
+        p {
+            padding: 24px;
+            font-size: 20px;
+            line-height: 24px;
+            text-align: center;
         }
     }
 
@@ -180,4 +189,14 @@
     margin-bottom: 43px;
 }
     }
+}
+
+.validation-error-msg {
+    color: red;
+    position: relative;
+    margin-top: -16px;
+    margin-bottom: 16px;
+    padding-left: 8px;
+    font-size: 14px;
+    font-weight: 600;
 }

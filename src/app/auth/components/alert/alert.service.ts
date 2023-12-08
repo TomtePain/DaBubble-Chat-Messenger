@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { loggedIn } from '@angular/fire/auth-guard';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -13,6 +14,8 @@ export class AlertService {
 
 
   setAlert(text: string, showAlert:boolean) {
+    console.log("this.alertTextSubject", this.alertTextSubject);
+    
     this.alertTextSubject.next(text);
     this.showAlertSubject.next(showAlert);
   }

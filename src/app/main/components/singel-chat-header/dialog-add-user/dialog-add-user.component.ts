@@ -131,6 +131,7 @@ export class DialogAddUserComponent implements OnInit {
         ids: arrayUnion(usid)
       });
     })
+    this.data.refreshData();
     this.closeDialog();
   }
 

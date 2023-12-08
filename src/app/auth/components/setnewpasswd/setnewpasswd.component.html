@@ -1,4 +1,4 @@
-<div class="restpwd-container">
+<div *ngIf="isPwdReset" class="restpwd-container">
     <div class="head">
         <mat-icon fontIcon="arrow_back" class="arrow-back" routerLink="/auth/login"></mat-icon>
         <h2>Passwort zurücksetzen</h2>
@@ -15,6 +15,14 @@
         </div>
     </form>
     <div class="restpwd-btns">
-        <button mat-raised-button color="primary" [disabled]="restpwdForm.invalid" (click)="restPassword()">Passwort ändern</button>
+        <button mat-raised-button color="primary" [disabled]="restpwdForm.invalid" (click)="resetPassword()">Passwort ändern</button>
     </div>
+</div>
+
+<div *ngIf="isEmailVerify" class="restpwd-container">
+    <div class="head">
+        <mat-icon fontIcon="arrow_back" class="arrow-back" routerLink="/auth/login"></mat-icon>
+        <h2>Deine E-Mail Adresse wurde bestätigt</h2>
+    </div>
+    <p>Du kannst Dich nun mit Deinem Konto einloggen.</p>
 </div>

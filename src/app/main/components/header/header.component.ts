@@ -6,6 +6,7 @@ import { UserService } from '../../services/user.service';
 import { Firestore } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { UserProfile } from 'src/app/interfaces/user-profile';
+import { RefreshService } from '../../services/refresh.service';
 
 @Component({
   selector: 'app-header',
@@ -17,17 +18,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   fullName: string = '';
   userProfileImage: string = '';
 
-  constructor(public dialog: MatDialog, private userservice: UserService, public auth: Auth, private firestore: Firestore) {
+  constructor(public dialog: MatDialog, private userservice: UserService, public auth: Auth, private firestore: Firestore, private refreshService: RefreshService) {
   }
 
 
   ngOnInit(): void {
+    this.refreshService.refreshObservable.subscribe(() => {
+      this.refreshData();
+    });
+    // console.log("this.userservice.loginUser", this.userservice.loginUser);
     setTimeout(() => {
-      console.log("this.userservice.loginUser", this.userservice.loginUser);
       if (this.userservice.loginUser === undefined) {
-        console.log("reload");
+        // console.log("this.userservice.loginUser is undefined", this.userservice.loginUser);
+        // console.log("reload");
         window.location.reload();
       } else {
+        // console.log("this.userservice.loginUser is defined", this.userservice.loginUser);
         this.setUserData();
       }
     }, 500);
@@ -36,8 +42,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.fullName = '';
-    this.userProfileImage = '';    
+    this.userProfileImage = '';
   }
+
+  refreshData() {
+    this.setUserData();
+  }
+
 
   openDialog() {
     this.dialog.open(ProfileComponent, {

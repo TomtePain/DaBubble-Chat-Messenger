@@ -10,26 +10,49 @@
         </div>
         <div class="input-box">
             <mat-icon fontIcon="mail" class="icon"></mat-icon>
-            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com">
+            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$">
+            <div *ngIf="regForm.controls['email'].errors && (regForm.controls['email'].dirty || regForm.controls['email'].touched)">
+                <div *ngIf="regForm.controls['email'].errors['required']" class="validation-error-msg">
+                    Deine E-Mail-Adresse ist erforderlich.
+                </div>
+                <div *ngIf="regForm.controls['email'].errors['email'] || regForm.controls['email'].errors['pattern']" class="validation-error-msg">
+                    Bitte gib eine gültige E-Mail-Adresse ein.
+                </div>
+                <div *ngIf="regForm.controls['email'].errors['forbiddenEmail']" class="validation-error-msg">
+                    {{errorEmail}} ist bereits vergeben.
+                </div>
+            </div>
         </div>
+        
+        
         <div class="input-box">
             <mat-icon fontIcon="lock" class="icon"></mat-icon>
             <input type="password" name="password" id="password" formControlName="password" placeholder="Passwort">
+            <div *ngIf="regForm.controls.password.errors && (regForm.controls.password.dirty || regForm.controls.password.touched)">
+                <div *ngIf="regForm.controls.password.errors['required']" class="validation-error-msg">
+                    Ein Passwort ist erforderlich.
+                </div>
+                <div *ngIf="regForm.controls.password.errors['minlength']" class="validation-error-msg">
+                    Das Passwort muss mindestens {{ regForm.controls.password.errors['minlength'].requiredLength }} Zeichen lang sein.
+                </div>
+            </div>
         </div>
+
         <div class="input-box">
             <mat-checkbox color="primary" formControlName="acceptTerms">Ich stimme der <a
-                    href="#">Datenschutzerklärung</a> zu.</mat-checkbox>
+                    href="#">Datenschutzerklärung</a> zu.</mat-checkbox> 
         </div>
     </form>
     <div class="reg-btns">
-        <button mat-raised-button color="primary" [disabled]="!regForm.valid" (click)="chooseProfile()">Weiter</button>
+        <button mat-raised-button color="primary" [disabled]="!regForm.valid" (click)="regUser()">Weiter</button>
     </div>
 </div>
 
 <div class="profile-icon-container" *ngIf="showChooseProfile">
     <div class="head">
-        <mat-icon fontIcon="arrow_back" class="arrow-back" (click)="chooseProfile()"></mat-icon>
+        <!-- <mat-icon fontIcon="arrow_back" class="arrow-back" (click)="chooseProfile()"></mat-icon> -->
         <h2>Wähle deinen Avatar</h2>
+        <p>Wähle ein Profilbild aus der Liste aus, lade ein eigenes Bild hoch oder klicke auf "Weiter".</p>
     </div>
     <div class="person-icon">
         <img src="{{profileImage}}" alt="">
@@ -48,7 +71,8 @@
             <input type='file' id="getFile" style="display:none" (change)="upload($event)" accept=".png,.jpg">
         </div>
         <div class="reg-btns">
-            <button mat-raised-button color="primary" (click)="regUser()">Weiter</button>
+            <button mat-stroked-button color="primary" (click)="finalizeRegistration()">Überspringen</button>
+            <button mat-raised-button color="primary" (click)="setProfileImageAndFinalizeRegistration()">Weiter</button>
         </div>
     </div>
 </div>
