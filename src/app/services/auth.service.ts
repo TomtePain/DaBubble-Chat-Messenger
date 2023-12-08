@@ -12,7 +12,9 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  updateEmail
+  updateEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -217,6 +219,21 @@ export class AuthService {
     return isReg;
   }
 
+  handleReauthentication(email: string, password: string, newEmail: string) {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      const credential = EmailAuthProvider.credential(email, password);
+      reauthenticateWithCredential(user, credential).then(() => {
+        // User re-authenticated, now update email
+        this.handleEmailChange(newEmail); 
+      }).catch((error) => {
+        // Handle errors here, such as wrong password
+        console.error('Re-authentication failed', error);
+      });
+    }
+  }
+
   handleEmailChange(newEmail: string) {
     let previousUserEmail = this.auth.currentUser?.email;
 
@@ -227,7 +244,6 @@ export class AuthService {
       console.log("auth", auth);
       console.log("user", user);
       
-
       if (user) {
         console.log("Going to update email");
         

@@ -23,8 +23,8 @@ export class ProfileComponent {
 
   profileForm = this.fb.group({
     fullNameFormControl: new FormControl('', [Validators.required]),
-    // emailFormControl: new FormControl('', [Validators.required, Validators.email]) //Activate to enable email change option
-    emailFormControl: new FormControl({value: '', disabled: true}) //Activate to disable email change option
+    emailFormControl: new FormControl('', [Validators.required, Validators.email]) //Activate to enable email change option
+    // emailFormControl: new FormControl({value: '', disabled: true}) //Activate to disable email change option
 
   });
 
