@@ -154,7 +154,12 @@ export class AuthService {
       .catch((err) => {
         let code = err.code;
         code = code.slice(5);
-        this.alert(code);
+        if (code === 'wrong-password') {
+          this.alert('Das eingegebene Passwort ist falsch. Bitte versuche es erneut.');
+        } else if (code === 'too-many-requests') {
+          this.alert('Zugriff gesperrt, bitte versuche es später erneut.')
+        } else {
+        this.alert(code);}
       });
   }
 
