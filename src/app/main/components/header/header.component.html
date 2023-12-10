@@ -1,11 +1,7 @@
 <div class="header">
     <img src="./assets/images/logo.png" alt="">
     <div class="searchbar">
-        <mat-form-field appearance="fill">
-            <mat-label>DABubble durchsuchen</mat-label>
-            <input matInput>
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+        <app-search></app-search>
     </div>
     <div class="profile" (click)="openMenu()">
         <span class="login-name">{{ fullName }}</span>
