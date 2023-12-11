@@ -112,6 +112,7 @@ export class EditorComponent implements OnInit {
         this.editorService.fileUrl = '';
         this.uploadedDataName = '';
         this.uploadedData = false;
+        this.message = '';
         setTimeout(() => {
           this.scrollToBottom.emit()
         }, 500);
@@ -245,7 +246,7 @@ export class EditorComponent implements OnInit {
     });
     if (this.searchResult.length <= 1) {
       this.searchMarktUsers = false;
-      this.addToMsg(this.searchResult[0].fullName)
+      // this.addToMsg(this.searchResult[0].fullName)
     }
   }
 
@@ -270,10 +271,12 @@ export class EditorComponent implements OnInit {
   */
   addToMsg(name: string) {
     const textToAdd = this.message.substring(0, this.lastIndexOfAt + 1);
-    this.message = `${textToAdd}${name} `;
+    // this.message = `${textToAdd}${name} `;
+    this.message = `${textToAdd}` + `${name}`;
     this.searchMarktUsers = false;
     this.setCursor();
   }
+
 
   /**
    * Event listener for the 'input' event that triggers when the user types in a textarea.
