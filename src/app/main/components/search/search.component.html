@@ -1,6 +1,32 @@
-<!-- <p>globalsearch works!</p> -->
-        <mat-form-field appearance="fill">
-            <mat-label>DABubble durchsuchen</mat-label>
-            <input matInput>
-            <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+<!-- Search input starts here -->
+<mat-form-field appearance="fill">
+    <mat-label>DABubble durchsuchen</mat-label>
+    <input matInput (ngModelChange)="search($event)" [(ngModel)]="searchInput">
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
+  <!-- Search results start here -->
+  <div class="searchresults-container" *ngIf="searchResults.length > 0">
+      <!-- Search results for messages start here -->
+      <div class="result-box" routerLink="{{searchResult.path}}" *ngFor="let searchResult of searchResults; let i = index" (click)="clearSearch()">
+        <!-- <div class="result-box" *ngFor="let item of searchResult"> -->
+          <div class="result-image">
+            <img src="{{searchResult.userProfileImage}}"alt="">
+          </div>
+          <div class="result-content">
+              <div class="result-header-container">
+                  <div class="result-username">
+                 {{ searchResult.user}}
+                  </div>
+                  <div class="result-date">
+                    {{ searchResult.timestamp | date : 'short' : 'de-DE'}} Uhr
+                  </div>
+              </div>
+          
+              <div class="result-message">
+                {{ searchResult.message }}
+              </div>
+          </div>
+        </div>
+
+  </div>

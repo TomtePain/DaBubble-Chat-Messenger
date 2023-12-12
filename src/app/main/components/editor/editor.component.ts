@@ -103,7 +103,8 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       uploadFile: fileURL,
-      uploadFileName: fileName 
+      uploadFileName: fileName,
+      searchTerms: this.splitSentence(content.value) 
     }
 
     if (content.value != '') {
@@ -387,6 +388,11 @@ checkForPDF() {
   let splitedName: string[] = name.split('.');
   let lastPc: string = splitedName[splitedName.length - 1];
   return lastPc
+}
+
+splitSentence(sentence: string): string[] {
+  const regex = /\W+/;
+  return sentence.split(regex).filter(word => word.length > 0);
 }
 
 }
