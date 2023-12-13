@@ -104,7 +104,8 @@ export class EditorComponent implements OnInit {
       message: content.value,
       uploadFile: fileURL,
       uploadFileName: fileName,
-      searchTerms: this.splitSentence(content.value) 
+      messageLowercase: this.messageToLowercase(content.value),
+      searchTerms: this.messageToSeachTerms(content.value) 
     }
 
     if (content.value != '') {
@@ -123,11 +124,25 @@ export class EditorComponent implements OnInit {
   addNewMessageThread() {
     let timeStamp = new Date();
     let content: any = document.getElementById('thread-text');
+    let fileURL;
+    let fileName;
+
+    if(this.editorService.fileUrl == '') {
+      fileURL = false;
+      fileName = false;
+    } else {
+      fileURL = this.editorService.fileUrl;
+      fileName = this.editorService.fileName
+    }
 
     let newMessage = {
       user: this.userName,
       timestamp: timeStamp.getTime(),
-      message: content.value
+      message: content.value,
+      uploadFile: fileURL,
+      uploadFileName: fileName,
+      messageLowercase: this.messageToLowercase(content.value),
+      searchTerms: this.messageToSeachTerms(content.value) 
     }
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
@@ -143,15 +158,27 @@ export class EditorComponent implements OnInit {
     let content: any = document.getElementById('new-thread-text');
     let path = environment.channelDb + '/' + this.channelId + '/' + 'messages';
     const docInstance:DocumentReference = doc(this.firestore, path, this.mainMessageId);
-    console.log("content new-thread-text", content);
     
-  console.log("path", path, "docInstance", docInstance);
+    let fileURL;
+    let fileName;
+
+    if(this.editorService.fileUrl == '') {
+      fileURL = false;
+      fileName = false;
+    } else {
+      fileURL = this.editorService.fileUrl;
+      fileName = this.editorService.fileName
+    }
   
   
     let newMessage = {
       user: this.userName,
       timestamp: timeStamp.getTime(),
-      message: content.value
+      message: content.value,
+      uploadFile: fileURL,
+      uploadFileName: fileName,
+      messageLowercase: this.messageToLowercase(content.value),
+      searchTerms: this.messageToSeachTerms(content.value) 
     }
   
     let newThread = {
@@ -390,9 +417,14 @@ checkForPDF() {
   return lastPc
 }
 
-splitSentence(sentence: string): string[] {
+messageToSeachTerms(sentence: string): string[] {
   const regex = /\W+/;
   return sentence.split(regex).filter(word => word.length > 0);
+}
+
+messageToLowercase(message: string) {
+  let messageLowercase = message.toLowerCase();
+  return messageLowercase;
 }
 
 }

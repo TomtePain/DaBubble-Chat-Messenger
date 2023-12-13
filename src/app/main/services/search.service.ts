@@ -23,37 +23,46 @@ export class SearchService {
 
   async searchMessages(input: string) {
     this.searchResultMessages = [];
-    let input_variations = []
-    input_variations.push(input)
-    input_variations.push(input.toLowerCase())
-    input_variations.push(input.toUpperCase())
-    input_variations.push(input[0].toUpperCase() + input.slice(1));
+    let input_variations = [];
+    const cleanedInput = input.trim().replace(/^[^\w]+|[^\w]+$/g, "");
+    input_variations.push(cleanedInput)
+    input_variations.push(cleanedInput.toLowerCase())
+    input_variations.push(cleanedInput.toUpperCase())
+    input_variations.push(cleanedInput[0].toUpperCase() + cleanedInput.slice(1));
 
-    // console.log(input_variations);
+
+    console.log(input_variations);
     
     //TODO find the optimal query method
 
     //?Variant that checks if one of the input variations matches the whole message
-    const matchInput = query(collectionGroup(this.firestore, 'messages'), where('message', 'in', input_variations))
+    // const matchInput = query(collectionGroup(this.firestore, 'messages'), where('message', 'in', input_variations))
     //?Variant that checks if one of the input variations matches any of the stored searchTerm strings that are stored for each message during the creation
     // const matchInput = query(collectionGroup(this.firestore, 'messages'), where('searchTerms', 'array-contains-any', input_variations))
     //?Variant that checks if one of the input variations matches any of the stored searchTerm strings that are stored for each message during the creation or if one of the input variations matches the whole message
-    // const matchInput = query(collectionGroup(this.firestore, 'messages'), or(where('searchTerms', 'array-contains-any', input_variations), where('message', 'in', input_variations)))
+    const matchInput = query(collectionGroup(this.firestore, 'messages'), 
+    or(
+      //? searchTerms, message and messageLowercase are document fields
+      where('messageLowercase', 'in', input_variations),
+      where('searchTerms', 'array-contains-any', input_variations), 
+      where('message', 'in', input_variations)
+      )) 
 
     const querySnapshot = await getDocs(matchInput)
-    console.log(querySnapshot);
+    // console.log(querySnapshot);
 
     for (const doc of querySnapshot.docs) {
       let searchResult = doc.data();
-
       let path = await this.getUrlPath(doc.ref.path) as string;
-      //TODO Please remove next two steps if direct links from search results to messages are working correctly
+
+      //! Please remove next two steps if direct links from search results to messages are working correctly
       let lastSlashIndex = path.lastIndexOf('/');
       path = path.substring(0, lastSlashIndex);
+      //! end of two steps
 
       //Only generate a search result if the currentUser has access to the channel the search message is part of. 
       let channel = this.getChannelId(path);   
-      console.log("channel", channel);
+      // console.log("channel", channel);
       this.isCurrentUserIdInChannel(channel).then(isUserInChannel => {
         if (isUserInChannel) {
           const user = searchResult['user'];
@@ -151,7 +160,7 @@ getUserFullName(userId: string) {
 getUserProfileImage(userId: string) {
   this.allUserDataInfo = this.userService.allUsers;
   let existUser = this.allUserDataInfo.find((exist) => exist.id == userId);
-  console.log("userProfileImage");
+  // console.log("userProfileImage");
   return existUser.photoURL;
 }
 

@@ -46,7 +46,7 @@ searchUsers(input: string) {
 async searchMessages(input: string) {
   // console.log("input in searchThreads", input);
   this.searchResults = await this.searchService.searchMessages(input)
-  console.log("this.searchResults", this.searchResults);
+  // console.log("this.searchResults", this.searchResults);
 }
 
 splitSentence(sentence: string): string[] {
