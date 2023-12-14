@@ -17,10 +17,12 @@ constructor(private searchService: SearchService) {
   }
 
 search(input: string) {
+  //TODO create some sort of input lag to avoid search problems by too fast input
   if (input.length > 2) {
     setTimeout(() => {
       this.searchMessages(input);
-      if (this.searchResultsMessages.length > 0) {
+      this.searchChannels(input);
+      if (this.searchResultsMessages.length > 0 || this.searchResultsChannels > 0) {
         this.displaySearchResults = true
       }
     }, 500);
@@ -35,9 +37,12 @@ clearSearch() {
   this.searchResultsMessages = [];
 }
 
-searchChannels(input: string) {
-  // TODO create search for channelNames as available for the messages. Result should link to the channel
+async searchChannels(input: string) {
+  // TODO create search for channelNames as available for the messages. Result should link to the channel path
   // console.log("input in searchChannels", input);
+  this.searchResultsChannels = await this.searchService.searchChannels(input);
+  console.log("this.searchResultsChannels in search Component", this.searchResultsChannels);
+  
 }
 
 searchUsers(input: string) {
@@ -46,9 +51,7 @@ searchUsers(input: string) {
 }
 
 async searchMessages(input: string) {
-  // console.log("input in searchThreads", input);
   this.searchResultsMessages = await this.searchService.searchMessages(input)
-  // console.log("this.searchResults", this.searchResults);
 }
 
 splitSentence(sentence: string): string[] {
