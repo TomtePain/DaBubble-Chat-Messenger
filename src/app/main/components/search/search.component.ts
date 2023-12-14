@@ -8,7 +8,9 @@ import { SearchService } from '../../services/search.service';
 })
 export class SearchComponent {
   displaySearchResults: boolean = false;
-  searchResults: any = [];
+  searchResultsMessages: any = [];
+  searchResultsChannels: any = [];
+  searchResultsUsers: any = [];
   searchInput!: string;
 
 constructor(private searchService: SearchService) {
@@ -18,7 +20,7 @@ search(input: string) {
   if (input.length > 2) {
     setTimeout(() => {
       this.searchMessages(input);
-      if (this.searchResults.length > 0) {
+      if (this.searchResultsMessages.length > 0) {
         this.displaySearchResults = true
       }
     }, 500);
@@ -30,7 +32,7 @@ search(input: string) {
 
 clearSearch() {
   this.searchInput = "";
-  this.searchResults = [];
+  this.searchResultsMessages = [];
 }
 
 searchChannels(input: string) {
@@ -45,7 +47,7 @@ searchUsers(input: string) {
 
 async searchMessages(input: string) {
   // console.log("input in searchThreads", input);
-  this.searchResults = await this.searchService.searchMessages(input)
+  this.searchResultsMessages = await this.searchService.searchMessages(input)
   // console.log("this.searchResults", this.searchResults);
 }
 

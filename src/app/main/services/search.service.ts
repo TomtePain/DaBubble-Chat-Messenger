@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, query, addDoc, collection, collectionData, deleteDoc, doc, docData, getDoc, getDocs, onSnapshot, setDoc, where, collectionGroup, or } from '@angular/fire/firestore';
+import { Firestore, query, collection, doc, getDoc, getDocs, where, collectionGroup, or } from '@angular/fire/firestore';
 import { UserService } from './user.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
@@ -29,8 +29,7 @@ export class SearchService {
     input_variations.push(cleanedInput.toLowerCase())
     input_variations.push(cleanedInput.toUpperCase())
     input_variations.push(cleanedInput[0].toUpperCase() + cleanedInput.slice(1));
-
-
+    
     console.log(input_variations);
     
     //TODO find the optimal query method
@@ -160,7 +159,6 @@ getUserFullName(userId: string) {
 getUserProfileImage(userId: string) {
   this.allUserDataInfo = this.userService.allUsers;
   let existUser = this.allUserDataInfo.find((exist) => exist.id == userId);
-  // console.log("userProfileImage");
   return existUser.photoURL;
 }
 

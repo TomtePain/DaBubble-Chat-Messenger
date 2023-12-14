@@ -86,5 +86,24 @@ export class EditorService {
     updateDoc(docInstance, updateCounter);
   }
 
+  messageToSearchTerms(sentence: string): string[] {
+    const messageWordsOnly = sentence.trim().replace(/[^\p{L}\p{N}\s]/gu, "");
+    console.log("messageWordsOnly", messageWordsOnly);
+    
+    const messageLowerCase = messageWordsOnly.toLowerCase();
+    console.log("messageLowerCase", messageLowerCase);
+    const regex = /\s+/;
+    let array = sentence.split(regex).filter(word => word.length > 0).map(word => word.toLowerCase());;
+    array.push(messageLowerCase);
+    console.log("Array", array);
+    
+    return array;
+  }
+  
+  messageToLowercase(message: string) {
+    const messageLowercase = message.toLowerCase();
+    return messageLowercase;
+  }
+
 
 }

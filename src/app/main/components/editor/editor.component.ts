@@ -104,8 +104,8 @@ export class EditorComponent implements OnInit {
       message: content.value,
       uploadFile: fileURL,
       uploadFileName: fileName,
-      messageLowercase: this.messageToLowercase(content.value),
-      searchTerms: this.messageToSeachTerms(content.value) 
+      messageLowercase: this.editorService.messageToLowercase(content.value),
+      searchTerms: this.editorService.messageToSearchTerms(content.value) 
     }
 
     if (content.value != '') {
@@ -141,8 +141,8 @@ export class EditorComponent implements OnInit {
       message: content.value,
       uploadFile: fileURL,
       uploadFileName: fileName,
-      messageLowercase: this.messageToLowercase(content.value),
-      searchTerms: this.messageToSeachTerms(content.value) 
+      messageLowercase: this.editorService.messageToLowercase(content.value),
+      searchTerms: this.editorService.messageToSearchTerms(content.value) 
     }
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
@@ -177,8 +177,8 @@ export class EditorComponent implements OnInit {
       message: content.value,
       uploadFile: fileURL,
       uploadFileName: fileName,
-      messageLowercase: this.messageToLowercase(content.value),
-      searchTerms: this.messageToSeachTerms(content.value) 
+      messageLowercase: this.editorService.messageToLowercase(content.value),
+      searchTerms: this.editorService.messageToSearchTerms(content.value) 
     }
   
     let newThread = {
@@ -415,16 +415,6 @@ checkForPDF() {
   let splitedName: string[] = name.split('.');
   let lastPc: string = splitedName[splitedName.length - 1];
   return lastPc
-}
-
-messageToSeachTerms(sentence: string): string[] {
-  const regex = /\W+/;
-  return sentence.split(regex).filter(word => word.length > 0);
-}
-
-messageToLowercase(message: string) {
-  let messageLowercase = message.toLowerCase();
-  return messageLowercase;
 }
 
 }

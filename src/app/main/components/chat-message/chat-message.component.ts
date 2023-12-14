@@ -17,6 +17,7 @@ import { UserService } from '../../services/user.service';
 import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-delete-message.component';
 import { getStorage, ref, deleteObject } from '@angular/fire/storage';
 import { UploadComponent } from '../../dialogs/upload/upload.component';
+import { EditorService } from '../../services/editor.service';
 
 @Component({
   selector: 'app-chat-message',
@@ -51,6 +52,7 @@ export class ChatMessageComponent implements OnInit {
     private userservice:UserService,
     private router: Router,
     public dialog: MatDialog,
+    public editorService: EditorService
   ) {}
 
   ngOnInit(): void {
@@ -153,12 +155,14 @@ export class ChatMessageComponent implements OnInit {
   }
 
   saveEditMessage(message: any) {
-    let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';
+    let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';  
     const docInstance = doc(this.firestore, path, message.id);
     let changes: any = document.getElementById('messageChatContent');
     let updateData = {
       message: changes.value,
       updated: true,
+      messageLowercase: this.editorService.messageToLowercase(changes.value),
+      searchTerms: this.editorService.messageToSearchTerms(changes.value) 
     };
 
     if(changes.value == ''){
@@ -175,13 +179,7 @@ export class ChatMessageComponent implements OnInit {
 
   toggleReaction(type: string, messageId: string, reactionData: any) {
     const channelType = 'channel';
-    this.reactionservice.toggleReaction(
-      type,
-      messageId,
-      reactionData,
-      channelType,
-      this.channelID
-    );
+    this.reactionservice.toggleReaction(type, messageId, reactionData, channelType, this.channelID);
   }
 
   showMoreEmojis(i: any) {
@@ -238,6 +236,7 @@ export class ChatMessageComponent implements OnInit {
   showDeleteMessageDialog() {
     this.dialog.open(DialogDeleteMessageComponent, {
       data: {
+        messageType: 'chat',
         messageData: this.messageData,
         existingUser : this.existingUser,
         channelID : this.channelID,
@@ -291,6 +290,5 @@ export class ChatMessageComponent implements OnInit {
   hideBoxes() {
     this.showEmojiPicker = false;
   }
-
 
 }
