@@ -52,19 +52,19 @@
 
       <!-- Search results for users start here  -->
       <div class="divider" *ngIf="searchResultsUsers.length > 0"><span>Gefundene User</span></div>
-        <div class="result-box" *ngIf="searchResultsUsers.length > 0">
+        <div class="result-box" *ngFor="let foundUser of searchResultsUsers" (click)="viewUsersProfile(foundUser.id)">
           <div class="result-image">
-            <img src="/assets/images/profile-icons/big/avatar-2.png">
+            <img src="{{foundUser.photoURL}}">
           </div>
           <div class="result-content">
             <div class="result-header-container">
               <div class="result-username">
-            Tester Allgemein
+                {{foundUser.fullName}}
               </div>
             </div>
       
             <div class="result-message">
-            Profil von Tester Allgemein ansehen
+            Profil von {{foundUser.fullName}} ansehen
             </div>
         </div>
         </div>

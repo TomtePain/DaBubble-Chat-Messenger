@@ -12,7 +12,6 @@ import { CrudService } from '../../services/crud.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
-import { user } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
 import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-delete-message.component';
 import { getStorage, ref, deleteObject } from '@angular/fire/storage';

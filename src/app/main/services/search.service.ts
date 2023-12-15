@@ -17,13 +17,15 @@ export class SearchService {
   existingUser: any;
   currentUser: string | null;
 
+
   constructor(private firestore: Firestore, private userService: UserService, private auth: AuthService, private crud: CrudService) { 
     this.currentUser = this.userService.userDBId;
   }
 
+
 async searchChannels(input: string) {
     this.searchResultChannels = []; // clear search results
-    const cleanedInput = input.trim().replace(/^[^\w]+|[^\w]+$/g, ""); // remove any symbols from the input string
+    const cleanedInput = this.cleanInput(input); // remove any symbols from the input string
     let input_variations = this.getInputVariations(cleanedInput);   
 
     // TODO check that channels are type channel to avoid direct messages appearing in channel results
@@ -47,6 +49,7 @@ async searchChannels(input: string) {
     return this.searchResultChannels;
   }
 
+
 async getChannelsSearchResults(input_variations: Query<DocumentData>) {
   const querySnapshot = await getDocs(input_variations);
   for (const doc of querySnapshot.docs) {
@@ -56,19 +59,45 @@ async getChannelsSearchResults(input_variations: Query<DocumentData>) {
     this.isCurrentUserIdInChannel(channel).then(isUserInChannel => {
     if (isUserInChannel) {
     const foundChannel = this.getSingleChannelSearchResult(searchResultData, doc.id)
-    console.log("foundchannel", foundChannel);
     
     this.searchResultChannels.push(foundChannel);
     }
   })
 }
-console.log("this.searchResultChannels", this.searchResultChannels);
-
 }
+
+
+async searchUsers(input: string) {
+  this.searchResultUsers = []; // clear search results
+  const cleanedInput = this.cleanInput(input); // remove any symbols from the input string
+  let input_variations = this.getInputVariations(cleanedInput);   
+
+  const matchInputsToUsers = query(collectionGroup(this.firestore, environment.userDb),
+    or(
+      where('searchTerms', 'array-contains-any', input_variations), 
+      where('fullName', 'in', input_variations)
+    ));
+
+  await this.getUserSearchResults(matchInputsToUsers)
+
+  return this.searchResultUsers;
+}
+
+
+async getUserSearchResults(input_variations: Query<DocumentData>) {
+  const querySnapshot = await getDocs(input_variations);
+  for (const doc of querySnapshot.docs) {
+    let searchResultData = doc.data();
+   
+    const foundUser = this.getSingleUserSearchResult(searchResultData, doc.id)
+    this.searchResultUsers.push(foundUser);
+}
+}
+
 
 async searchMessages(input: string) {
     this.searchResultMessages = []; // clear search results
-    const cleanedInput = input.trim().replace(/^[^\w]+|[^\w]+$/g, ""); // remove any symbols from the input string
+    const cleanedInput = this.cleanInput(input); // remove any symbols from the input string
     let input_variations = this.getInputVariations(cleanedInput);    
       
     // ? Search query that checks if one of the input variations matches any of the stored searchTerm strings that are stored for each message during the creation or if one of the input variations matches the whole message. "searchTerms", "message" and "messageLowercase" are document fields.
@@ -83,6 +112,7 @@ async searchMessages(input: string) {
 
   return this.searchResultMessages;
 }
+
 
 async getMessagesSearchResults(input_variations: Query<DocumentData>) {
   const querySnapshot = await getDocs(input_variations)
@@ -198,6 +228,16 @@ getSingleChannelSearchResult(data: DocumentData, docId: string) {
 }
 
 
+getSingleUserSearchResult(data: DocumentData, docId: string) {
+  const searchResult = {
+    id: docId,
+    fullName: data['fullName'],
+    photoURL: data['photoURL']
+  }
+  return searchResult;
+}
+
+
 getInputVariations(cleanedInput: string) {
   let input_variations = [];
   input_variations.push(cleanedInput)
@@ -229,6 +269,10 @@ getChannelId(path: string): string {
   return segments[1];
 }
 
+cleanInput(input: string) {
+  let cleanedInput = input.trim().replace(/^[^\w]+|[^\w]+$/g, "")
+  return cleanedInput;
+}
 
 }
 

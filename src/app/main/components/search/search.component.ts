@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { SearchService } from '../../services/search.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-search',
@@ -12,42 +15,47 @@ export class SearchComponent {
   searchResultsChannels: any = [];
   searchResultsUsers: any = [];
   searchInput!: string;
+  allUserDataInfo: Array<any> = [];
+  searchTimeout: any = null;
 
-constructor(private searchService: SearchService) {
+constructor(private searchService: SearchService, public dialog: MatDialog, private userservice:UserService) {
   }
 
 search(input: string) {
-  //TODO create some sort of input lag to avoid search problems by too fast input
-  if (input.length > 2) {
-    setTimeout(() => {
+  // Clear the existing timeout
+  if (this.searchTimeout) {
+    clearTimeout(this.searchTimeout);
+  }
+
+  // Delay the search result for a specific time to gather the input string correctly
+  this.searchTimeout = setTimeout(() => {
+    if (input.length > 1) {
       this.searchMessages(input);
       this.searchChannels(input);
-      if (this.searchResultsMessages.length > 0 || this.searchResultsChannels > 0) {
-        this.displaySearchResults = true
+      this.searchUsers(input);
+      if (this.searchResultsMessages.length > 0 || this.searchResultsChannels > 0 || this.searchResultsUsers > 0) {
+        this.displaySearchResults = true;
+      } else {
+        this.displaySearchResults = false;
       }
-    }, 500);
-
-  } else {
-    this.displaySearchResults = false;
-  }
+    } else {
+      this.displaySearchResults = false;
+    }
+  }, 500); // Adjust the delay as needed
 }
 
 clearSearch() {
   this.searchInput = "";
   this.searchResultsMessages = [];
+  this.searchResultsUsers = [];
 }
 
 async searchChannels(input: string) {
-  // TODO create search for channelNames as available for the messages. Result should link to the channel path
-  // console.log("input in searchChannels", input);
   this.searchResultsChannels = await this.searchService.searchChannels(input);
-  console.log("this.searchResultsChannels in search Component", this.searchResultsChannels);
-  
 }
 
-searchUsers(input: string) {
-  // TODO create search for users as available for the messages/channels. It should link to the found users' profile card
-  // console.log("input in searchChannels", input);
+async searchUsers(input: string) {
+  this.searchResultsUsers = await this.searchService.searchUsers(input);
 }
 
 async searchMessages(input: string) {
@@ -61,6 +69,14 @@ splitSentence(sentence: string): string[] {
   return sentence.split(regex).filter(word => word.length > 0);
 }
 
+async viewUsersProfile(userId:any) {
+  this.allUserDataInfo = this.userservice.allUsers;
+  this.dialog.open(DialogProfileviewOfOthersComponent, {
+    data: {
+      userId: userId,
+      userInfo: this.allUserDataInfo    }
+  });
+}
 
 
 }
