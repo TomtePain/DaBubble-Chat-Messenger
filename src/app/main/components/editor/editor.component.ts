@@ -103,7 +103,9 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       uploadFile: fileURL,
-      uploadFileName: fileName 
+      uploadFileName: fileName,
+      messageLowercase: this.editorService.messageToLowercase(content.value),
+      searchTerms: this.editorService.messageToSearchTerms(content.value) 
     }
 
     if (content.value != '') {
@@ -122,11 +124,25 @@ export class EditorComponent implements OnInit {
   addNewMessageThread() {
     let timeStamp = new Date();
     let content: any = document.getElementById('thread-text');
+    let fileURL;
+    let fileName;
+
+    if(this.editorService.fileUrl == '') {
+      fileURL = false;
+      fileName = false;
+    } else {
+      fileURL = this.editorService.fileUrl;
+      fileName = this.editorService.fileName
+    }
 
     let newMessage = {
       user: this.userName,
       timestamp: timeStamp.getTime(),
-      message: content.value
+      message: content.value,
+      uploadFile: fileURL,
+      uploadFileName: fileName,
+      messageLowercase: this.editorService.messageToLowercase(content.value),
+      searchTerms: this.editorService.messageToSearchTerms(content.value) 
     }
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
@@ -142,15 +158,27 @@ export class EditorComponent implements OnInit {
     let content: any = document.getElementById('new-thread-text');
     let path = environment.channelDb + '/' + this.channelId + '/' + 'messages';
     const docInstance:DocumentReference = doc(this.firestore, path, this.mainMessageId);
-    console.log("content new-thread-text", content);
     
-  console.log("path", path, "docInstance", docInstance);
+    let fileURL;
+    let fileName;
+
+    if(this.editorService.fileUrl == '') {
+      fileURL = false;
+      fileName = false;
+    } else {
+      fileURL = this.editorService.fileUrl;
+      fileName = this.editorService.fileName
+    }
   
   
     let newMessage = {
       user: this.userName,
       timestamp: timeStamp.getTime(),
-      message: content.value
+      message: content.value,
+      uploadFile: fileURL,
+      uploadFileName: fileName,
+      messageLowercase: this.editorService.messageToLowercase(content.value),
+      searchTerms: this.editorService.messageToSearchTerms(content.value) 
     }
   
     let newThread = {
@@ -167,10 +195,8 @@ export class EditorComponent implements OnInit {
         };
         this.crud.addItem(newMessage, environment.threadDb + '/' + docRef.id + '/' + 'messages')
         updateDoc(docInstance, updateData)
-        .then(() => {
-          console.log("Data added to", path);
-        }).catch((error) => {
-          console.log('Error creating newThread:', error);
+        .catch((error) => {
+          console.error('Error creating newThread:', error);
       })
       content.value = '';
       //route to new thread id
@@ -377,8 +403,6 @@ export class EditorComponent implements OnInit {
     
 
 openThread(threadId:string) {
-  console.log(this.channelId, "thread", threadId);
-  
   this.router.navigate([this.channelId, "thread", threadId]);
 }
 

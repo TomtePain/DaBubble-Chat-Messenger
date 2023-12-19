@@ -35,7 +35,8 @@
 
     &>p {
         color: var(--black, #000);
-        text-align: center;
+        text-align: left;
+        width: 100%;
         font-size: 20px;
         font-weight: 400;
     }
@@ -100,3 +101,13 @@
         }
     }
 }
+
+.validation-error-msg {
+    color: red;
+    position: relative;
+    margin-top: -16px;
+    margin-bottom: 16px;
+    padding-left: 16px;
+    font-size: 14px;
+    font-weight: 600;
+  }

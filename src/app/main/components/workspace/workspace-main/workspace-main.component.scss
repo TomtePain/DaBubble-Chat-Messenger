@@ -102,4 +102,12 @@ h3{
     justify-content: flex-end;
 }
 
-
+@media screen and (max-width: 1570px) {
+.workspace-card {
+position: absolute;
+left: 64px;
+z-index: 99;
+-webkit-box-shadow: 3px 10px 48px -15px #000000;
+box-shadow: 3px 10px 48px -15px #000000;
+}
+}

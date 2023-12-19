@@ -84,11 +84,8 @@ export class ReactionService {
 
   updateDataInDb(docInstance: DocumentReference, updatedData: any) {
     updateDoc(docInstance, updatedData)
-      .then(() => {
-        console.log('data updated', updatedData);
-      })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }
 

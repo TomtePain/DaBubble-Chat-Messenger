@@ -1,0 +1,72 @@
+<!-- Search input starts here -->
+<mat-form-field appearance="fill">
+    <mat-label>DABubble durchsuchen</mat-label>
+    <input matInput (ngModelChange)="search($event)" [(ngModel)]="searchInput">
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
+<!-- Search results start here -->
+<div class="searchresults-container" *ngIf="(searchResultsMessages.length > 0) || (searchResultsChannels.length > 0) || (searchResultsUsers.length > 0)">
+
+    <!-- Search results for channels start here  -->
+    <div class="divider" *ngIf="searchResultsChannels.length > 0"><span>Gefundene Channels</span></div>
+      <div class="result-box" routerLink="{{foundChannel.id}}" *ngFor="let foundChannel of searchResultsChannels" (click)="clearSearch()">
+        <div class="result-image">
+          #
+        </div>
+        <div class="result-content">
+            <div class="result-header-container">
+                <div class="result-username">
+                  {{foundChannel.name}}
+                </div>
+            </div>
+        
+            <div class="result-message">
+              {{foundChannel.description}}
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Search results for messages start here  -->
+    <div class="divider" *ngIf="searchResultsMessages.length > 0"><span>Gefundene Nachrichten</span></div>
+    <div class="result-box" routerLink="{{foundMessage.path}}" *ngFor="let foundMessage of searchResultsMessages" (click)="clearSearch()">
+        <div class="result-image">
+          <img src="{{foundMessage.userProfileImage}}"alt="">
+        </div>
+        <div class="result-content">
+            <div class="result-header-container">
+                <div class="result-username">
+                {{ foundMessage.user}}
+                </div>
+                <div class="result-date">
+                  {{ foundMessage.timestamp | date : 'short' : 'de-DE'}} Uhr
+                </div>
+            </div>
+        
+            <div class="result-message">
+              {{ foundMessage.message }}
+            </div>
+        </div>
+      </div>
+
+      <!-- Search results for users start here  -->
+      <div class="divider" *ngIf="searchResultsUsers.length > 0"><span>Gefundene User</span></div>
+        <div class="result-box" *ngFor="let foundUser of searchResultsUsers" (click)="viewUsersProfile(foundUser.id)">
+          <div class="result-image">
+            <img src="{{foundUser.photoURL}}">
+          </div>
+          <div class="result-content">
+            <div class="result-header-container">
+              <div class="result-username">
+                {{foundUser.fullName}}
+              </div>
+            </div>
+      
+            <div class="result-message">
+            Profil von {{foundUser.fullName}} ansehen
+            </div>
+        </div>
+        </div>
+    
+  </div>

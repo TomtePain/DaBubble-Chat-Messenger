@@ -6,6 +6,7 @@ import { AddedUserToChannel } from './added-user-to-channel';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { EditorService } from 'src/app/main/services/editor.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class AddPeopleToChannelComponent {
   channelName: string = '';
   description: string = '';
   channelPath: string = '';
-
+  searchTerms: string[] = [];
+  
   addPeople: boolean = false;
   searchTerm: string = '';
   dmUsers: any = [];
@@ -27,7 +29,7 @@ export class AddPeopleToChannelComponent {
   uid: string = '';
   placeholder: boolean = true;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private crud: CrudService, private firestore: Firestore, private dialogRef: MatDialogRef<AddPeopleToChannelComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private crud: CrudService, private editorService: EditorService, private firestore: Firestore, private dialogRef: MatDialogRef<AddPeopleToChannelComponent>) { }
   @ViewChild('userInput') inputField: any;
   ngOnInit() {
     this.getVariables();
@@ -37,6 +39,7 @@ export class AddPeopleToChannelComponent {
     this.channelName = this.data.channelName;
     this.description = this.data.description;
     this.channelPath = this.data.channelPath;
+    this.searchTerms = this.generateSearchTerms();
     this.uid = this.data.uid;
   }
 
@@ -48,6 +51,7 @@ export class AddPeopleToChannelComponent {
         description: this.description,
         img: 'assets/workspace-images/tag.svg',
         ids: this.addedToChannelIds,
+        searchTerms: this.searchTerms,
         creator: this.uid,
         type:'channel'
       };
@@ -143,5 +147,17 @@ export class AddPeopleToChannelComponent {
   }
   setPlaceholder() {
     this.placeholder = false;
+  }
+
+  generateSearchTerms(): string[] {
+    let channelDescriptionSearchTerms: any = [];
+    let channelNameSearchTerms: any = [];
+
+    channelDescriptionSearchTerms = this.editorService.messageToSearchTerms(this.description);
+    channelNameSearchTerms = this.editorService.messageToSearchTerms(this.channelName);
+   
+    let searchTerms: string[] = []
+    searchTerms = searchTerms.concat(channelNameSearchTerms, channelDescriptionSearchTerms)    
+    return searchTerms;
   }
 }
