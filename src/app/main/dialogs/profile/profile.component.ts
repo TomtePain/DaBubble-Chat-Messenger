@@ -5,7 +5,7 @@ import { UserService } from '../../services/user.service';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { from } from 'rxjs';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/main/services/auth.service';
 import { RefreshService } from '../../services/refresh.service';
 
 @Component({

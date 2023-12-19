@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, query, collection, doc, getDoc, getDocs, where, collectionGroup, or, DocumentData, Query, DocumentSnapshot, and } from '@angular/fire/firestore';
 import { UserService } from './user.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/main/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { CrudService } from './crud.service';
 

@@ -7,7 +7,7 @@ import {
 import { matchpassword } from './matchpassword.validator';
 import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/main/services/auth.service';
 
 @Component({
   selector: 'app-setnewpasswd',

@@ -30,11 +30,11 @@ import {
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { AlertService } from '../auth/components/alert/alert.service';
-import { CrudService } from '../main/services/crud.service';
-import { TreeService } from '../main/services/tree.service';
+import { AlertService } from '../../auth/components/alert/alert.service';
+import { CrudService } from './crud.service';
+import { TreeService } from './tree.service';
 // import { getAuth, updateEmail } from 'firebase/auth';
-import { UserService } from '../main/services/user.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',

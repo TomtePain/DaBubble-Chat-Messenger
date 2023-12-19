@@ -6,7 +6,7 @@ import { AbstractControl, FormBuilder, FormControl, ValidatorFn, Validators } fr
 import { Router } from '@angular/router';
 import { from } from 'rxjs';
 import { UserService } from 'src/app/main/services/user.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/main/services/auth.service';
 import { AlertService } from '../alert/alert.service';
 
 @Component({
