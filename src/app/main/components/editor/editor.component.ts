@@ -114,6 +114,7 @@ export class EditorComponent implements OnInit {
         this.editorService.fileUrl = '';
         this.uploadedDataName = '';
         this.uploadedData = false;
+        this.message = '';
         setTimeout(() => {
           this.scrollToBottom.emit()
         }, 500);
@@ -236,12 +237,12 @@ export class EditorComponent implements OnInit {
    * Updates the message by appending '@', sets the cursor, triggers the keyup event,
    * and activates the search for market users.
    */
-  updateMessageAndSearch() {
-    this.message = this.message + '@';
-    this.setCursor();
-    this.triggerKeyup();
-    this.activateSearchMarketUsers();
-  }
+  // updateMessageAndSearch() {
+  //   this.message = this.message + '@';
+  //   this.setCursor();
+  //   this.triggerKeyup();
+  //   this.activateSearchMarketUsers();
+  // }
 
   /**
    * Activates the search for market users by setting the 'searchMarktUsers' flag to true
@@ -271,7 +272,7 @@ export class EditorComponent implements OnInit {
     });
     if (this.searchResult.length <= 1) {
       this.searchMarktUsers = false;
-      this.addToMsg(this.searchResult[0].fullName)
+      // this.addToMsg(this.searchResult[0].fullName)
     }
   }
 
@@ -296,10 +297,11 @@ export class EditorComponent implements OnInit {
   */
   addToMsg(name: string) {
     const textToAdd = this.message.substring(0, this.lastIndexOfAt + 1);
-    this.message = `${textToAdd}${name} `;
+    this.message = `${textToAdd}` + `${name}`;
     this.searchMarktUsers = false;
     this.setCursor();
   }
+
 
   /**
    * Event listener for the 'input' event that triggers when the user types in a textarea.
@@ -308,24 +310,25 @@ export class EditorComponent implements OnInit {
    *
    * @param {Event} event - The input event object.
    */
-  @HostListener('input', ['$event'])
-  onInput(event: Event): void {
-    const textarea = event.target as HTMLTextAreaElement;
-    const text = textarea.value;
-    const cursorIndex = textarea.selectionStart;
-    this.setCursor()
-    // Check if the '@' character is typed or '@' preceded by a newline character.
-    if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
-      this.activateSearchMarketUsers();
-    }
-    const atPosition = text.lastIndexOf('@');
-    if (atPosition === -1) {
-      this.searchMarktUsers = false;
-    } else if (atPosition !== this.lastAtPosition) {
-      this.searchMarktUsers = true;
-    }
-    this.lastAtPosition = atPosition;
-  }
+
+  // @HostListener('input', ['$event'])
+  // onInput(event: Event): void {
+  //   const textarea = event.target as HTMLTextAreaElement;
+  //   const text = textarea.value;
+  //   const cursorIndex = textarea.selectionStart;
+  //   this.setCursor()
+  //   // Check if the '@' character is typed or '@' preceded by a newline character.
+  //   if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
+  //     this.activateSearchMarketUsers();
+  //   }
+  //   const atPosition = text.lastIndexOf('@');
+  //   if (atPosition === -1) {
+  //     this.searchMarktUsers = false;
+  //   } else if (atPosition !== this.lastAtPosition) {
+  //     this.searchMarktUsers = true;
+  //   }
+  //   this.lastAtPosition = atPosition;
+  // }
 
   /**
    * Sets the cursor position in a textarea element to the end of the content.

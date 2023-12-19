@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { DocumentReference, Firestore, arrayRemove, arrayUnion, doc, updateDoc } from '@angular/fire/firestore';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UploadComponent } from 'src/app/main/dialogs/upload/upload.component';
 import { CrudService } from 'src/app/main/services/crud.service';
 import { EditorService } from 'src/app/main/services/editor.service';
 import { UserService } from 'src/app/main/services/user.service';
@@ -20,9 +21,12 @@ export class DialogChannelEditComponent implements OnInit {
   channelCreatorName: string;
   channelId: string;
   currentUser: string;
+  allChannel:Array<any> = [];
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router, private editorService: EditorService) {
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router, private editorService: EditorService, public dialog: MatDialog) {
+
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescritpion;
     this.channelUser = data.channelUser;
@@ -33,7 +37,7 @@ export class DialogChannelEditComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    this.getAllChannel();
   }
 
   closeDialog() {
@@ -51,15 +55,19 @@ export class DialogChannelEditComponent implements OnInit {
   editChannelName() {
     const docInstance = doc(this.firestore, environment.channelDb, this.channelId);
     let changes: any = document.getElementById('channel-name');
+    let channelName = changes?.value.trim()
     let updateData = {
-      name: changes?.innerHTML,
-      searchTerms: this.generateSearchTerms(changes.innerHTML, 'name')
+      name: channelName
+      searchTerms: this.generateSearchTerms(channelName, 'name')
     };
-    updateDoc(docInstance, updateData)
+    this.channelName = changes.value.trim();
+    if(!this.checkChannelNameExist()){
+      updateDoc(docInstance, updateData)
       .then(() => {
-        this.channelName = changes.innerHTML;
+        this.channelName = changes.value.trim();
         this.viewEditChannelName();
       })
+    } else { this.showUploadDialog('channel exist'); }
   }
 
   viewEditChannelDescription() {
@@ -74,12 +82,12 @@ export class DialogChannelEditComponent implements OnInit {
     const docInstance = doc(this.firestore, environment.channelDb, this.channelId);
     let changes: any = document.getElementById('channel-decription');
     let updateData = {
-      description: changes?.innerHTML,
-      searchTerms: this.generateSearchTerms(changes.innerHTML, 'description')
+      description: changes?.value,
+      searchTerms: this.generateSearchTerms(changes.value, 'description')
     };
     updateDoc(docInstance, updateData)
       .then(() => {
-        this.channelDescription = changes.innerHTML;
+        this.channelDescription = changes.value;
         this.viewEditChannelDescription();
       })
   }
@@ -94,6 +102,27 @@ export class DialogChannelEditComponent implements OnInit {
       this.router.navigateByUrl('/')
     });
   }
+
+
+  showUploadDialog(msg: string) {
+    const dialogRef = this.dialog.open(UploadComponent, {
+      data: { typeOfMessage: msg },
+    });
+  }
+
+  checkChannelNameExist() {
+    let exist = this.allChannel.find(channel => channel.name == this.channelName);
+    if(exist){
+      return true 
+    } else {
+      return false
+    }
+  }
+
+  getAllChannel() {
+    this.crud.getItem(environment.channelDb).subscribe((result) => {
+      this.allChannel = result;
+    })
 
   generateSearchTerms(input: string, changeType: string): string[] {
     let channelDescriptionSearchTerms: any = [];
