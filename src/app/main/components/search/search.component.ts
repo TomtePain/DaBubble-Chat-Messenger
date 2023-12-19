@@ -11,9 +11,9 @@ import { UserService } from '../../services/user.service';
 })
 export class SearchComponent {
   displaySearchResults: boolean = false;
-  searchResultsMessages: any = [];
-  searchResultsChannels: any = [];
-  searchResultsUsers: any = [];
+  searchResultsMessages: Array<any> = [];
+  searchResultsChannels: Array<any> = [];
+  searchResultsUsers: Array<any> = [];
   searchInput!: string;
   allUserDataInfo: Array<any> = [];
   searchTimeout: any = null;
@@ -26,29 +26,41 @@ search(input: string) {
   if (this.searchTimeout) {
     clearTimeout(this.searchTimeout);
   }
-
   // Delay the search result for a specific time to gather the input string correctly
   this.searchTimeout = setTimeout(() => {
     if (input.length > 1) {
-      this.searchMessages(input);
-      this.searchChannels(input);
-      this.searchUsers(input);
-      if (this.searchResultsMessages.length > 0 || this.searchResultsChannels > 0 || this.searchResultsUsers > 0) {
-        this.displaySearchResults = true;
-      } else {
-        this.displaySearchResults = false;
-      }
-    } else {
+      this.executeSearch(input)
+    } else if (!input) {
+      this.clearSearch();
+    }
+    else {
       this.displaySearchResults = false;
     }
-  }, 500); // Adjust the delay as needed
+  }, 500); // Check if delay should be shorter or longer
 }
 
 clearSearch() {
   this.searchInput = "";
   this.searchResultsMessages = [];
+  this.searchResultsChannels = [];
   this.searchResultsUsers = [];
 }
+
+executeSearch(input: string) {
+  this.searchMessages(input);
+  this.searchChannels(input);
+  this.searchUsers(input);
+  if (this.isSearchResultAvailable()) {
+    this.displaySearchResults = true;
+  } else {
+    this.displaySearchResults = false;
+  }
+}
+
+isSearchResultAvailable() {
+  return this.searchResultsMessages.length > 0 || this.searchResultsChannels.length > 0 || this.searchResultsUsers.length > 0;
+}
+
 
 async searchChannels(input: string) {
   this.searchResultsChannels = await this.searchService.searchChannels(input);
@@ -77,6 +89,4 @@ async viewUsersProfile(userId:any) {
       userInfo: this.allUserDataInfo    }
   });
 }
-
-
 }

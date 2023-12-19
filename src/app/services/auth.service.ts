@@ -69,6 +69,7 @@ export class AuthService {
         let userData = {
           uid: userId,
           fullName: fullName,
+          searchTerms: this.generateSearchTerms(fullName as string, email as string),
           photoURL: photoURL,
           accessToChannel: [],
           isOnline: false,
@@ -108,6 +109,7 @@ export class AuthService {
       let userData = {
         uid: userId,
         fullName: fullName,
+        searchTerms: this.generateSearchTerms(fullName as string, email as string),
         photoURL: userPhotoURL,
         accessToChannel: [],
         isOnline: false,
@@ -243,25 +245,21 @@ export class AuthService {
     let previousUserEmail = this.auth.currentUser?.email;
 
     if (previousUserEmail != newEmail) {
-      console.log("Different emails", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
       const auth = getAuth();
       const user = auth.currentUser;
-      console.log("auth", auth);
-      console.log("user", user);
       
       if (user) {
-        console.log("Going to update email");
-        
+      
         updateEmail(user, newEmail).then(() => {
             // Email updated!
-            console.log("Email updated", newEmail, user);
+            // console.log("Email updated", newEmail, user);
             // Send email to verify email to new email address
             // sendEmailVerification(user).then(() => {
             // console.log("Email verification sent", user);
             // }); 
           })
           .catch((error) => {
-            console.log("Error", error);
+            console.error("Error", error);
             
             // An error occurred
             let code = error.code;
@@ -272,7 +270,7 @@ export class AuthService {
         console.error('No user is currently signed in.');
       }
     } else {
-      console.log("Email adresses are not different", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+      console.warn("Email adresses are not different", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
       
     }
   }
@@ -338,5 +336,19 @@ export class AuthService {
     //     this.alert('code');
     //   }
     });
+  }
+
+  generateSearchTerms(fullName: string, email: string) {
+    const nameLowerCase = fullName.toLowerCase();
+
+    // Split the lowercase sentence into words based on spaces
+    const regex = /\s+/;
+    let array = nameLowerCase.split(regex).filter(word => word.length > 0);
+  
+    // Add the entire lowercase sentence as a separate element
+    array.push(nameLowerCase);
+    array.push(email)
+    
+    return array;
   }
 }

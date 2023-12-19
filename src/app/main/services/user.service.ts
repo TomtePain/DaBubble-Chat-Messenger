@@ -38,10 +38,11 @@ export class UserService {
     return docData(this.documentRef);
   }
 
-  saveUserData(fullName: string, email: string) {
+  updateUserData(fullName: string, email: string, searchTerms: string[]) {
     updateDoc(this.documentRef, {
       fullName: fullName,
-      email: email
+      email: email,
+      searchTerms: searchTerms
     })
   }
 

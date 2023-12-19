@@ -42,7 +42,6 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   openEditMessage(message:any, i:any) {
-    console.log('clicked edit message', message )
     this.editActive = true;
     this.bubbleEdit(i);
   }
@@ -56,8 +55,6 @@ export class ThreadMessageComponent implements OnInit{
     const docInstance = doc(this.firestore, path, message.id);
     const isEmptyOrSpaces = (str: string) => /^[\s]*$/.test(str);
     let changes: any = document.getElementById('message-thread-content');
-    console.log(changes);
-    console.log(changes.innerHTML);
     
     let updateData = {
       message: changes.innerHTML,
@@ -80,8 +77,6 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   showMoreEmojis(i: any) {
-    console.log(this.sortedReactionTypes);
-
     for (let j = 0; j < this.sortedReactionTypes.length; j++) {
       let emojiElement = document.getElementById(
         `thread-emoji-${this.sortedReactionTypes[j]}${i}`
@@ -102,13 +97,10 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   toggleReaction(type: string, messageId: string, reactionData: any) {
-    console.log("this.threadId", this.threadId);
-    
     if (this.threadId) {
-      console.log(this.threadId, 'exists');
       this.reactionservice.toggleReaction(type, messageId, reactionData, 'thread', this.threadId);
   } else {
-    console.log('this.threadId does not exists');
+    console.error('this.threadId does not exists');
   }
   }
 

@@ -90,11 +90,12 @@ export class ProfileComponent {
   }
   
 
-  saveUserData() {
+  updateUserData() {
     let formFullname = this.profileForm.controls.fullNameFormControl.value;
     let formEmail = this.profileForm.controls.emailFormControl.value as string;
+    let searchTerms = this.generateSearchTerms(formFullname as string, formEmail as string);
     if (formFullname !== null && formEmail !== null) {
-      this.userservice.saveUserData(formFullname, formEmail);
+      this.userservice.updateUserData(formFullname, formEmail, searchTerms);
       // this.authservice.handleEmailChange(formEmail);
       // console.log("Data sent to authservice", formEmail);
       
@@ -112,5 +113,19 @@ export class ProfileComponent {
     let userData = JSON.parse(localStorage.getItem('activUser') || '{}');
     userData.fullName = 'TEste mich'
     localStorage.setItem('activUser',JSON.stringify(userData))
+  }
+
+  generateSearchTerms(fullName: string, email: string) {
+    const nameLowerCase = fullName.toLowerCase();
+
+    // Split the lowercase sentence into words based on spaces
+    const regex = /\s+/;
+    let array = nameLowerCase.split(regex).filter(word => word.length > 0);
+  
+    // Add the entire lowercase sentence as a separate element
+    array.push(nameLowerCase);
+    array.push(email)
+    
+    return array;
   }
 }

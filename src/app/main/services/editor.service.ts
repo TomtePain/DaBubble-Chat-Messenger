@@ -89,11 +89,9 @@ export class EditorService {
   messageToSearchTerms(sentence: string): string[] {
   // Clean the sentence and remove non-word characters, except spaces
   const messageWordsOnly = sentence.trim().replace(/[^\p{L}\p{N}\s]/gu, "");
-  console.log("messageWordsOnly", messageWordsOnly);
   
   // Convert the cleaned sentence to lowercase
   const messageLowerCase = messageWordsOnly.toLowerCase();
-  console.log("messageLowerCase", messageLowerCase);
 
   // Split the lowercase sentence into words based on spaces
   const regex = /\s+/;
@@ -101,7 +99,6 @@ export class EditorService {
 
   // Add the entire lowercase sentence as a separate element
   array.push(messageLowerCase);
-  console.log("Array", array);
   
   return array;
   }

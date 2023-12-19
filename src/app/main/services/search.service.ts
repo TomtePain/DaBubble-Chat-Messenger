@@ -192,11 +192,11 @@ async isCurrentUserIdInChannel(channelId: string) {
       if (idsArray && Array.isArray(idsArray)) {
         return idsArray.includes(userId);
       } else {
-        console.log('ids field is not an array or does not exist in the document');
+        console.warn('ids field is not an array or does not exist in the document');
         return false;
       }
     } else {
-      console.log('No such document!');
+      console.warn('No such document!');
       return false;
     }
   } catch (error) {

@@ -3,6 +3,7 @@ import { DocumentReference, Firestore, arrayRemove, arrayUnion, doc, updateDoc }
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CrudService } from 'src/app/main/services/crud.service';
+import { EditorService } from 'src/app/main/services/editor.service';
 import { UserService } from 'src/app/main/services/user.service';
 import { environment } from 'src/environments/environment';
 
@@ -21,7 +22,7 @@ export class DialogChannelEditComponent implements OnInit {
   currentUser: string;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router, private editorService: EditorService) {
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescritpion;
     this.channelUser = data.channelUser;
@@ -51,7 +52,8 @@ export class DialogChannelEditComponent implements OnInit {
     const docInstance = doc(this.firestore, environment.channelDb, this.channelId);
     let changes: any = document.getElementById('channel-name');
     let updateData = {
-      name: changes?.innerHTML
+      name: changes?.innerHTML,
+      searchTerms: this.generateSearchTerms(changes.innerHTML, 'name')
     };
     updateDoc(docInstance, updateData)
       .then(() => {
@@ -72,7 +74,8 @@ export class DialogChannelEditComponent implements OnInit {
     const docInstance = doc(this.firestore, environment.channelDb, this.channelId);
     let changes: any = document.getElementById('channel-decription');
     let updateData = {
-      description: changes?.innerHTML
+      description: changes?.innerHTML,
+      searchTerms: this.generateSearchTerms(changes.innerHTML, 'description')
     };
     updateDoc(docInstance, updateData)
       .then(() => {
@@ -92,6 +95,24 @@ export class DialogChannelEditComponent implements OnInit {
     });
   }
 
+  generateSearchTerms(input: string, changeType: string): string[] {
+    let channelDescriptionSearchTerms: any = [];
+    let channelNameSearchTerms: any = [];
+
+    if (changeType === 'name') {
+      channelDescriptionSearchTerms = this.editorService.messageToSearchTerms(this.channelDescription);
+      channelNameSearchTerms = this.editorService.messageToSearchTerms(input);
+    } else if (changeType === 'description') {
+    channelDescriptionSearchTerms = this.editorService.messageToSearchTerms(input);
+    channelNameSearchTerms = this.editorService.messageToSearchTerms(this.channelName);
+    } else {
+    console.error ("No changeType set in update functions");
+   }
+   
+    let searchTerms: string[] = []
+    searchTerms = searchTerms.concat(channelNameSearchTerms, channelDescriptionSearchTerms)    
+    return searchTerms;
+  }
 
 
 }

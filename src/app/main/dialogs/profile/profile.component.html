@@ -90,5 +90,5 @@
 
 <div class="action-bar" mat-dialog-actions *ngIf="profileEdit">
     <button mat-stroked-button color="primary" (click)="cancelEditProfile()">Abbrechen</button>
-    <button mat-raised-button color="primary" [disabled]="!profileForm.valid" (click)="saveUserData()">Speichern</button>
+    <button mat-raised-button color="primary" [disabled]="!profileForm.valid" (click)="updateUserData()">Speichern</button>
 </div>

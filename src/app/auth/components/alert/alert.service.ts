@@ -14,8 +14,7 @@ export class AlertService {
 
 
   setAlert(text: string, showAlert:boolean) {
-    console.log("this.alertTextSubject", this.alertTextSubject);
-    
+    // console.log("this.alertTextSubject", this.alertTextSubject);
     this.alertTextSubject.next(text);
     this.showAlertSubject.next(showAlert);
   }

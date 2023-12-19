@@ -195,10 +195,8 @@ export class EditorComponent implements OnInit {
         };
         this.crud.addItem(newMessage, environment.threadDb + '/' + docRef.id + '/' + 'messages')
         updateDoc(docInstance, updateData)
-        .then(() => {
-          console.log("Data added to", path);
-        }).catch((error) => {
-          console.log('Error creating newThread:', error);
+        .catch((error) => {
+          console.error('Error creating newThread:', error);
       })
       content.value = '';
       //route to new thread id
@@ -405,8 +403,6 @@ export class EditorComponent implements OnInit {
     
 
 openThread(threadId:string) {
-  console.log(this.channelId, "thread", threadId);
-  
   this.router.navigate([this.channelId, "thread", threadId]);
 }
 
