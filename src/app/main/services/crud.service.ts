@@ -10,8 +10,6 @@ export class CrudService {
 
   constructor(private firestore: Firestore) { }
 
-  userCollection = collection(this.firestore, 'kwusers');
-
   addItem(item: any, path: any) {
     const itemRef = collection(this.firestore, path);
     return addDoc(itemRef, item);
@@ -41,4 +39,6 @@ export class CrudService {
     const itemRef = doc(this.firestore, path);
     return setDoc(itemRef, item);
   }
+
+  
 }

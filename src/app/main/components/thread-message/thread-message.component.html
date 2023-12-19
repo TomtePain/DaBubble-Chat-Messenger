@@ -32,9 +32,7 @@
         </div>
 
     <div *ngIf="editActive" class="editor-container">
-      <div class="message-chat-info-content-edit" *ngIf="editActive" id="message-thread-content" contentEditable=plaintext-only>
-          {{ messageData.message }}
-      </div>
+      <div class="message-chat-info-content-edit" *ngIf="editActive" id="message-thread-content" contentEditable=plaintext-only>{{ messageData.message }}</div>
       <div class="icon-area">
           <div class="icon" id="smiley"></div>
           <div class="edit-button-container">

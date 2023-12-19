@@ -20,6 +20,8 @@ export class DialogDeleteMessageComponent implements OnInit {
   existingUser;
   channelId;
   userDBId;
+  threadId;
+  messageType;
 
   storage = getStorage();
 
@@ -31,9 +33,11 @@ export class DialogDeleteMessageComponent implements OnInit {
     public firestore: Firestore,
     public crud: CrudService,
     public tree: TreeService,) {
+    this.messageType = data.messageType;
     this.messageData = data.messageData;
     this.existingUser = data.existingUser;
     this.channelId = data.channelID;
+    this.threadId = data.channelID;
     this.userDBId = data.userID;
   }
 
@@ -47,6 +51,16 @@ export class DialogDeleteMessageComponent implements OnInit {
   }
 
   deleteMessage() {
+    if (this.messageType = 'chat') {
+      this.deleteChatMessage()
+    } else if (this.messageType = 'thread') {
+      this.deleteThreadMessage();
+    } else {
+      console.warn ("Message to delete is neither a chat message nor a thread message")
+    }
+  }
+
+  deleteChatMessage() {
     this.crud.deleteItem(environment.channelDb + '/' + this.channelId + '/' + 'messages' + '/' + this.messageData.id)
       .then(() => {
         if (this.messageData.uploadFile) {
@@ -57,6 +71,18 @@ export class DialogDeleteMessageComponent implements OnInit {
         this.closeDialog();
       });
   }
+
+  deleteThreadMessage() {
+    this.crud.deleteItem(environment.threadDb + '/' + this.threadId + '/' + 'messages' + this.messageData.id)
+    .then(() => {
+      if (this.messageData.uploadFile) {
+        this.deleteUploadedFile();
+      } else {
+        this.showUploadDialog('delete msg');
+      }
+      this.closeDialog();
+    });
+}
 
 
   deleteUploadedFile() {

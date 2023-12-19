@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadComponent } from 'src/app/main/dialogs/upload/upload.component';
 import { CrudService } from 'src/app/main/services/crud.service';
+import { EditorService } from 'src/app/main/services/editor.service';
 import { UserService } from 'src/app/main/services/user.service';
 import { environment } from 'src/environments/environment';
 
@@ -23,7 +24,9 @@ export class DialogChannelEditComponent implements OnInit {
   allChannel:Array<any> = [];
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router,public dialog: MatDialog) {
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogChannelEditComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router, private editorService: EditorService, public dialog: MatDialog) {
+
     this.channelName = data.channelName;
     this.channelDescription = data.channelDescritpion;
     this.channelUser = data.channelUser;
@@ -52,8 +55,10 @@ export class DialogChannelEditComponent implements OnInit {
   editChannelName() {
     const docInstance = doc(this.firestore, environment.channelDb, this.channelId);
     let changes: any = document.getElementById('channel-name');
+    let channelName = changes?.value.trim()
     let updateData = {
-      name: changes?.value.trim()
+      name: channelName
+      searchTerms: this.generateSearchTerms(channelName, 'name')
     };
     this.channelName = changes.value.trim();
     if(!this.checkChannelNameExist()){
@@ -77,7 +82,8 @@ export class DialogChannelEditComponent implements OnInit {
     const docInstance = doc(this.firestore, environment.channelDb, this.channelId);
     let changes: any = document.getElementById('channel-decription');
     let updateData = {
-      description: changes?.value
+      description: changes?.value,
+      searchTerms: this.generateSearchTerms(changes.value, 'description')
     };
     updateDoc(docInstance, updateData)
       .then(() => {
@@ -96,6 +102,7 @@ export class DialogChannelEditComponent implements OnInit {
       this.router.navigateByUrl('/')
     });
   }
+
 
   showUploadDialog(msg: string) {
     const dialogRef = this.dialog.open(UploadComponent, {
@@ -116,6 +123,24 @@ export class DialogChannelEditComponent implements OnInit {
     this.crud.getItem(environment.channelDb).subscribe((result) => {
       this.allChannel = result;
     })
+
+  generateSearchTerms(input: string, changeType: string): string[] {
+    let channelDescriptionSearchTerms: any = [];
+    let channelNameSearchTerms: any = [];
+
+    if (changeType === 'name') {
+      channelDescriptionSearchTerms = this.editorService.messageToSearchTerms(this.channelDescription);
+      channelNameSearchTerms = this.editorService.messageToSearchTerms(input);
+    } else if (changeType === 'description') {
+    channelDescriptionSearchTerms = this.editorService.messageToSearchTerms(input);
+    channelNameSearchTerms = this.editorService.messageToSearchTerms(this.channelName);
+    } else {
+    console.error ("No changeType set in update functions");
+   }
+   
+    let searchTerms: string[] = []
+    searchTerms = searchTerms.concat(channelNameSearchTerms, channelDescriptionSearchTerms)    
+    return searchTerms;
   }
 
 

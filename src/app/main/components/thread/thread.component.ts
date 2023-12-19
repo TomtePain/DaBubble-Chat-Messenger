@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { collection } from 'firebase/firestore';
 import { CrudService } from '../../services/crud.service';

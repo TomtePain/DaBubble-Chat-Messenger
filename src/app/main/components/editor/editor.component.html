@@ -2,6 +2,7 @@
 
 <div class="editor">
 
+
   <!-- CONTENT FOR THE USE OF @-SIGN FUNCTION!!! -->
 
   <!-- <div class="markt-users" *ngIf="searchMarktUsers">
@@ -18,9 +19,13 @@
 
    <!-- CONTENT FOR THE USE OF @-SIGN FUNCTION!!! #######   END   ######### -->
 
+
+  <!-- Text input starts here -->
   <textarea type="text" placeholder="Nachricht an..." id="text" *ngIf="isChatArea" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageKeyBoard($event)"></textarea>
   <textarea type="text" placeholder="Antworten..." id="thread-text" *ngIf="(isThreadArea && !isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageThreadKeyBoard($event)"></textarea>
   <textarea type="text" placeholder="Antworten und Thread erstellen..." id="new-thread-text" *ngIf="(isThreadArea && isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewThreadKeyBoard($event)"></textarea>
+
+   <!-- File Upload starts here -->
   <input type="file" #fileInput (change)="onFileSelect($event)" accept=".pdf, image/*" style="display: none;" />
   <div class="uploaded-file-container" *ngIf="uploadedData">
     <img *ngIf="checkForPDF() != 'pdf'" src="{{ editorService.fileUrl }}" alt="" style="width: 100px; border-radius: 10px;">
@@ -28,6 +33,7 @@
     <span>{{ uploadedDataName }}</span>
   </div>
 
+ <!-- Bottom icon area starts here -->
   <div class="icon-area">
     <div>
        <img class="icon" (click)="fileInput.click()" src="/assets/images/plus-icon.png" alt="" />
@@ -43,5 +49,7 @@
   </div>
   
 </div>
+
+<!-- Emoji picker starts here -->
 <emoji-mart class="emoji-mart" *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"
   [darkMode]="false"></emoji-mart>

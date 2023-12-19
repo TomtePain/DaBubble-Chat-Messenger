@@ -1,14 +1,13 @@
-import { group } from '@angular/animations';
 import { Component } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { matchpassword } from './matchpassword.validator';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { filter } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-setnewpasswd',
@@ -17,42 +16,56 @@ import { filter, map } from 'rxjs';
 })
 export class SetnewpasswdComponent {
   restpwdForm: FormGroup;
-  isPwdReset: boolean = false;
-  isEmailVerify: boolean = false;
+  // Get the action to complete.
+  mode!: string;
+  // Get the one-time code from the query parameter.
+  actionCode!: string;
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private auth: AuthService
   ) {
     this.activatedRoute.queryParams
       .pipe(filter((params) => params['mode']))
       .subscribe((params) => {
-        if (params['mode'] === 'resetPassword') {
-          this.isPwdReset = true;
-          this.isEmailVerify = false;
-        } else if (params['mode'] === 'verifyEmail') {
-          this.isPwdReset = false;
-          this.isEmailVerify = true;
-        }
+        this.mode = params['mode'];
+        this.actionCode = params['oobCode'];
+        // console.log("mode",this.mode);
+        // console.log("actionCode",this.actionCode);
+        // console.log("API key", environment.firebase.apiKey);
       });
 
     this.restpwdForm = new FormGroup(
       {
-        password: new FormControl('', [Validators.required]),
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(6),
+        ]),
         confirmPassword: new FormControl(''),
       },
       { validators: matchpassword }
     );
   }
 
+  ngOnInit() {
+    if (this.mode === 'verifyEmail') {
+      this.verifyEmail();
+    }
+  }
+
   resetPassword() {
-    //TODO update password in firebase
-    console.log('Passwort geändert');
+    const passwordControl = this.restpwdForm.get('password');
+    if (passwordControl) {
+      const newPassword = passwordControl.value;
+      this.auth.handleResetPasswort(this.actionCode, newPassword);
+    } else {
+      console.error('Password control is not found in the form');
+    }
   }
 
   verifyEmail() {
     //TODO check if something needs to be done to verify email in firebase or if click on email is already doing the required signal.
-    console.log('Email verifiziert');
+    this.auth.handleVerifyEmail(this.actionCode)
+    console.log('Email wird verifiziert');
   }
 }

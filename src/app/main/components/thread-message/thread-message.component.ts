@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { DocumentReference, Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { CrudService } from '../../services/crud.service';
 import { environment } from 'src/environments/environment';
 import { ReactionService } from '../../services/reaction.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { UserService } from '../../services/user.service';
+import { EditorService } from '../../services/editor.service';
+import { DialogDeleteMessageComponent } from '../chat-message/dialog-delete-message/dialog-delete-message.component';
 
 @Component({
   selector: 'app-thread-message',
@@ -25,7 +27,7 @@ export class ThreadMessageComponent implements OnInit{
   allUserDataInfo:Array<any> = [];
   existingUser:any;
 
-  constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService) {}
+  constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService, public editorService: EditorService) {}
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -40,7 +42,6 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   openEditMessage(message:any, i:any) {
-    console.log('clicked edit message', message )
     this.editActive = true;
     this.bubbleEdit(i);
   }
@@ -50,19 +51,32 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   saveEditMessage(message: any) {
-    const docInstance = doc(this.firestore, environment.messagesDb, message.id)
+    let path = environment.threadDb + '/' + this.threadId + '/' + 'messages';
+    const docInstance = doc(this.firestore, path, message.id);
+    const isEmptyOrSpaces = (str: string) => /^[\s]*$/.test(str);
     let changes: any = document.getElementById('message-thread-content');
+    
     let updateData = {
       message: changes.innerHTML,
-      updated: true
+      updated: true,
+      messageLowercase: this.editorService.messageToLowercase(changes.innerHTML),
+      searchTerms: this.editorService.messageToSearchTerms(changes.innerHTML) 
+    };
+
+    
+
+    if(isEmptyOrSpaces(changes.innerHTML) || (changes.value && isEmptyOrSpaces(changes.value))){
+      this.showDeleteMessageDialog();
+    } else {
+      this.updateDataInDb(docInstance, updateData);
     }
-    updateDoc(docInstance, updateData)
-    this.closeEditMessage();
+  }
+
+  updateDataInDb(docInstance: DocumentReference, updatedData: any) {
+    updateDoc(docInstance, updatedData);
   }
 
   showMoreEmojis(i: any) {
-    console.log(this.sortedReactionTypes);
-
     for (let j = 0; j < this.sortedReactionTypes.length; j++) {
       let emojiElement = document.getElementById(
         `thread-emoji-${this.sortedReactionTypes[j]}${i}`
@@ -83,13 +97,10 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   toggleReaction(type: string, messageId: string, reactionData: any) {
-    console.log("this.threadId", this.threadId);
-    
     if (this.threadId) {
-      console.log(this.threadId, 'exists');
       this.reactionservice.toggleReaction(type, messageId, reactionData, 'thread', this.threadId);
   } else {
-    console.log('this.threadId does not exists');
+    console.error('this.threadId does not exists');
   }
   }
 
@@ -105,5 +116,17 @@ export class ThreadMessageComponent implements OnInit{
         userInfo: this.allUserDataInfo
       }
     });
+  }
+
+  showDeleteMessageDialog() {
+    this.dialog.open(DialogDeleteMessageComponent, {
+      data: {
+        messageType: 'thread',
+        messageData: this.messageData,
+        existingUser : this.existingUser,
+        channelID: this.threadId,
+        userID: this.userservice.userDBId
+      }
+    })
   }
 }

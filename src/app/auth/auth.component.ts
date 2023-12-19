@@ -68,10 +68,15 @@ export class AuthComponent implements OnInit {
       this.router.navigate(['/auth/login']); // Weiterleitung zu /auth/login
     }
   }
+  
   startAnimation() {
+    const currentPath = this.router.url;
+    if (currentPath !== '/auth/login') {
+      this.isShown = false;
+  } else {
     setTimeout(() => {
       this.isShown = false;
     }, 500)
   }
-  
+}
 }
