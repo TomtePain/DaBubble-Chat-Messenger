@@ -22,7 +22,7 @@
             <h2 class="title">Channel-Name</h2>
             <button class="edit-btn" (click)="editChannelName()">Speichern</button>
         </div>
-        <div class="channel-name information-text edit-name mt-20"><img src="/assets/images/tag.png" alt=""><span class="editable" contentEditable=plaintext-only id="channel-name">{{ channelName }}</span></div>
+        <div class="channel-name information-text edit-name mt-20"><img src="/assets/images/tag.png" alt=""><input type="text" class="editable" id="channel-name" value="{{ channelName }}"></div>
     </div>
 
 <!-- VIEW WITHOUT EDIT ACTIVE -->
@@ -49,7 +49,7 @@
             <h2 class="title">Beschreibung</h2>
             <button class="edit-btn" (click)="editChannelDescription()">Speichern</button>
         </div>
-        <span class="information-text edit-name" contentEditable=plaintext-only id="channel-decription">{{ channelDescription }}</span>
+        <input type="text" class="information-text edit-name" id="channel-decription" value="{{ channelDescription }}">
 
         <div class="pseudoline-edit"></div>
 

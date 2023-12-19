@@ -36,7 +36,7 @@ export class DialogAddChannelComponent {
 
   openDialog() {
     if (this.channelForm.valid) {
-      this.channelName = this.channelForm.get('channelName')?.value;
+      this.channelName = this.channelForm.get('channelName')?.value.trim();
       this.description = this.channelForm.get('description')?.value;
     }
     if(!this.checkChannelExist()){
