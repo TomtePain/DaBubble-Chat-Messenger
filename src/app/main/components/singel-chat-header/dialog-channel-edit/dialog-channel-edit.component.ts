@@ -57,7 +57,7 @@ export class DialogChannelEditComponent implements OnInit {
     let changes: any = document.getElementById('channel-name');
     let channelName = changes?.value.trim()
     let updateData = {
-      name: channelName
+      name: channelName,
       searchTerms: this.generateSearchTerms(channelName, 'name')
     };
     this.channelName = changes.value.trim();
@@ -123,6 +123,7 @@ export class DialogChannelEditComponent implements OnInit {
     this.crud.getItem(environment.channelDb).subscribe((result) => {
       this.allChannel = result;
     })
+  }
 
   generateSearchTerms(input: string, changeType: string): string[] {
     let channelDescriptionSearchTerms: any = [];
@@ -142,6 +143,4 @@ export class DialogChannelEditComponent implements OnInit {
     searchTerms = searchTerms.concat(channelNameSearchTerms, channelDescriptionSearchTerms)    
     return searchTerms;
   }
-
-
 }
