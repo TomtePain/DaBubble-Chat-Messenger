@@ -141,6 +141,7 @@ export class TreeService {
     this.crud.getItem(environment.channelDb).subscribe((channel) => {
       let ownMessage = channel.find((exist: { ids: string | null; }) => exist.ids == this.currentUserDbId)
       this.router.navigate(['/', ownMessage.id]);
+      // this.currentSelectedChannel = SUCHE NACH this.currentUserDbId in Users Channel und return doc.id;
     })
   }
 
@@ -152,7 +153,7 @@ export class TreeService {
     }
     if (selectedNode.type == 'message') {
       const directMessagePartnerUserId = selectedNode.ids.find((id:string) => id !== this.currentUserDbId);
-      this.currentSelectedChannel = directMessagePartnerUserId;
+      // this.currentSelectedChannel = SUCHE NACH directMessagePartnerUserId in Users Channel und return doc.id;;
       this.router.navigate(['/', selectedNode.id]);
     }
     else if (selectedNode.type == 'channel') {
@@ -162,12 +163,4 @@ export class TreeService {
     this.isSearchActive = false;
     this.isNewMessage = false;
   }
-
-  focusSelected(node: any) {
-    let userDmSel = document.getElementById(`${node}`);
-    userDmSel?.classList.toggle('selected');
-    console.log('this is the id of :', userDmSel)
-  }
-
-
 }
