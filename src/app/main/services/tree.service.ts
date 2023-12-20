@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection, doc, DocumentData, Firestore, getDoc, getDocs, onSnapshot, query, where } from '@angular/fire/firestore';
+import { collection, Firestore, getDocs, query, where } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DialogAddChannelComponent } from '../components/workspace/dialog-add-channel/dialog-add-channel.component';

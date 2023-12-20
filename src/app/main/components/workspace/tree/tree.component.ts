@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { CrudService } from 'src/app/main/services/crud.service';
-import { ChannelNode, ExampleFlatNode, MessageNode } from './tree';
+import { ChannelNode, ExampleFlatNode } from './tree';
 import { TreeService } from 'src/app/main/services/tree.service';
 import { Firestore, collection, query, where, onSnapshot, getDocs } from '@angular/fire/firestore';
-import { catchError } from 'rxjs';
 import { UserService } from 'src/app/main/services/user.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { RefreshService } from 'src/app/main/services/refresh.service';
 
@@ -47,8 +46,7 @@ export class TreeComponent implements OnInit {
   messagesSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
 
-  constructor(private router: Router, public crud: CrudService, public tree: TreeService, private firestore: Firestore, private userservice: UserService, private refreshService: RefreshService) {
-
+  constructor(private router: Router, public activatedRoute: ActivatedRoute, public crud: CrudService, public tree: TreeService, private firestore: Firestore, private userservice: UserService, private refreshService: RefreshService) {
   }
   
   dbMessages: any[] = [];
@@ -59,7 +57,7 @@ export class TreeComponent implements OnInit {
   dmUserId = '';
   dmIds = [];
   collection2 = environment.userDb;
-
+  currentRouteId: string | null = null; // Initialized to null
   channelRef = query(
     collection(this.firestore, environment.channelDb),
     where('type', 'in', ['channel', 'message']),
@@ -68,19 +66,58 @@ export class TreeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.refreshService.refreshObservable.subscribe(() => {
-      this.refreshData();
-    });
-    this.getChannels();
+
+    
+    
+    // this.activatedRoute.params.subscribe(params => {
+      //   const routeId = params['yourRouteParameterName'];
+      //   if (routeId) {
+        //     this.currentRouteId = routeId;
+        //     console.log("Route ID from params subscription:", this.currentRouteId);
+        //   }
+        // });
+        
+        this.refreshService.refreshObservable.subscribe(() => {
+          this.refreshData();
+        });
+        this.getChannels();
+        const urlSegments = this.router.url.split('/');
+        // Assuming the ID is the last segment
+        this.currentRouteId = urlSegments[urlSegments.length - 1];
+        console.log("Current Route ID from URL:", this.currentRouteId);
+        this.tree.currentSelectedChannel = this.currentRouteId;
+        // console.log("node.id", node.id);
+        
+
+    // this.setCurrentRouteId();
+    // console.log("Initial Route ID:", this.currentRouteId);
+  
   }
 
   refreshData() {
     this.getChannels();
   }
 
+  setCurrentRouteId(): void {
+    this.activatedRoute.params.subscribe(params => {
+      const routeId = params['yourRouteParameterName']; // Replace with your actual route parameter name
+      if (routeId) {
+        this.currentRouteId = routeId;
+        this.tree.currentSelectedChannel = routeId;
+        // console.log("Updated Route ID:", this.currentRouteId);
+      }
+    });
+  }
+
+  isSelected(nodeId: string): boolean {
+    // console.log("nodeId", nodeId, "this.currentRouteId", this.currentRouteId);
+    // console.log("this.tree.currentSelectedChannel === nodeId || this.currentRouteId === nodeId;",  this.tree.currentSelectedChannel === nodeId || this.currentRouteId === nodeId);
+    
+    return this.tree.currentSelectedChannel === nodeId;;
+  }
 
   getChannels() {
-    const unsubscribe = onSnapshot(this.channelRef, (querySnapshot) => {
+    onSnapshot(this.channelRef, (querySnapshot) => {
       const result = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {

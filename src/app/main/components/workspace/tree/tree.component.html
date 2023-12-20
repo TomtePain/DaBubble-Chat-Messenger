@@ -1,15 +1,19 @@
+
 <div>
+  <!-- Container that includes for Channels-->
   <mat-tree  [dataSource]="channelSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node">
-      <div class="channel" [class.selected]="this.tree.currentSelectedChannel === node.id"
-           (click)="this.tree.handleNodeClick(node)">
+      <div class="channel" (click)="this.tree.handleNodeClick(node)" [class.selected]="isSelected(node.id)">
         <div class="img-container">
-          <img [src]="this.tree.currentSelectedChannel === node.id ? 'assets/workspace-images/tag-clicked.svg' : node.img" class="tag-container">
+          <img [src]="isSelected(node.id) ? 'assets/workspace-images/tag-clicked.svg' : node.img" class="tag-container">
         </div>
-        <p>{{node.name}}</p>
+        <p>{{node.name}} 
+          - {{node.id}}
+        </p>
       </div>
     </mat-tree-node>
   
+      <!-- "Header" are for Channels-->
     <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
       <div class="space-between ">
         <button  class="channel-interaction mb-20" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="this.tree.changeArrow('arrow-1',true)">
@@ -30,18 +34,21 @@
     </mat-tree-node>
   </mat-tree>
 
+  <!-- Container that includes for the direct messages-->
   <mat-tree [dataSource]="messagesSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node">
-      <div class="dm-container"  (click)="this.tree.routeToDmChannel(node)" id="{{node.id}}" [class.selected]="this.tree.currentSelectedChannel === node.id"> 
+      <div class="dm-container" (click)="this.tree.routeToDmChannel(node)" id="{{node.id}}" [class.selected]="isSelected(node.id)"> 
         <div class="container-img">
           <img class="profile-img-container" src="{{node.img}}" alt="">
           <img class="online-state" [src]="node.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">
         </div>
-        <p>{{node.name}} <span *ngIf="node.id == uid">(Du)</span></p> 
+        <p>{{node.name}}
+           - {{node.id}} 
+           <span *ngIf="node.id == uid">(Du)</span></p> 
       </div>
     </mat-tree-node>
 
-
+    <!-- "Header" are for Direct messages-->
     <mat-tree-node  *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
       <button class="channel-interaction mb-20 mt-20" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="this.tree.changeArrow('arrow-2',false)">
         <div class="arrow-container">

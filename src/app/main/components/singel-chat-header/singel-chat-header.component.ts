@@ -1,15 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Firestore, collection, query, where, onSnapshot } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { CrudService } from '../../services/crud.service';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { TreeService } from '../../services/tree.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogChannelEditComponent } from './dialog-channel-edit/dialog-channel-edit.component';
 import { DialogShowChannelUserComponent } from './dialog-show-channel-user/dialog-show-channel-user.component';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
-import { AddPeopleToChannelComponent } from '../workspace/add-people-to-channel/add-people-to-channel.component';
 import { DialogAddUserComponent } from './dialog-add-user/dialog-add-user.component';
 import { RefreshService } from '../../services/refresh.service';
 
