@@ -52,7 +52,7 @@ export class TreeComponent implements OnInit {
   dbMessages: any[] = [];
   dbChannels: { name: string, type: string, id: string, img: string, ids: any[] }[] = [];
   user = [];
-  uid = this.userservice.userDBId;
+  currentUserDbId = this.userservice.userDBId;
   userDmData: any = [];
   dmUserId = '';
   dmIds = [];
@@ -61,7 +61,7 @@ export class TreeComponent implements OnInit {
   channelRef = query(
     collection(this.firestore, environment.channelDb),
     where('type', 'in', ['channel', 'message']),
-    where('ids', 'array-contains', this.uid)
+    where('ids', 'array-contains', this.currentUserDbId)
   );
 
 
@@ -69,11 +69,13 @@ export class TreeComponent implements OnInit {
   this.refreshService.refreshObservable.subscribe(() => {
     this.refreshData();
   });
+
   this.getChannels();
+
   const urlSegments = this.router.url.split('/');
   // Assuming the ID is the last segment
   this.currentRouteId = urlSegments[urlSegments.length - 1];
-  console.log("Current Route ID from URL:", this.currentRouteId);
+
   this.tree.currentSelectedChannel = this.currentRouteId;
 
 
@@ -100,7 +102,7 @@ export class TreeComponent implements OnInit {
   getChannels() {
     onSnapshot(this.channelRef, (querySnapshot) => {
       const result = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
+        const data = doc.data();        
         return {
           id: doc.id,
           type: data['type'],
@@ -109,7 +111,7 @@ export class TreeComponent implements OnInit {
           ids: data['ids'],
           own: data['own']
         };
-      });
+      });   
       this.filterType(result);
     });
   }
@@ -118,13 +120,11 @@ export class TreeComponent implements OnInit {
   filterType(result: any) {
     const channels = result.filter((item: any) => item.type === 'channel');
     const messages = result.filter((item: any) => item.type === 'message');
+
     this.findUsersFromMessageId(messages);
     this.tree.userChannels = channels;
     this.dbChannels = channels;
-    this.tree.allChannels = channels;
-    this.dmIds = messages;
-    console.log("this.dmIds", this.dmIds);
-    
+    this.tree.allChannels = channels;    
     this.updateChannels();
     this.treeControl.expandAll();
   }
@@ -133,10 +133,10 @@ export class TreeComponent implements OnInit {
   findUsersFromMessageId(messages: any) {
     messages.forEach((message: any) => {
       if (message.ids && Array.isArray(message.ids)) {
-        const idsNotMatchingUid = message.ids.filter((id: any) => id !== this.uid);
+        const idsNotMatchingUid = message.ids.filter((id: any) => id !== this.currentUserDbId);
         this.userDmData.push(...idsNotMatchingUid);
         // //////////////////////////////////////////////////// ADDED 
-        let idIsUID = message.ids.filter((id: any) => id == this.uid && message.own && message.ids.length == 1);
+        let idIsUID = message.ids.filter((id: any) => id == this.currentUserDbId && message.own && message.ids.length == 1);
         this.userDmData.push(...idIsUID);
         // //////////////////////////////////////////////////// ADDED 
       }
@@ -151,7 +151,7 @@ export class TreeComponent implements OnInit {
     const querySnapshot = await getDocs(userRef); // Use getDocs to fetch data once
 
     const filteredDocs = querySnapshot.docs.filter((doc) => {
-      const docId = doc.id;
+      const docId = doc.id;     
       return this.userDmData.includes(docId);
     });
     this.dbMessages = filteredDocs.map((doc) => {
