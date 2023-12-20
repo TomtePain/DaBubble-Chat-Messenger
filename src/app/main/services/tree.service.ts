@@ -17,11 +17,11 @@ export class TreeService {
   clickedBottom: boolean = false;
   userChannels: any = [];
   userMessages: any = [];
-  uid = this.userservice.userDBId;
+  currentUserDbId = this.userservice.userDBId;
   currentSelectedChannel: string | null = null;
   search = false;
   newMessage = false;
-  own:boolean = false;
+  isOwnChannel:boolean = false;
   allChannels: Array<any> = [];
 
   changeArrow(id: string, isTopArrow: boolean) {
@@ -60,52 +60,52 @@ export class TreeService {
   }
 
 
-  async routeToDmChannel(node: any) {
-    if (node.id === this.uid) {
+  async routeToDmChannel(selectedNode: any) {
+    if (selectedNode.id === this.currentUserDbId) {
       this.routeToOwnDM();
-      this.currentSelectedChannel = node.id;
+      this.currentSelectedChannel = selectedNode.id;
       return;
     }else {
-      this.own = false;
+      this.isOwnChannel = false;
     }
 
-    const dmChannelsRef = collection(this.firestore, environment.channelDb);
-    const querySnapshot1 = await getDocs(
+    const channelsRef = collection(this.firestore, environment.channelDb);
+    const selectedNodeChannelsSnapshot = await getDocs(
       query(
-        dmChannelsRef,
-        where('ids', 'array-contains', node.id),
+        channelsRef,
+        where('ids', 'array-contains', selectedNode.id),
         where('type', '==', 'message')
       )
     );
   
-    const querySnapshot2 = await getDocs(
+    const currentUserChannelsSnapshot = await getDocs(
       query(
-        dmChannelsRef,
-        where('ids', 'array-contains', this.uid),
+        channelsRef,
+        where('ids', 'array-contains', this.currentUserDbId),
         where('type', '==', 'message')
       )
     );
   
-    const matchingDocs1:any = [];
-    const matchingDocs2:any = [];
+    const selectedNodeDocuments:any = [];
+    const currentUserDocuments:any = [];
   
-    querySnapshot1.forEach((doc) => {
-      matchingDocs1.push({ id: doc.id, ... doc.data() });
+    selectedNodeChannelsSnapshot.forEach((doc) => {
+      selectedNodeDocuments.push({ id: doc.id, ... doc.data() });
     });
   
-    querySnapshot2.forEach((doc) => {
-      matchingDocs2.push({ id: doc.id, ... doc.data() });
+    currentUserChannelsSnapshot.forEach((doc) => {
+      currentUserDocuments.push({ id: doc.id, ... doc.data() });
     });
   
     // Find the intersection of the two sets of documents
-    const matchingDocs = matchingDocs1.filter((doc1:any) =>
-      matchingDocs2.some((doc2:any) => doc1.id === doc2.id)
+    const commonChannels = selectedNodeDocuments.filter((doc1:any) =>
+    currentUserDocuments.some((doc2:any) => doc1.id === doc2.id)
     );
-    if (matchingDocs.length > 0) {
-      const fullDocument = matchingDocs[0]; // Assuming you only want the first matching document
+    if (commonChannels.length > 0) {
+      const fullDocument = commonChannels[0]; // Assuming you only want the first matching document
       this.handleNodeClick(fullDocument);
     } else {
-      this.createNewDm(node.id);
+      this.createNewDm(selectedNode.id);
     }
   }
   
@@ -114,7 +114,7 @@ export class TreeService {
     const DM = {
       ids: [id, this.userservice.userDBId],
       type: 'message',
-      own: this.own
+      own: this.isOwnChannel
     };
     this.crud.addItem(DM, environment.channelDb).then((docRef) => {
       this.router.navigate(['/', docRef.id]);
@@ -138,7 +138,7 @@ export class TreeService {
 
   routeToOwnDM() {
     this.crud.getItem(environment.channelDb).subscribe((channel) => {
-      let ownMessage = channel.find((exist: { ids: string | null; }) => exist.ids == this.uid)
+      let ownMessage = channel.find((exist: { ids: string | null; }) => exist.ids == this.currentUserDbId)
       this.router.navigate(['/', ownMessage.id]);
     })
   }
@@ -150,7 +150,7 @@ export class TreeService {
       this.openDialog();
     }
     if (node.type == 'message') {
-      const otherUserId = node.ids.find((id:string) => id !== this.uid);
+      const otherUserId = node.ids.find((id:string) => id !== this.currentUserDbId);
       this.currentSelectedChannel = otherUserId;
       this.router.navigate(['/', node.id]);
     }
