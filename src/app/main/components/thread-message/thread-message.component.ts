@@ -26,6 +26,7 @@ export class ThreadMessageComponent implements OnInit{
   editActive:boolean = false;
   allUserDataInfo:Array<any> = [];
   existingUser:any;
+  showEmojiPicker = false;
 
   constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService, public editorService: EditorService) {}
 
@@ -57,15 +58,15 @@ export class ThreadMessageComponent implements OnInit{
     let changes: any = document.getElementById('message-thread-content');
     
     let updateData = {
-      message: changes.innerHTML,
+      message: changes.value,
       updated: true,
-      messageLowercase: this.editorService.messageToLowercase(changes.innerHTML),
-      searchTerms: this.editorService.messageToSearchTerms(changes.innerHTML) 
+      messageLowercase: this.editorService.messageToLowercase(changes.value),
+      searchTerms: this.editorService.messageToSearchTerms(changes.value) 
     };
 
     
 
-    if(isEmptyOrSpaces(changes.innerHTML) || (changes.value && isEmptyOrSpaces(changes.value))){
+    if(isEmptyOrSpaces(changes.value) || (changes.value && isEmptyOrSpaces(changes.value))){
       this.showDeleteMessageDialog();
     } else {
       this.updateDataInDb(docInstance, updateData);
@@ -129,4 +130,22 @@ export class ThreadMessageComponent implements OnInit{
       }
     })
   }
+
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    let input:any = document.getElementById('message-thread-content');
+    const text = `${input.value}${event.emoji.native}`;
+    input.value = text;
+    this.showEmojiPicker = false;
+  }
+
+  openHidedDeleteBtn(i:any) {
+    let open = document.getElementById(`openHidedDeleteBtnThread${i}`);
+    open?.classList.toggle('d-none');
+  }
+
+
 }

@@ -44,6 +44,9 @@ export class DialogDeleteMessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkForPDF();
+    console.log('messagetype:', this.messageType);
+    console.log('threadid:', this.threadId);
+    console.log('this.messageData.id:', this.messageData.id)
   }
 
   closeDialog() {
@@ -51,9 +54,9 @@ export class DialogDeleteMessageComponent implements OnInit {
   }
 
   deleteMessage() {
-    if (this.messageType = 'chat') {
+    if (this.messageType == 'chat') {
       this.deleteChatMessage()
-    } else if (this.messageType = 'thread') {
+    } else if (this.messageType == 'thread') {
       this.deleteThreadMessage();
     } else {
       console.warn ("Message to delete is neither a chat message nor a thread message")
@@ -73,7 +76,7 @@ export class DialogDeleteMessageComponent implements OnInit {
   }
 
   deleteThreadMessage() {
-    this.crud.deleteItem(environment.threadDb + '/' + this.threadId + '/' + 'messages' + this.messageData.id)
+    this.crud.deleteItem(environment.threadDb + '/' + this.threadId + '/' + 'messages' + '/' + this.messageData.id)
     .then(() => {
       if (this.messageData.uploadFile) {
         this.deleteUploadedFile();

@@ -32,9 +32,14 @@
         </div>
 
     <div *ngIf="editActive" class="editor-container">
-      <div class="message-chat-info-content-edit" *ngIf="editActive" id="message-thread-content" contentEditable=plaintext-only>{{ messageData.message }}</div>
+
+      <div class="options-for-delete" (click)="openHidedDeleteBtn(messageDataIndex)">
+        <button class="btn-prime red-btn d-none" id="openHidedDeleteBtnThread{{messageDataIndex}}" (click)="showDeleteMessageDialog()">Nachricht löschen</button>
+      </div>
+
+      <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="message-thread-content" value="{{ messageData.message }}">
       <div class="icon-area">
-          <div class="icon" id="smiley"></div>
+          <div class="icon" id="smiley" (click)="toggleEmojiPicker()"></div>
           <div class="edit-button-container">
               <button class="btn-secondary" (click)="closeEditMessage()">Abbrechen</button>
               <button class="btn-prime" (click)="saveEditMessage(messageData)">Speichern</button>
@@ -61,3 +66,6 @@
 </div>
 </div>
 </div>
+
+<emoji-mart class="emoji-mart" *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"
+  [darkMode]="false"></emoji-mart>

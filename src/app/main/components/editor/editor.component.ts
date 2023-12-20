@@ -148,6 +148,7 @@ export class EditorComponent implements OnInit {
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
       content.value = '';
+      this.message = '';
       setTimeout(() => {
         this.scrollToBottom.emit()
       }, 500)

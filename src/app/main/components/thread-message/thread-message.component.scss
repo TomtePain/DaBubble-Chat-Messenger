@@ -440,6 +440,36 @@
   }
 }
 
+.options-for-delete {
+    background-image: url(http://localhost:4200/assets/images/icons/options_vert.png);
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: -16px;
+    align-self: flex-end;
+    cursor: pointer;
+    border-radius: 100%;
+    position: relative;
+
+    &:hover {
+        background-color: #ECEEFE;
+        background-image: url(/assets/images/icons/options_vert_purple.png);
+    }
+}
+
+.red-btn {
+    background: red;
+    position: absolute;
+    right: 50px;
+    width: max-content;
+    animation: slideOutBtn 125ms ease-in-out;
+
+    &:hover {
+        box-shadow: 1px 1px 1px 1px lightgrey;
+    }
+}
+
 @keyframes slideIn {
   from {
       transform: translateX(-20px);
@@ -448,6 +478,15 @@
   to {
       transform: translateX(0px);
   }
+}
+
+@keyframes slideOutBtn {
+    from {
+        transform: translateX(20px);
+    }
+    to {
+        transform: translateX(0px);
+    }
 }
 
 
