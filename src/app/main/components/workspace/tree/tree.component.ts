@@ -66,32 +66,17 @@ export class TreeComponent implements OnInit {
 
 
   ngOnInit(): void {
+  this.refreshService.refreshObservable.subscribe(() => {
+    this.refreshData();
+  });
+  this.getChannels();
+  const urlSegments = this.router.url.split('/');
+  // Assuming the ID is the last segment
+  this.currentRouteId = urlSegments[urlSegments.length - 1];
+  console.log("Current Route ID from URL:", this.currentRouteId);
+  this.tree.currentSelectedChannel = this.currentRouteId;
 
-    
-    
-    // this.activatedRoute.params.subscribe(params => {
-      //   const routeId = params['yourRouteParameterName'];
-      //   if (routeId) {
-        //     this.currentRouteId = routeId;
-        //     console.log("Route ID from params subscription:", this.currentRouteId);
-        //   }
-        // });
-        
-        this.refreshService.refreshObservable.subscribe(() => {
-          this.refreshData();
-        });
-        this.getChannels();
-        const urlSegments = this.router.url.split('/');
-        // Assuming the ID is the last segment
-        this.currentRouteId = urlSegments[urlSegments.length - 1];
-        console.log("Current Route ID from URL:", this.currentRouteId);
-        this.tree.currentSelectedChannel = this.currentRouteId;
-        // console.log("node.id", node.id);
-        
 
-    // this.setCurrentRouteId();
-    // console.log("Initial Route ID:", this.currentRouteId);
-  
   }
 
   refreshData() {
@@ -104,15 +89,11 @@ export class TreeComponent implements OnInit {
       if (routeId) {
         this.currentRouteId = routeId;
         this.tree.currentSelectedChannel = routeId;
-        // console.log("Updated Route ID:", this.currentRouteId);
       }
     });
   }
 
-  isSelected(nodeId: string): boolean {
-    // console.log("nodeId", nodeId, "this.currentRouteId", this.currentRouteId);
-    // console.log("this.tree.currentSelectedChannel === nodeId || this.currentRouteId === nodeId;",  this.tree.currentSelectedChannel === nodeId || this.currentRouteId === nodeId);
-    
+  isSelected(nodeId: string): boolean {   
     return this.tree.currentSelectedChannel === nodeId;;
   }
 
@@ -142,6 +123,8 @@ export class TreeComponent implements OnInit {
     this.dbChannels = channels;
     this.tree.allChannels = channels;
     this.dmIds = messages;
+    console.log("this.dmIds", this.dmIds);
+    
     this.updateChannels();
     this.treeControl.expandAll();
   }
@@ -171,7 +154,6 @@ export class TreeComponent implements OnInit {
       const docId = doc.id;
       return this.userDmData.includes(docId);
     });
-
     this.dbMessages = filteredDocs.map((doc) => {
       const data = doc.data();
       return {
@@ -187,7 +169,7 @@ export class TreeComponent implements OnInit {
   }
 
 
-  updateMessages() {
+  updateMessages() {  
     const updatedMessages = [
       {
         name: 'Direktnachrichten',

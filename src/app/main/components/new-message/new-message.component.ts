@@ -26,11 +26,11 @@ export class NewMessageComponent {
     const searchTerm = event.target.value;
     this.channelsUser = this.tree.userChannels;
     if (searchTerm !== '') {
-      this.tree.search = true;
+      this.tree.isSearchActive = true;
       this.channelsUser = this.filterDataByName(this.channelsUser,searchTerm);
       this.messageUser = this.filterDataByName2(this.messageUser,searchTerm);
     } else {
-     this.tree.search = false;
+     this.tree.isSearchActive = false;
     }
   }
 

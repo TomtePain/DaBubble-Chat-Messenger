@@ -42,7 +42,7 @@ export class WorkspaceMainComponent {
   }
 
   createNewMessage() {
-    this.tree.newMessage = true;
+    this.tree.isNewMessage = true;
   }
 
   updateWorkspaceState(width: number) {

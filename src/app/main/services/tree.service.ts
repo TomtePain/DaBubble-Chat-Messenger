@@ -19,8 +19,8 @@ export class TreeService {
   userMessages: any = [];
   currentUserDbId = this.userservice.userDBId;
   currentSelectedChannel: string | null = null;
-  search = false;
-  newMessage = false;
+  isSearchActive = false;
+  isNewMessage = false;
   isOwnChannel:boolean = false;
   allChannels: Array<any> = [];
 
@@ -51,7 +51,7 @@ export class TreeService {
   }
 
 
-  openDialog() {
+  openAddChannelDialog() {
     this.dialog.open(DialogAddChannelComponent, {
       data: {
         channels: this.allChannels
@@ -69,6 +69,7 @@ export class TreeService {
       this.isOwnChannel = false;
     }
 
+    // Query for channels that contain both IDs and are type "message"
     const channelsRef = collection(this.firestore, environment.channelDb);
     const selectedNodeChannelsSnapshot = await getDocs(
       query(
@@ -86,23 +87,23 @@ export class TreeService {
       )
     );
   
-    const selectedNodeDocuments:any = [];
-    const currentUserDocuments:any = [];
+    const selectedNodeDMChannels:any = [];
+    const currentUserDMChannels:any = [];
   
     selectedNodeChannelsSnapshot.forEach((doc) => {
-      selectedNodeDocuments.push({ id: doc.id, ... doc.data() });
+      selectedNodeDMChannels.push({ id: doc.id, ... doc.data() });
     });
   
     currentUserChannelsSnapshot.forEach((doc) => {
-      currentUserDocuments.push({ id: doc.id, ... doc.data() });
+      currentUserDMChannels.push({ id: doc.id, ... doc.data() });
     });
   
     // Find the intersection of the two sets of documents
-    const commonChannels = selectedNodeDocuments.filter((doc1:any) =>
-    currentUserDocuments.some((doc2:any) => doc1.id === doc2.id)
+    const commonDMChannels = selectedNodeDMChannels.filter((doc1:any) =>
+    currentUserDMChannels.some((doc2:any) => doc1.id === doc2.id)
     );
-    if (commonChannels.length > 0) {
-      const fullDocument = commonChannels[0]; // Assuming you only want the first matching document
+    if (commonDMChannels.length > 0) {
+      const fullDocument = commonDMChannels[0]; // Assuming you only want the first matching document
       this.handleNodeClick(fullDocument);
     } else {
       this.createNewDm(selectedNode.id);
@@ -119,7 +120,7 @@ export class TreeService {
     this.crud.addItem(DM, environment.channelDb).then((docRef) => {
       this.router.navigate(['/', docRef.id]);
       this.currentSelectedChannel = id;
-      this.search = false;
+      this.isSearchActive = false;
     }).catch((error) => {
       console.error('Error creating DM:', error);
     });
@@ -144,22 +145,22 @@ export class TreeService {
   }
 
 
-  handleNodeClick(node: any) {
-    this.newMessage = false;
-    if (node.id === 'add') {
-      this.openDialog();
+  handleNodeClick(selectedNode: any) {
+    this.isNewMessage = false;
+    if (selectedNode.id === 'add') {
+      this.openAddChannelDialog();
     }
-    if (node.type == 'message') {
-      const otherUserId = node.ids.find((id:string) => id !== this.currentUserDbId);
-      this.currentSelectedChannel = otherUserId;
-      this.router.navigate(['/', node.id]);
+    if (selectedNode.type == 'message') {
+      const directMessagePartnerUserId = selectedNode.ids.find((id:string) => id !== this.currentUserDbId);
+      this.currentSelectedChannel = directMessagePartnerUserId;
+      this.router.navigate(['/', selectedNode.id]);
     }
-    else if (node.type == 'channel') {
-      this.currentSelectedChannel = node.id;
-      this.router.navigate(['/', node.id]);
+    else if (selectedNode.type == 'channel') {
+      this.currentSelectedChannel = selectedNode.id;
+      this.router.navigate(['/', selectedNode.id]);
     } 
-    this.search = false;
-    this.newMessage = false;
+    this.isSearchActive = false;
+    this.isNewMessage = false;
   }
 
   focusSelected(node: any) {

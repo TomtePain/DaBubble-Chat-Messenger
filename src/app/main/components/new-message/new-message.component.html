@@ -7,7 +7,7 @@
             <p>{{selected.fullName}}</p>
         </div>
     </div>
-    <div *ngIf="this.tree.search" class="search-container" >
+    <div *ngIf="this.tree.isSearchActive" class="search-container" >
         <div class="scroll">
             <div *ngFor="let channel of channelsUser" (click)="this.tree.handleNodeClick(channel)">
                 <div class="search-result">

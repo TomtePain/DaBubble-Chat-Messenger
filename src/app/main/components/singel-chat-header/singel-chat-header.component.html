@@ -1,4 +1,4 @@
-<div class="search-container" *ngIf="this.tree.newMessage">
+<div class="search-container" *ngIf="this.tree.isNewMessage">
     <app-new-message></app-new-message>
 </div>
 
@@ -9,12 +9,12 @@
 
 
 
-<div class="left" *ngIf="!this.tree.newMessage && channel && channel.type == 'channel'" (click)="openDialog()">
+<div class="left" *ngIf="!this.tree.isNewMessage && channel && channel.type == 'channel'" (click)="openDialog()">
     <p *ngIf="channel"># {{ channel.name }}</p>
     <img src="assets/images/icons/keyboard_arrow_down.png" alt="">
 </div>
 
-<div class="right" *ngIf="!this.tree.newMessage && channel && channel.type == 'channel'">
+<div class="right" *ngIf="!this.tree.isNewMessage && channel && channel.type == 'channel'">
     <div class="members-icons-container" (click)="openDialogShowUser()">
         <div class="members-icons" *ngIf="existingUser">
             <img *ngFor="let user of existingUser.slice(0, 3);" src="{{ user.photoURL }}" alt="">
@@ -25,7 +25,7 @@
     <div class="add-member" (click)="openAddUserDialog()"></div>
 </div>
 
-<div class="message-header" *ngIf="!this.tree.newMessage && channel && channel.type == 'message'">
+<div class="message-header" *ngIf="!this.tree.isNewMessage && channel && channel.type == 'message'">
     <div class="user-container" *ngFor="let user of existingUser" (click)="viewUsersProfile(user.id)">
         <div class="user-img-container" *ngIf="user.id != currentUser && !own">
             <img class="user-avatar"  src="{{ user.photoURL }}" alt="">
