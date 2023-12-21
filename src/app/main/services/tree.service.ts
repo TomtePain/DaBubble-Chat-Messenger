@@ -146,7 +146,7 @@ export class TreeService {
   }
 
 
-  handleNodeClick(selectedNode: any) {
+  handleNodeClick(selectedNode: any) {   
     this.isNewMessage = false;
     if (selectedNode.id === 'add') {
       this.openAddChannelDialog();
@@ -154,6 +154,7 @@ export class TreeService {
     if (selectedNode.type == 'message') {
       const directMessagePartnerUserId = selectedNode.ids.find((id:string) => id !== this.currentUserDbId);
       // this.currentSelectedChannel = SUCHE NACH directMessagePartnerUserId in Users Channel und return doc.id;;
+      this.currentSelectedChannel = directMessagePartnerUserId;
       this.router.navigate(['/', selectedNode.id]);
     }
     else if (selectedNode.type == 'channel') {

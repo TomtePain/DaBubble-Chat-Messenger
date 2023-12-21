@@ -56,7 +56,7 @@ export class TreeComponent implements OnInit {
   userDmData: any = [];
   dmUserId = '';
   dmIds = [];
-  collection2 = environment.userDb;
+  selectedChannel: string | null = null; // Initialized to null;
   currentRouteId: string | null = null; // Initialized to null
   channelRef = query(
     collection(this.firestore, environment.channelDb),
@@ -71,19 +71,52 @@ export class TreeComponent implements OnInit {
   });
 
   this.getChannels();
+  this.selectTreeNode();  
+  }
 
+  selectTreeNode() {
   const urlSegments = this.router.url.split('/');
-  // Assuming the ID is the last segment
-  this.currentRouteId = urlSegments[urlSegments.length - 1];
+  
+  // Make sure that the url segments 2nd position is always taken for the node selection
+  this.currentRouteId = urlSegments[1];  
 
-  this.tree.currentSelectedChannel = this.currentRouteId;
+  this.getCurrentSelectedChannel(this.currentRouteId, (selectedChannel: string | null) => {
+    this.selectedChannel = selectedChannel;
+    this.tree.currentSelectedChannel = this.selectedChannel;
+  });
+  }
 
 
+// Asynchronously fetches the selected channel based on the current route. Updates this.selectedChannel with the result once obtained. Note that other code in ngOnInit continues executing and does not wait for this update.
+getCurrentSelectedChannel(currentRoute: string, callback: (selectedChannel: string | null) => void) {
+  // Fetch all channels and find the one matching currentRoute
+  this.crud.getItem(environment.channelDb).subscribe((resp) => {
+    let allChannels = resp;
+    const currentChannel = allChannels.find((channel: any) => channel.id === currentRoute);
+
+    this.selectedChannel = this.setSelectedChannel(currentChannel, currentRoute);
+    callback(this.selectedChannel);
+  });
+}
+
+  // Determine the appropriate selected channel based on the channel's type and properties.
+  setSelectedChannel(currentChannel: any, currentRoute: string) {
+    if (currentChannel) {
+      // Check if it is an "own" direct messages chat classified and return the currentUserDBId. If it is not an "own" channel find the userId in currentChannel.ids that is not the currentUsersDbId
+      if (currentChannel.type === 'message') {
+        return currentChannel.own ? this.currentUserDbId : currentChannel.ids.find((id: string) => id !== this.currentUserDbId);
+    } // Use currentRoute for non-'message' type channels
+      else {
+        return currentRoute;
+    }
+  }
   }
 
   refreshData() {
     this.getChannels();
   }
+
+
 
   setCurrentRouteId(): void {
     this.activatedRoute.params.subscribe(params => {

@@ -13,6 +13,7 @@ export class UserService {
   userDBId = localStorage.getItem('userId');//: string = '';
   documentRef;
   allUsers: any;
+  allChannels: any;
   alluserRef:any;
   loginUser:any;
 
@@ -26,6 +27,14 @@ export class UserService {
     this.crud.getItem(environment.userDb).subscribe((resp) => {
       this.allUsers = resp;
     })
+  }
+
+  getAllChannels() {
+    this.crud.getItem(environment.channelDb).subscribe((resp) => {
+      this.allChannels = resp;
+      return resp;
+    })
+    
   }
 
   saveLoginUserData() {
