@@ -14,6 +14,7 @@ import { DialogChannelEditComponent } from '../singel-chat-header/dialog-channel
 import { SingelChatHeaderComponent } from '../singel-chat-header/singel-chat-header.component';
 import { Subscription, filter } from 'rxjs';
 import { RefreshService } from '../../services/refresh.service';
+import { ScrollService } from '../../services/scroll.service';
 
 @Component({
   selector: 'app-singel-chat',
@@ -44,6 +45,7 @@ export class SingelChatComponent implements OnInit {
     public firestore: Firestore,
     public crud: CrudService,
     public userservice: UserService,
+    private scrollService: ScrollService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router,
@@ -65,12 +67,11 @@ export class SingelChatComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.channelId = params['id'];
+      const messageId: string = params['messageId'];      
       this.getCurrentChannelInfo();
       this.getMessages();
       this.getUserName();
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 2000);
+      this.scrollToMessageOrBottom(messageId)
     });
   }
 
@@ -78,6 +79,17 @@ export class SingelChatComponent implements OnInit {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
+  }
+
+  scrollToMessageOrBottom(messageId: string) {
+    // Ensuring the message is in the DOM before scrolling. Otherwise scroll to bottom
+    if (messageId.length === 20) {
+      setTimeout(() => this.scrollService.scrollToMessage(messageId), 1000);
+    } else {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 2000);
+  }
   }
 
   refreshData() {
