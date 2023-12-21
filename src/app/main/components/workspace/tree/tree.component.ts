@@ -6,7 +6,7 @@ import { ChannelNode, ExampleFlatNode } from './tree';
 import { TreeService } from 'src/app/main/services/tree.service';
 import { Firestore, collection, query, where, onSnapshot, getDocs } from '@angular/fire/firestore';
 import { UserService } from 'src/app/main/services/user.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { RefreshService } from 'src/app/main/services/refresh.service';
 
@@ -66,6 +66,7 @@ export class TreeComponent implements OnInit {
 
 
   ngOnInit(): void {
+  this.subscribeToRouteChanges();
   this.refreshService.refreshObservable.subscribe(() => {
     this.refreshData();
   });
@@ -75,20 +76,16 @@ export class TreeComponent implements OnInit {
   }
 
   selectTreeNode() {
-  const urlSegments = this.router.url.split('/');
-  
-  // Make sure that the url segments 2nd position is always taken for the node selection
-  this.currentRouteId = urlSegments[1];  
+  this.currentRouteId = this.getCurrentRouteChannelId();  
 
   this.getCurrentSelectedChannel(this.currentRouteId, (selectedChannel: string | null) => {
-    this.selectedChannel = selectedChannel;
-    this.tree.currentSelectedChannel = this.selectedChannel;
+    this.tree.currentSelectedChannel = selectedChannel;
   });
   }
 
 
-// Asynchronously fetches the selected channel based on the current route. Updates this.selectedChannel with the result once obtained. Note that other code in ngOnInit continues executing and does not wait for this update.
-getCurrentSelectedChannel(currentRoute: string, callback: (selectedChannel: string | null) => void) {
+  // Asynchronously fetches the selected channel based on the current route. Updates this.selectedChannel with the result once obtained. Note that other code in ngOnInit continues executing and does not wait for this update.
+  getCurrentSelectedChannel(currentRoute: string, callback: (selectedChannel: string | null) => void) {
   // Fetch all channels and find the one matching currentRoute
   this.crud.getItem(environment.channelDb).subscribe((resp) => {
     let allChannels = resp;
@@ -97,7 +94,8 @@ getCurrentSelectedChannel(currentRoute: string, callback: (selectedChannel: stri
     this.selectedChannel = this.setSelectedChannel(currentChannel, currentRoute);
     callback(this.selectedChannel);
   });
-}
+  }
+
 
   // Determine the appropriate selected channel based on the channel's type and properties.
   setSelectedChannel(currentChannel: any, currentRoute: string) {
@@ -112,25 +110,37 @@ getCurrentSelectedChannel(currentRoute: string, callback: (selectedChannel: stri
   }
   }
 
+
   refreshData() {
     this.getChannels();
   }
 
 
-
-  setCurrentRouteId(): void {
-    this.activatedRoute.params.subscribe(params => {
-      const routeId = params['yourRouteParameterName']; // Replace with your actual route parameter name
-      if (routeId) {
-        this.currentRouteId = routeId;
-        this.tree.currentSelectedChannel = routeId;
+  subscribeToRouteChanges(): void {
+    this.router.events.subscribe(event => {
+      
+      // As soon as the navigation process ended the selected channel will be updated with the currentRoute's ChannelId
+      if (event instanceof NavigationEnd) {
+        const currentRouteId = this.getCurrentRouteChannelId();
+        this.getCurrentSelectedChannel(currentRouteId, (selectedChannel) => {
+          this.tree.currentSelectedChannel = selectedChannel;
+        });
       }
     });
   }
 
+
+  getCurrentRouteChannelId(): string {
+    // Extract the current route ID from the URL. Make sure that the url segments 2nd position is always taken for the node selection
+    const urlSegments = this.router.url.split('/');
+    return urlSegments[1];
+  }
+
+
   isSelected(nodeId: string): boolean {   
     return this.tree.currentSelectedChannel === nodeId;;
   }
+
 
   getChannels() {
     onSnapshot(this.channelRef, (querySnapshot) => {
@@ -236,9 +246,6 @@ getCurrentSelectedChannel(currentRoute: string, callback: (selectedChannel: stri
     this.treeControl.expandAll();
   }
 
-
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
-
-  
 
 }
