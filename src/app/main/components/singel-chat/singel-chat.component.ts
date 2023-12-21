@@ -83,7 +83,7 @@ export class SingelChatComponent implements OnInit {
 
   scrollToMessageOrBottom(messageId: string) {
     // Ensuring the message is in the DOM before scrolling. Otherwise scroll to bottom
-    if (messageId.length === 20) {
+    if (messageId && messageId.length === 20) {
       setTimeout(() => this.scrollService.scrollToMessage(messageId), 1000);
     } else {
     setTimeout(() => {

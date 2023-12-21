@@ -47,6 +47,8 @@ export class EditorComponent implements OnInit {
     this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.message = '';
+        this.uploadedData = false;
+        this.uploadedDataName = '';   
       }
     });
   }
