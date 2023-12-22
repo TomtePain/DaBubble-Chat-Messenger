@@ -43,9 +43,9 @@ export class SingelChatHeaderComponent implements OnInit {
     });
     this.route.params.subscribe(() => {
       this.getCurrentChannelInfo();
-      setTimeout(() => {
-        this.checkUserDataFromDb();
-      }, 2000);
+      // setTimeout(() => {
+      //   this.checkUserDataFromDb();
+      // }, 2000);
     })
   }
 
@@ -68,6 +68,7 @@ export class SingelChatHeaderComponent implements OnInit {
           });
         }
         if (this.channel.creator) { this.creatorID = this.channel.creator; }
+        this.checkUserDataFromDb();
       }
     });
   }
