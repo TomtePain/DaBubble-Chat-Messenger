@@ -48,7 +48,9 @@ export class EditorComponent implements OnInit {
       if (event instanceof NavigationStart) {
         this.message = '';
         this.uploadedData = false;
-        this.uploadedDataName = '';   
+        this.uploadedDataName = '';
+        this.editorService.fileUrl = '';
+        this.editorService.fileName = '';
       }
     });
   }
