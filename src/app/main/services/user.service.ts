@@ -39,7 +39,7 @@ export class UserService {
 
   saveLoginUserData() {
     this.getUserData().subscribe(resp => {
-      this.loginUser = resp;      
+      this.loginUser = resp;     
     })
   }
 

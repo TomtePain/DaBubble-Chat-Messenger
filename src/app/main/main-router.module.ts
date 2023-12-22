@@ -33,10 +33,10 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: ':id/:messageId',
-    component: SingelChatComponent
-  }
+  // {
+  //   path: ':id/:messageId',
+  //   component: SingelChatComponent
+  // }
 ];
 
 @NgModule({
