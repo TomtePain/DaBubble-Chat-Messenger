@@ -7,6 +7,7 @@ import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { ReactionService } from '../../services/reaction.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshService } from '../../services/refresh.service';
+import { ScrollService } from '../../services/scroll.service';
 
 @Component({
   selector: 'app-thread',
@@ -29,7 +30,7 @@ export class ThreadComponent implements OnInit, OnChanges {
   private destroy$ = new Subject<void>();
   isNew!: boolean;
 
-  constructor(public firestore: Firestore, public crud: CrudService, private reactionservice: ReactionService, private route: ActivatedRoute, private router: Router, private refreshService: RefreshService) {
+  constructor(public firestore: Firestore, public crud: CrudService, private reactionservice: ReactionService, private route: ActivatedRoute, private router: Router, private refreshService: RefreshService, private scrollService: ScrollService) {
   }
 
   ngOnInit(): void {
@@ -39,9 +40,13 @@ export class ThreadComponent implements OnInit, OnChanges {
     this.staticReactionTypes = this.reactionservice.staticReactionTypes;
     this.sortedReactionTypes = this.reactionservice.sortedReactionTypes;
     this.channelId = this.route.parent?.snapshot.paramMap.get('id') as string;
-        
-    this.getCurrentChannelInfo();
-    this.loadThreadContent()
+
+    this.route.params.subscribe((params) => {
+      const messageId: string = params['messageId'];      
+      this.getCurrentChannelInfo();
+      this.loadThreadContent();
+      this.scrollToMessageOrBottom(messageId)
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,7 +55,7 @@ export class ThreadComponent implements OnInit, OnChanges {
       this.getThreadMessages();
       setTimeout(() => {
         this.scrollToBottom();
-      }, 1000)
+      }, 2000)
     }
   }
 
@@ -58,6 +63,17 @@ export class ThreadComponent implements OnInit, OnChanges {
     this.destroy$.next();
     this.destroy$.complete();
     this.routeSub?.unsubscribe();
+  }
+
+  scrollToMessageOrBottom(messageId: string) {
+    // Ensuring the message is in the DOM before scrolling. Otherwise scroll to bottom
+    if (messageId && messageId.length === 20) {
+      setTimeout(() => this.scrollService.scrollToMessage(messageId), 1000);
+    } else {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 2000);
+  }
   }
 
   refreshData() {

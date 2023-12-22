@@ -36,7 +36,7 @@ search(input: string) {
     else {
       this.displaySearchResults = false;
     }
-  }, 500); // Check if delay should be shorter or longer
+  }, 500); // Check if delay should be shorter or longer 
 }
 
 clearSearch() {
@@ -68,6 +68,7 @@ async searchChannels(input: string) {
 
 async searchUsers(input: string) {
   this.searchResultsUsers = await this.searchService.searchUsers(input);
+
 }
 
 async searchMessages(input: string) {

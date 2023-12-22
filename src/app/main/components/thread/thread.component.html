@@ -22,7 +22,8 @@
                     [messageData]="startMessageData" 
                     [userName]="startMessageData?.user" 
                     [isThreadMessage]="true" 
-                    [channelID]="channelId" >
+                    [channelID]="channelId"
+                    id="{{startMessageData.id}}" >
                 </app-chat-message>
             </ng-container>
             
@@ -33,7 +34,7 @@
             <div class="separator"><div class="threadanswers">{{allMessages.length}} Antworten</div><div class="line"></div></div>
             <!-- Thread messages start here -->
             <ng-container *ngFor="let message of allMessages; let i = index" >
-                <app-thread-message [messageData]="message" [messageDataIndex]="i" [threadId]="threadId"></app-thread-message>
+                <app-thread-message [messageData]="message" [messageDataIndex]="i" [threadId]="threadId" id="{{message.id}}"></app-thread-message>
             </ng-container>
             <div id="anchor-thread"></div>
             <!-- Thread messages end here -->

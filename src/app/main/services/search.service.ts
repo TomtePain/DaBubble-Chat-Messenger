@@ -120,11 +120,6 @@ async getMessagesSearchResults(input_variations: Query<DocumentData>) {
     let searchResultData = doc.data();
     let path = await this.getUrlPath(doc.ref.path) as string;
 
-    // !!! Please remove next two steps if direct links from search results to messages are working correctly
-    let lastSlashIndex = path.lastIndexOf('/');
-    path = path.substring(0, lastSlashIndex);
-    // !!! end of help code
-
     //Only generate a search result if the currentUser has access to the channel the search message is part of. 
     let channel = this.getChannelId(path);   
     this.isCurrentUserIdInChannel(channel).then(isUserInChannel => {
