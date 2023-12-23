@@ -30,12 +30,26 @@ const routes: Routes = [
       {
         path: 'thread/:id/:messageId',
         component: ThreadComponent
-      }
+      },
+      // { KLAPPT NICHT
+      //   path: ':messageId',
+      //   component: SingelChatComponent,
+      // }
     ]
   },
-  // {
+  // { KLAPPT NICHT
   //   path: ':id/:messageId',
   //   component: SingelChatComponent
+  // },
+  // { KLAPPT NICHT
+  //   path: ':id',
+  //   component: SingelChatComponent,
+  //   children: [
+  //     {
+  //       path: ':messageId',
+  //       component: SingelChatComponent,
+  //     }
+  //   ]
   // }
 ];
 
