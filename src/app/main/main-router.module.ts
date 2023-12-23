@@ -10,34 +10,55 @@ import { DialogDeleteMessageComponent } from './components/chat-message/dialog-d
 import { DialogAddUserComponent } from './components/singel-chat-header/dialog-add-user/dialog-add-user.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: "/" + environment.mainChannel, // specify your target route here
+  { 
+    path:'', 
+    redirectTo: "/" + environment.mainChannel , // specify your target route here
     pathMatch: 'full'
   },
-  {
-    path: ':id',
-    component: SingelChatComponent,
+    {path:':id' , component:SingelChatComponent,
     children: [
       {
-        path: 'thread/:id',
-        component: ThreadComponent
-      },
-      {
-        path: 'newthread/:id',
-        component: ThreadComponent
-      },
-      {
-        path: 'thread/:id/:messageId',
+        path: 'thread/:id', 
         component: ThreadComponent
       }
-    ]
-  },
-  {
-    path: ':id/:messageId',
-    component: SingelChatComponent
-  }
-];
+    ]},
+    {path:':id' , component:SingelChatComponent,  children: [
+      {
+        path: 'newthread/:id', 
+        component: ThreadComponent
+      }
+    ]}
+  ];
+  
+// const routes: Routes = [
+//   {
+//     path: '',
+//     redirectTo: "/" + environment.mainChannel, // specify your target route here
+//     pathMatch: 'full'
+//   },
+//   {
+//     path: ':id',
+//     component: SingelChatComponent,
+//     children: [
+//       {
+//         path: 'thread/:id',
+//         component: ThreadComponent
+//       },
+//       {
+//         path: 'newthread/:id',
+//         component: ThreadComponent
+//       },
+//       {
+//         path: 'thread/:id/:messageId',
+//         component: ThreadComponent
+//       }
+//     ]
+//   },
+//   {
+//     path: ':id/:messageId',
+//     component: SingelChatComponent
+//   }
+// ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes), CommonModule ],

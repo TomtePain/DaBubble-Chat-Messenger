@@ -28,16 +28,6 @@ async searchChannels(input: string) {
     const cleanedInput = this.cleanInput(input); // remove any symbols from the input string
     let input_variations = this.getInputVariations(cleanedInput);   
 
-    // TODO check that channels are type channel to avoid direct messages appearing in channel results
-    // const matchInputsToChannels = query(collectionGroup(this.firestore, environment.channelDb),
-    // and(
-    //   where('type', '==', "channel"), 
-    //   or(
-
-    //     where('searchTerms', 'array-contains-any', input_variations), 
-    //     where('name', 'in', input_variations)
-    //   )));
-
     const matchInputsToChannels = query(collectionGroup(this.firestore, environment.channelDb),
       or(
         where('searchTerms', 'array-contains-any', input_variations), 
@@ -119,6 +109,11 @@ async getMessagesSearchResults(input_variations: Query<DocumentData>) {
   for (const doc of querySnapshot.docs) {
     let searchResultData = doc.data();
     let path = await this.getUrlPath(doc.ref.path) as string;
+
+     // !!! Please remove next two steps if direct links from search results to messages are working correctly
+     let lastSlashIndex = path.lastIndexOf('/');
+     path = path.substring(0, lastSlashIndex);
+     // !!! end of help code
 
     //Only generate a search result if the currentUser has access to the channel the search message is part of. 
     let channel = this.getChannelId(path);   
