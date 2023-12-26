@@ -71,7 +71,7 @@ export class SingelChatComponent implements OnInit {
       this.getCurrentChannelInfo();
       this.getMessages();
       this.getUserName();
-      this.scrollToMessageOrBottom(messageId)
+      this.scrollToMessageOrBottom(messageId);
     });
   }
 
@@ -173,16 +173,15 @@ export class SingelChatComponent implements OnInit {
     let allChannels: Array<any> = [];
     this.crud.getItem(environment.channelDb).subscribe((result) => {
       allChannels = result;
-      let currentChannel = allChannels.find(
-        (exist) => exist.id == this.channelId
-      );
+      let currentChannel = allChannels.find((exist) => exist.id == this.channelId);
       this.currentChannel = [];
       // this.currentChannel = currentChannel;
       this.currentChannel.push(currentChannel);
       if (currentChannel) {
         this.channelType = currentChannel.type;
+        this.checkUserDataFromDb();
       }
-    });
+    });   
   }
 
   onArrayUpdated(newArray: any[]) {
@@ -200,5 +199,14 @@ export class SingelChatComponent implements OnInit {
 
   showChannelDialog() {
     this.singelChatheaderfunction?.openDialog();
+  }
+
+  checkUserDataFromDb() {
+    this.existingUser = [];
+    let channelUser = this.currentChannel[0].ids;
+    channelUser.forEach((element:any) => {
+      let existUser = this.userservice.allUsers.find((exist:any) => exist.id == element);
+      if(existUser) { this.existingUser.push(existUser) };
+    });
   }
 }
