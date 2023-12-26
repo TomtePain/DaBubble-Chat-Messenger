@@ -88,7 +88,7 @@ export class SingelChatComponent implements OnInit {
     } else {
     setTimeout(() => {
       this.scrollToBottom();
-    }, 2000);
+    }, 1000);
   }
   }
 
