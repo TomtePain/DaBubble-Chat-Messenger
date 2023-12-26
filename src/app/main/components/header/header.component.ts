@@ -27,18 +27,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.refreshService.refreshObservable.subscribe(() => {
       this.refreshData();
     });
-    this.getUserData();
+    // this.getUserData();
 
-    // setTimeout(() => {
-    //   if (this.userservice.loginUser === undefined) {
-    //     // console.log("this.userservice.loginUser is undefined", this.userservice.loginUser);
-    //     // console.log("reload");
-    //     window.location.reload();
-    //   } else {
-    //     // console.log("this.userservice.loginUser is defined", this.userservice.loginUser);
-    //     this.setUserData();
-    //   }
-    // }, 500);
+    setTimeout(() => {
+      if (this.userservice.loginUser === undefined) {
+        // console.log("this.userservice.loginUser is undefined", this.userservice.loginUser);
+        // console.log("reload");
+        window.location.reload();
+      } else {
+        // console.log("this.userservice.loginUser is defined", this.userservice.loginUser);
+        this.setUserData();
+      }
+    }, 500);
   }
 
 
@@ -74,9 +74,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userProfileImage = data.photoURL;
   }
 
-  getUserData() {
-    this.userservice.getUserData().subscribe( () => {
-      this.setUserData();
-    })
-  }
+  // getUserData() {
+  //   this.userservice.getUserData().subscribe( () => {
+  //     this.setUserData();
+  //   })
+  // }
 }
