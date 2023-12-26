@@ -138,7 +138,7 @@ async getUrlPath(messagePath: string) {
 let path = messagePath.split("/");
 
 if (messagePath.startsWith(environment.channelDb)) {
-  let url = `/${path[1]}/${path[3]}`;
+  let url = `/${path[1]}/msg/${path[3]}`;
   return url;
 } else if (messagePath.startsWith(environment.threadDb)) {
   let channel = await this.getThreadParentURL(path[1])

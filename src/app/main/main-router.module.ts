@@ -15,6 +15,10 @@ const routes: Routes = [
     redirectTo: "/" + environment.mainChannel, // specify your target route here
     pathMatch: 'full'
   },
+  { 
+    path: ':id/msg/:messageId',
+    component: SingelChatComponent
+  },
   {
     path: ':id',
     component: SingelChatComponent,
@@ -31,25 +35,16 @@ const routes: Routes = [
         path: 'thread/:id/:messageId',
         component: ThreadComponent
       },
-      // { KLAPPT NICHT
-      //   path: ':messageId',
-      //   component: SingelChatComponent,
+      // {
+      //   path: '**', // Wildcard route for a component
+      //   redirectTo: '' // Redirect to the parent component
       // }
     ]
-  },
-  // { KLAPPT NICHT
-  //   path: ':id/:messageId',
-  //   component: SingelChatComponent
-  // },
-  // { KLAPPT NICHT
-  //   path: ':id',
-  //   component: SingelChatComponent,
-  //   children: [
-  //     {
-  //       path: ':messageId',
-  //       component: SingelChatComponent,
-  //     }
-  //   ]
+  }
+  // ,
+  // {
+  //   path: '**', // Wildcard route for the entire app
+  //   redirectTo: "/" + environment.mainChannel // Redirect to the default channel or some other route
   // }
 ];
 
