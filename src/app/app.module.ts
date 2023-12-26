@@ -45,6 +45,7 @@ import { NewMessageComponent } from './main/components/new-message/new-message.c
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { UploadComponent } from './main/dialogs/upload/upload.component';
 import { SearchComponent } from './main/components/search/search.component';
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,7 +72,8 @@ import { SearchComponent } from './main/components/search/search.component';
     NewMessageComponent,
     SingelChatHeaderComponent,
     DialogProfileviewOfOthersComponent,
-    SearchComponent
+    SearchComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,
