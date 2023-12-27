@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main/main.component';
 import { AuthComponent } from './auth/auth.component';
 import { redirectUnauthorizedTo, canActivate } from '@angular/fire/auth-guard';
+import { PagenotfoundComponent } from './main/components/pagenotfound/pagenotfound.component';
 const redirectToLogin = () => redirectUnauthorizedTo(['auth/login']);
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     component: AuthComponent,
     loadChildren: () => import('./auth/auth-router.module').then(m => m.AuthRoutingModule)
   },
+  {path: '**', component: PagenotfoundComponent}
 ];
 
 @NgModule({
