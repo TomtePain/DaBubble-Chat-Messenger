@@ -7,6 +7,7 @@ import { CrudService } from 'src/app/main/services/crud.service';
 import { EditorService } from 'src/app/main/services/editor.service';
 import { UserService } from 'src/app/main/services/user.service';
 import { environment } from 'src/environments/environment';
+import { DialogLeaveChannelComponent } from '../dialog-leave-channel/dialog-leave-channel.component';
 
 @Component({
   selector: 'app-dialog-channel-edit',
@@ -93,14 +94,13 @@ export class DialogChannelEditComponent implements OnInit {
   }
 
   leaveChannel() {
-    const docInstance = doc(this.firestore, environment.channelDb, this.channelId);
-    updateDoc(docInstance, {
-      ids: arrayRemove(this.currentUser)
+    this.dialog.open(DialogLeaveChannelComponent, {
+      data: {
+        currentUser: this.currentUser,
+        channelId: this.channelId,
+        refreshData: this.data.refreshData.bind(this)
+      }
     })
-    .then(() => {
-      this.closeDialog();
-      this.router.navigateByUrl('/')
-    });
   }
 
 

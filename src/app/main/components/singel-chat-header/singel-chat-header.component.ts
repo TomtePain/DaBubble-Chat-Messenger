@@ -57,12 +57,14 @@ export class SingelChatHeaderComponent implements OnInit {
     let allChannels: Array<any> = [];
     this.channel = [];
     this.channelUser = [];
+    console.log()
     this.crud.getItem(environment.channelDb).subscribe((result) => {
       allChannels = result;
       this.channel = allChannels.find(exist => exist.id == this.channelID);
       if (this.channel) {
         this.own = this.channel.own;
         if (this.channel.ids) {
+          this.channelUser = []; 
           this.channel.ids.forEach((element: any) => {
             this.channelUser.push(element);
           });
@@ -95,7 +97,8 @@ export class SingelChatHeaderComponent implements OnInit {
         channelUser: this.existingUser,
         channelCreatorName: this.channelCreatorName,
         channelId: this.channelID,
-        currentUser: this.currentUser
+        currentUser: this.currentUser,
+        refreshData: this.ngOnInit.bind(this)
       }
     });
   }

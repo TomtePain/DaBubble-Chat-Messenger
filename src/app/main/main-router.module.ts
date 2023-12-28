@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { DialogDeleteMessageComponent } from './components/chat-message/dialog-delete-message/dialog-delete-message.component';
 import { DialogAddUserComponent } from './components/singel-chat-header/dialog-add-user/dialog-add-user.component';
+import { DialogLeaveChannelComponent } from './components/singel-chat-header/dialog-leave-channel/dialog-leave-channel.component';
 
 const routes: Routes = [
   {
@@ -55,7 +56,8 @@ const routes: Routes = [
     DialogChannelEditComponent,
     DialogShowChannelUserComponent,
     DialogDeleteMessageComponent,
-    DialogAddUserComponent
+    DialogAddUserComponent,
+    DialogLeaveChannelComponent
   ]
 })
 

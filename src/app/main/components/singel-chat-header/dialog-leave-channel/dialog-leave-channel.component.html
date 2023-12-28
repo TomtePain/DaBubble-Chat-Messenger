@@ -1,0 +1,14 @@
+<div class="delete-message-container">
+    <header>
+        <h1>Channel verlassen</h1>
+        <img src="/assets/images/close.png" alt="" (click)="closeDialog()">
+    </header>
+    <div>
+        Bist du sicher, dass du diesen Channel verlassen möchtest? 
+        Du kannst danach nur wieder von einem anderen User eingeladen werden!
+    </div>
+    <div class="button-container">
+        <button class="btn-secondary" (click)="closeDialog()" >Abbrechen</button>
+        <button class="btn-prime warn" (click)="leaveChannel()">Channel verlassen</button>
+    </div>
+</div>
