@@ -23,6 +23,11 @@ export class DialogChannelEditComponent implements OnInit {
   channelId: string;
   currentUser: string;
   allChannel:Array<any> = [];
+  guest = environment.guest;
+  admin1 = environment.admin1;
+  admin2 = environment.admin2;
+  mainChannel = environment.mainChannel;
+
 
 
 

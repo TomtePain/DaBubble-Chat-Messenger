@@ -12,6 +12,9 @@ export const environment = {
   channelDb: 'channel',
   threadDb: 'threads',
   messagesDb: 'messages',
-  mainChannel: '8veqP2ohCvtLVgT46sP5' //id of "Allgemein" channel
+  mainChannel: '8veqP2ohCvtLVgT46sP5', //id of "Allgemein" channel
+  guest: 'AD0QcMsUIh2iCkEDRpGX', //id of Guest-Access
+  admin1: '0oHZDUNTO04Ay098XBNe', //id of Christian-Access
+  admin2: 'lkk8gvYTiba7jyo8Z6n2' //id of Tom-Access
 };
 
