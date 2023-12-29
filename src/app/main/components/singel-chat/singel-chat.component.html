@@ -13,7 +13,19 @@
 
         <div class="chat-content scroll">
 
-            <div class="starter-info" *ngIf="userMessages.length <= 0 && channelType == 'message' ">
+            <div class="starter-info" *ngIf="userMessages.length <= 0 && channelType == 'message' && singelChatheaderfunction?.own ">
+                <div class="starter-info-container" *ngFor="let user of existingUser;">
+                    <div class="starter-info-content" *ngIf="user.id == userName">
+                        <img class="starter-info-avatar" src="{{ user.photoURL }}" alt="Profilbild">
+                        <span (click)="viewUsersProfile(user.id)">{{ user.fullName }} (Du)</span>
+                    </div>
+                    <div class="text" *ngIf="user.id == userName">
+                        Dieser Raum ist nur für dich da. Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.
+                    </div>
+                </div>
+            </div>
+
+            <div class="starter-info" *ngIf="userMessages.length <= 0 && channelType == 'message' && !singelChatheaderfunction?.own">
                 <div class="starter-info-container" *ngFor="let user of existingUser;">
                     <div class="starter-info-content" *ngIf="user.id != userName">
                         <img class="starter-info-avatar" src="{{ user.photoURL }}" alt="">
