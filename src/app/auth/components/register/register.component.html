@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="input-box">
+        <div class="input-box accept-data-protection">
             <mat-checkbox color="primary" formControlName="acceptTerms">Ich stimme der <a
                     href="#">Datenschutzerklärung</a> zu.</mat-checkbox> 
         </div>
@@ -71,7 +71,7 @@
             <input type='file' id="getFile" style="display:none" (change)="upload($event)" accept=".png,.jpg">
         </div>
         <div class="reg-btns">
-            <button mat-stroked-button color="primary" (click)="finalizeRegistration()">Überspringen</button>
+            <button mat-stroked-button class="secondary" color="primary" (click)="finalizeRegistration()">Überspringen</button>
             <button mat-raised-button color="primary" (click)="setProfileImageAndFinalizeRegistration()">Weiter</button>
         </div>
     </div>

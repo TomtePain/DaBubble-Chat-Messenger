@@ -8,7 +8,9 @@
     justify-content: center;
     align-items: center;
     padding: 50px 53px;
-    width: 500px;
+    width: calc(100% - 106px);
+    max-width: 520px;
+    gap: 32px;
     position: relative;
 
     &> .arrow-back{
@@ -24,19 +26,20 @@
         font-size: 46px;
         font-weight: 700;
         line-height: 55px;
-        margin-bottom: 30px;
+        margin-bottom: 0px;
     }
 
     &>p {
         font-size: 20px;
         line-height: 24px;
         text-align: center;
-        margin-bottom: 46px;
+        margin-bottom: 0px;
     }
 
     .reg-form {
         display: flex;
         flex-direction: column;
+        width: 100%;
 
         .input-box {
             width: 100%;
@@ -45,8 +48,8 @@
             .icon {
                 position: absolute;
                 color: #686868;
-                top: 14px;
-                left: 12px;
+                top: 16px;
+                left: 32px;
             }
 
             input {
@@ -56,12 +59,10 @@
                 border: none;
                 background: var(--bg-color, #ECEEFE);
                 border: 1px solid var(--bg-color, #ECEEFE);
-                display: flex;
-                padding: 18px 40px;
-                align-items: center;
+                padding: 16px 20px 16px 80px;
                 gap: 10px;
-                align-self: stretch;
-                width: 27rem;
+                font-size: 18px;
+                width: calc(100% - 100px);
                 margin-bottom: 32px;
 
                 &:focus {
@@ -71,6 +72,8 @@
 
         }
     }
+
+
 
     a {
         color: var(--purple-1);
@@ -105,9 +108,53 @@
         width: 100%;
         gap: 8px;
 
-        .mat-mdc-raised-button,
-        .mat-mdc-outlined-button {
-            border-radius: 25px !important;
+        button {
+            padding: 24px 32px;
+            font-size: 18px;
+            border-radius: 25px;
+            gap: 10px;
+            background-color: var(--purple-1);
+            color: white;
+
+            &:hover {
+                border-radius: 25px;
+                background: var(--purple-2, #797EF3);
+            }
+
+            &:active {
+                border-radius: 25px;
+                background: var(--purple-1, #444DF2);
+            }
+        
+            &:disabled {
+                border-radius: 25px;
+                background: var(--text-gray, #686868);
+            }
+        }
+
+        .secondary {
+            padding: 24px 32px;
+            font-size: 18px;
+            border-radius: 25px;
+            gap: 10px;
+            color: var(--purple-1);
+            background-color: white;
+    
+            &:hover {
+                border-radius: 25px;
+                color: white;
+                background: var(--purple-1, #444DF2);
+            }
+    
+            &:active {
+                border-radius: 25px;
+                background: var(--purple-1, #444DF2);
+            }
+        
+            &:disabled {
+                border-radius: 25px;
+                background: var(--text-gray, #686868);
+            }
         }
     }
 }
@@ -187,6 +234,32 @@
 .uploadImage-container {
     margin-top: 43px;
     margin-bottom: 43px;
+
+    button {
+        padding: 24px 32px;
+        font-size: 18px;
+        border-radius: 25px;
+        gap: 10px;
+        // font-family: Nunito;
+        color: var(--purple-1);
+        background-color: white;
+
+        &:hover {
+            border-radius: 25px;
+            color: white;
+            background: var(--purple-1, #444DF2);
+        }
+
+        &:active {
+            border-radius: 25px;
+            background: var(--purple-1, #444DF2);
+        }
+    
+        &:disabled {
+            border-radius: 25px;
+            background: var(--text-gray, #686868);
+        }
+    }
 }
     }
 }

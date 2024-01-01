@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
+
     .typing {
         font-size: 60px;
         font-weight: 700;
@@ -19,12 +20,15 @@
 
 .auth-container {
     padding: 75px 75px 48px;
+    font-size: 18px;
+
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 70px;
-        margin-bottom: 8px;
+        margin-bottom: 32px;
+        
         .reg-container {
           a {
             text-decoration: none;
