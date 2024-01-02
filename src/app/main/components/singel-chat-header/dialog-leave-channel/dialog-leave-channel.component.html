@@ -9,6 +9,7 @@
     </div>
     <div class="button-container">
         <button class="btn-secondary" (click)="closeDialog()" >Abbrechen</button>
-        <button class="btn-prime warn" (click)="leaveChannel()">Channel verlassen</button>
+        <button class="btn-prime warn" (click)="leaveChannel()" *ngIf="!isGuest">Channel verlassen</button>
+        <button class="btn-prime" (click)="leaveChannel()" *ngIf="isGuest" disabled title="Als Gast können Sie diesen Channel nicht verlassen!">Channel verlassen</button>
     </div>
 </div>

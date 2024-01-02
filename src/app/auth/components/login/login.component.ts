@@ -33,7 +33,10 @@ export class LoginComponent implements OnInit {
   }
 
   guestLogin() {
-    this.userAuth.signInGuest()
+    // this.userAuth.signInGuest()
+    let email = 'guest.guestmail@existiert.net';
+    let password = 'guest.guestmail@existiert.net';
+    this.userAuth.signIn(email, password);
   }
 
   enterSubmit($event: any){
