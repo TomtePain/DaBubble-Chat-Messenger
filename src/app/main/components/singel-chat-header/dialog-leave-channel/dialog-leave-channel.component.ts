@@ -17,14 +17,24 @@ export class DialogLeaveChannelComponent {
 
   channelId;
   currentUser;
+  isGuest:boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogLeaveChannelComponent>, public firestore: Firestore, public crud: CrudService, private route: ActivatedRoute, private router: Router, public dialog: MatDialog, private refreshservice: RefreshService) {
     this.channelId = data.channelId;
     this.currentUser = data.currentUser;
+    this.checkIsGuest();
   }
 
   closeDialog(){
     this.dialogRef.close();
+  }
+
+  checkIsGuest() {
+    if(this.currentUser == environment.guest) {
+      this.isGuest = true;
+    }else {
+      this.isGuest = false;
+    }
   }
 
   leaveChannel(){

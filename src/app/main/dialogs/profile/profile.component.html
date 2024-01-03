@@ -36,7 +36,8 @@
                 <mat-icon fontIcon="account_circle"></mat-icon>
                 <h3>Vollständiger Name</h3>
             </div>
-            <input type="text" class="input-field" formControlName="fullNameFormControl" [ngClass]="{ 'is-invalid': f.fullNameFormControl.errors}">
+            <input type="text" class="input-field" formControlName="fullNameFormControl" [ngClass]="{ 'is-invalid': f.fullNameFormControl.errors}" *ngIf="!currentUserIsGuest">
+            <input type="text" class="input-field" formControlName="guestNameFormControl" [ngClass]="{ 'is-invalid': f.guestNameFormControl.errors}" *ngIf="currentUserIsGuest" title="Als Gast kann der Name nicht geändert werden!">
             <div *ngIf="profileForm.controls.fullNameFormControl.errors && (profileForm.controls.fullNameFormControl.dirty || profileForm.controls.fullNameFormControl.touched)">
                 <div *ngIf="profileForm.controls.fullNameFormControl.errors['required']" class="validation-error-msg">
                     Ein Name ist erforderlich.
@@ -90,5 +91,5 @@
 
 <div class="action-bar" mat-dialog-actions *ngIf="profileEdit">
     <button mat-stroked-button color="primary" (click)="cancelEditProfile()">Abbrechen</button>
-    <button mat-raised-button color="primary" [disabled]="!profileForm.valid" (click)="updateUserData()">Speichern</button>
+    <button mat-raised-button color="primary" [disabled]="!profileForm.valid" [disabled]="currentUserIsGuest" (click)="updateUserData()">Speichern</button>
 </div>

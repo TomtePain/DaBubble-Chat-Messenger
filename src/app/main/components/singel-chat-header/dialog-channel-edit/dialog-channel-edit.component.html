@@ -10,7 +10,7 @@
     <div class="section-edit-channel-name" id="channel-name-save">
         <div class="title-headline">
             <h2 class="title">Channel-Name</h2>
-            <button class="edit-btn" (click)="viewEditChannelName()">Bearbeiten</button>
+            <button class="edit-btn" (click)="viewEditChannelName()" *ngIf="channelId != mainChannel || currentUser == admin1 || currentUser == admin2"  >Bearbeiten</button>
         </div>
         <span class="channel-name information-text"><img src="/assets/images/tag.png" alt="">{{ channelName }}</span>
     </div>
@@ -30,7 +30,7 @@
     <div class="section-edit-channel-description" id="channel-description-save">
         <div class="title-headline">
             <h2 class="title">Beschreibung</h2>
-            <button class="edit-btn" (click)="viewEditChannelDescription()">Bearbeiten</button>
+            <button class="edit-btn" (click)="viewEditChannelDescription()"  *ngIf="channelId != mainChannel || currentUser == admin1 || currentUser == admin2">Bearbeiten</button>
         </div>
         <span class="information-text">{{ channelDescription }}</span>
 

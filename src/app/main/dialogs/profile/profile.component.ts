@@ -7,6 +7,7 @@ import { from } from 'rxjs';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { AuthService } from 'src/app/main/services/auth.service';
 import { RefreshService } from '../../services/refresh.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -20,9 +21,11 @@ export class ProfileComponent {
   userProfileImage:string = '';
   profileImageEdit: boolean = false;
   profileImage = './assets/images/profile-icons/person.png';
+  currentUserIsGuest:boolean = false;
 
   profileForm = this.fb.group({
     fullNameFormControl: new FormControl('', [Validators.required]),
+    guestNameFormControl: new FormControl({value: 'Gast', disabled: true}),
     // emailFormControl: new FormControl('', [Validators.required, Validators.email]) //Activate to enable email change option
     emailFormControl: new FormControl({value: '', disabled: true}) //Activate to disable email change option
 
@@ -30,6 +33,7 @@ export class ProfileComponent {
 
   constructor(public dialog: MatDialog, private fb: FormBuilder, public dialogRef: MatDialogRef<ProfileComponent>, private userservice: UserService, private storage: Storage, private authservice: AuthService, private refreshService:RefreshService) {
     this.setData();
+    this.checkIsGuest();
   }
 
   get f() { return this.profileForm.controls; }
@@ -89,6 +93,13 @@ export class ProfileComponent {
       this.profileForm.controls.fullNameFormControl.setValue(userData.fullName);
   }
   
+  checkIsGuest() {
+    if(this.userservice.userDBId == environment.guest) {
+      this.currentUserIsGuest = true;
+    }else {
+      this.currentUserIsGuest = false;
+    }
+  }
 
   updateUserData() {
     let formFullname = this.profileForm.controls.fullNameFormControl.value;
