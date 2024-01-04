@@ -35,18 +35,9 @@ const routes: Routes = [
       {
         path: 'thread/:id/:messageId',
         component: ThreadComponent
-      },
-      // {
-      //   path: '**', // Wildcard route for a component
-      //   redirectTo: '' // Redirect to the parent component
-      // }
+      }
     ]
   }
-  // ,
-  // {
-  //   path: '**', // Wildcard route for the entire app
-  //   redirectTo: "/" + environment.mainChannel // Redirect to the default channel or some other route
-  // }
 ];
 
 @NgModule({

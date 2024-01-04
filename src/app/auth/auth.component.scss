@@ -42,6 +42,40 @@
     }
 }
 
+.footer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+
+  button {
+    padding: 8px 16px;
+    font-size: 18px;
+    border-radius: 25px;
+    gap: 10px;
+    border: none;
+    color: var(--purple-2);
+    cursor: pointer;
+    background: none;
+
+    &:hover {
+        border-radius: 25px;
+        border: 1px solid var(--ligth-purple-lines);
+    }
+
+    &:active {
+        border-radius: 25px;
+        background: var(--purple-2, #444DF2);
+        color: white;
+    }
+
+    &:disabled {
+        border-radius: 25px;
+        background: var(--text-gray, #686868);
+    }
+}
+}
+
 
 //Keyframes
 
