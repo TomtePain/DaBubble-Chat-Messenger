@@ -46,6 +46,8 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { UploadComponent } from './main/dialogs/upload/upload.component';
 import { SearchComponent } from './main/components/search/search.component';
 import { PagenotfoundComponent } from './main/components/pagenotfound/pagenotfound.component';
+import { ImprintComponent } from './main/components/imprint/imprint.component';
+import { PrivacyComponent } from './main/components/privacy/privacy.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +75,9 @@ import { PagenotfoundComponent } from './main/components/pagenotfound/pagenotfou
     SingelChatHeaderComponent,
     DialogProfileviewOfOthersComponent,
     SearchComponent,
-    PagenotfoundComponent
+    PagenotfoundComponent,
+    ImprintComponent,
+    PrivacyComponent
   ],
   imports: [
     BrowserModule,

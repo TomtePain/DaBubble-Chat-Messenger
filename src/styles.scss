@@ -7,6 +7,7 @@ html,
 body {
   height: 100%;
   margin: 0;
+  background-color: var(--main-bg-color);
 }
 
 body {
@@ -141,6 +142,78 @@ app-search {
 
 .pointer {
   cursor: pointer;
+}
+
+.arrow-back {
+  cursor: pointer;
+  padding: 8px;
+  margin-left: -8px;
+
+  &:hover {
+    border-radius: 100%;
+    color: var(--purple-1);
+    background-color: var(--light-purple-bg);
+  }
+}
+
+// STATIC Pages styles
+.staticpage-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: calc(100% - 150px);
+  justify-content: center;
+  align-items: center;
+  padding: 75px 75px 48px;
+  font-size: 18px;
+
+  .header {
+    width: 100%;
+
+    img {
+      width: 240px;
+    }
+  }
+
+  .content {
+    border-radius: 30px;
+    background: #fff;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    padding: 50px 53px;
+    width: calc(100% - 106px);
+    max-width: 520px;
+    gap: 32px;
+
+    .content-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+    }
+
+    h2 {
+      color: var(--purple-1, #444df2);
+      font-size: 46px;
+      font-weight: 700;
+      line-height: 55px;
+      margin-bottom: 0px;
+    }
+
+    & > p {
+      font-size: 20px;
+      line-height: 24px;
+      text-align: left;
+      margin-bottom: 0px;
+    }
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      margin-top: -16px;
+    }
+  }
 }
 
 // ONLY FOR WORK BY TOM

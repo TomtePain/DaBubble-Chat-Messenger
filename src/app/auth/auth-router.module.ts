@@ -21,7 +21,7 @@ const routes: Routes = [
     {
         path: 'setnewpassword',
         component: SetnewpasswdComponent
-    },
+    }
 ];
 
 @NgModule({

@@ -7,15 +7,18 @@
     justify-content: center;
     align-items: center;
     padding: 50px 53px;
-    width: 500px;
+    width: calc(100% - 106px);
+    max-width: 520px;
+    gap: 32px;
     position: relative;
 
     .head {
         display: flex;
         justify-content: center;
         align-items: center;
+        text-align: center;
         position: relative;
-        margin-bottom: 15px;
+        margin-bottom: 16px;
 
         .arrow-back {
             position: absolute;
@@ -29,13 +32,13 @@
             font-size: 46px;
             font-weight: 700;
             line-height: 55px;
-            margin-bottom: 30px;
+            margin-bottom: 0px;
         }
     }
 
     &>p {
         color: var(--black, #000);
-        text-align: left;
+        text-align: center;
         width: 100%;
         font-size: 20px;
         font-weight: 400;
@@ -44,31 +47,29 @@
     .reg-form {
         display: flex;
         flex-direction: column;
+        width: 100%;
 
         .input-box {
             width: 100%;
             position: relative;
+            width: 100%;
 
             .icon {
                 position: absolute;
                 color: #686868;
-                top: 14px;
-                left: 12px;
+                top: 16px;
+                left: 32px;
             }
 
             input {
-                padding-left: 24px;
                 outline: none;
                 border-radius: 100px;
-                border: none;
                 background: var(--bg-color, #ECEEFE);
                 border: 1px solid var(--bg-color, #ECEEFE);
-                display: flex;
-                padding: 18px 40px;
-                align-items: center;
+                padding: 16px 20px 16px 80px;
                 gap: 10px;
-                align-self: stretch;
-                width: 27rem;
+                width: calc(100% - 100px);
+                font-size: 18px;
                 margin-bottom: 32px;
 
                 &:focus {
@@ -95,9 +96,28 @@
         align-items: flex-end;
         width: 100%;
 
-        .mat-mdc-raised-button,
-        .mat-mdc-outlined-button {
-            border-radius: 25px !important;
+        button {
+            padding: 24px 32px;
+            font-size: 18px;
+            border-radius: 25px;
+            gap: 10px;
+            background-color: var(--purple-1);
+            color: white;
+
+            &:hover {
+                border-radius: 25px;
+                background: var(--purple-2, #797EF3);
+            }
+
+            &:active {
+                border-radius: 25px;
+                background: var(--purple-1, #444DF2);
+            }
+        
+            &:disabled {
+                border-radius: 25px;
+                background: var(--text-gray, #686868);
+            }
         }
     }
 }

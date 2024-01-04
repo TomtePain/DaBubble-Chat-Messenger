@@ -4,13 +4,17 @@ import { MainComponent } from './main/main.component';
 import { AuthComponent } from './auth/auth.component';
 import { redirectUnauthorizedTo, canActivate } from '@angular/fire/auth-guard';
 import { PagenotfoundComponent } from './main/components/pagenotfound/pagenotfound.component';
+import { ImprintComponent } from './main/components/imprint/imprint.component';
+import { PrivacyComponent } from './main/components/privacy/privacy.component';
 const redirectToLogin = () => redirectUnauthorizedTo(['auth/login']);
 const routes: Routes = [
+  {path: 'imprint', component: ImprintComponent},
+  {path: 'privacy', component: PrivacyComponent},
   {
     path: '',
     component: MainComponent,
     loadChildren: () => import('./main/main-router.module').then(m => m.MainRoutingModule),
-     ...canActivate(redirectToLogin)
+    ...canActivate(redirectToLogin)
   },
   {
     path: 'auth',
@@ -19,6 +23,7 @@ const routes: Routes = [
   },
   {path: '**', component: PagenotfoundComponent}
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes , { anchorScrolling: 'enabled'})],

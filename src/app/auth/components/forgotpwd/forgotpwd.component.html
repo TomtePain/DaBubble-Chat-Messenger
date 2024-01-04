@@ -8,7 +8,7 @@
     <form [formGroup]="forgotpwdForm" class="reg-form">
         <div class="input-box">
             <mat-icon fontIcon="mail" class="icon"></mat-icon>
-            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com">
+            <input type="email" name="email" id="email" formControlName="email" placeholder="beispielname@email.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$">
         </div>
     </form>
     <p class="hint">Wir senden Ihnen eine E-Mail, über die Sie Ihr Passwort ändern können.</p>
