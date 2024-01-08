@@ -28,6 +28,7 @@ export class ChatMessageComponent implements OnInit {
   @Input() messageDataIndex: any;
   @Input() userName!: string;
   @Input() channelID!: string;
+  @Input() channelUser: any;
   @Output() threadCreate = new EventEmitter<string>();
   @Output() tempThreadInput = new EventEmitter<any>();
   isThread: boolean = false;
@@ -43,6 +44,7 @@ export class ChatMessageComponent implements OnInit {
   private destroy$ = new Subject<void>();
   showEmojiPicker = false;
   message: any = '';
+  channelUserNames:Array<any> = [];
 
   constructor(
     public firestore: Firestore,
@@ -65,6 +67,7 @@ export class ChatMessageComponent implements OnInit {
     if (this.isThreadMessage) {
       this.messageDataIndex = 999999;
     }
+    this.getChannelUserNames();
   }
 
   ngOnDestroy() {
@@ -287,5 +290,51 @@ export class ChatMessageComponent implements OnInit {
   hideBoxes() {
     this.showEmojiPicker = false;
   }
+
+  ///////////////////////////////////////////////////////////////////
+
+  // START EXPERIMENTAL 
+
+  ///////////////////////////////////////////////////////////////////
+
+  getChannelUserNames() {
+    this.channelUserNames = [];
+    this.channelUser.forEach((name:any) => {
+      this.channelUserNames.push(name['fullName']);
+    })
+  }
+
+
+  splitText(allowedNames: any[]): string {
+    let result = this.messageData.message;
+    let markedNames = document.querySelectorAll(".highlight-message-names");
+
+    allowedNames.forEach((name) => {
+      const regex = new RegExp(`@${name}`, 'g');
+      result = result.replace(regex, `<span class="highlight-message-names">@${name}</span>`);
+    });
+
+    markedNames.forEach((item) => {
+      item.setAttribute('data-name', item.innerHTML.slice(1))
+    })
+
+    return result;
+  }
+
+  handleNameClick(event: any): void {
+    if (event.target.classList.contains('highlight-message-names')) {
+      let clickedName = event.target.getAttribute('data-name');
+      let exist = this.channelUser.find((userName:any) => userName.fullName == clickedName);
+      if(exist) {
+        console.log('exist:', exist.id)
+      }
+      // Führen Sie hier die Aktionen für den Klick auf den Namen durch
+
+      console.log(`Name clicked: ${clickedName}`);
+    }
+  }
+
+
+
 
 }
