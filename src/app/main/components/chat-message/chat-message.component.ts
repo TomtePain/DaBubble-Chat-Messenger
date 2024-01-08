@@ -44,17 +44,17 @@ export class ChatMessageComponent implements OnInit {
   private destroy$ = new Subject<void>();
   showEmojiPicker = false;
   message: any = '';
-  channelUserNames:Array<any> = [];
+  channelUserNames: Array<any> = [];
 
   constructor(
     public firestore: Firestore,
     public crud: CrudService,
     private reactionservice: ReactionService,
-    private userservice:UserService,
+    private userservice: UserService,
     private router: Router,
     public dialog: MatDialog,
     public editorService: EditorService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -77,7 +77,7 @@ export class ChatMessageComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['messageData'] && !changes['messageData'].firstChange) {
-      this.messageData = changes['messageData'].currentValue ;
+      this.messageData = changes['messageData'].currentValue;
     }
   }
 
@@ -86,27 +86,27 @@ export class ChatMessageComponent implements OnInit {
       environment.threadDb + '/' + messageData.threadId + '/' + 'messages';
 
     this.crud.getItem(path).pipe(
-        //Use pipe to apply actions step by step to the Observable. First map
-        map((allThreadMessages) => {
-          // If allThreadMessages is either not provided or an empty array, the function returns a default object with a count of 0 and a latestTimestamp of -1.
-          if (!allThreadMessages || allThreadMessages.length === 0) {
-            return {
-              count: 0,
-              latestTimestamp: 0,
-            };
-          }
-          // If there are thread messages, take the maximum timestamp from them and return an object with the total count of messages and the latest timestamp.
-          const latestTimestamp = Math.max(
-            ...allThreadMessages.map((msg: any) => msg.timestamp)
-          );
+      //Use pipe to apply actions step by step to the Observable. First map
+      map((allThreadMessages) => {
+        // If allThreadMessages is either not provided or an empty array, the function returns a default object with a count of 0 and a latestTimestamp of -1.
+        if (!allThreadMessages || allThreadMessages.length === 0) {
           return {
-            count: allThreadMessages.length,
-            latestTimestamp: latestTimestamp,
+            count: 0,
+            latestTimestamp: 0,
           };
-        }),
-        // Uses the takeUntil operator to automatically unsubscribe from the observable when the component is destroyed. It listens for a value emitted from the destroy$ subject (which happens in the ngOnDestroy method).
-        takeUntil(this.destroy$)
-      )
+        }
+        // If there are thread messages, take the maximum timestamp from them and return an object with the total count of messages and the latest timestamp.
+        const latestTimestamp = Math.max(
+          ...allThreadMessages.map((msg: any) => msg.timestamp)
+        );
+        return {
+          count: allThreadMessages.length,
+          latestTimestamp: latestTimestamp,
+        };
+      }),
+      // Uses the takeUntil operator to automatically unsubscribe from the observable when the component is destroyed. It listens for a value emitted from the destroy$ subject (which happens in the ngOnDestroy method).
+      takeUntil(this.destroy$)
+    )
       .subscribe((allThreadMessages) => {
         this.amountThreadMessages = allThreadMessages.count;
         this.lastThreadTimeStamp = allThreadMessages.latestTimestamp;
@@ -142,7 +142,7 @@ export class ChatMessageComponent implements OnInit {
     options?.classList.toggle('d-none');
   }
 
-  openHidedDeleteBtn(i:any) {
+  openHidedDeleteBtn(i: any) {
     let open = document.getElementById(`openHidedDeleteBtn${i}`);
     open?.classList.toggle('d-none');
   }
@@ -157,22 +157,22 @@ export class ChatMessageComponent implements OnInit {
   }
 
   saveEditMessage(message: any) {
-    let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';  
+    let path = environment.channelDb + '/' + this.channelID + '/' + 'messages';
     const docInstance = doc(this.firestore, path, message.id);
     let changes: any = document.getElementById('messageChatContent');
     let updateData = {
       message: changes.value,
       updated: true,
       messageLowercase: this.editorService.messageToLowercase(changes.value),
-      searchTerms: this.editorService.messageToSearchTerms(changes.value) 
+      searchTerms: this.editorService.messageToSearchTerms(changes.value)
     };
 
-    if(changes.value == ''){
+    if (changes.value == '') {
       this.showDeleteMessageDialog();
     } else {
       this.updateDataInDb(docInstance, updateData);
     }
-    
+
   }
 
   updateDataInDb(docInstance: DocumentReference, updatedData: any) {
@@ -185,21 +185,21 @@ export class ChatMessageComponent implements OnInit {
   }
 
   showMoreEmojis(i: any) {
-    if(this.isThreadMessage) {
-    for (let j = 0; j < this.sortedReactionTypes.length; j++) {
-      let emojiElement = document.getElementById(
-        `emoji-${this.sortedReactionTypes[j]}${i}`
-      );
-      emojiElement?.classList.toggle('d-none');
+    if (this.isThreadMessage) {
+      for (let j = 0; j < this.sortedReactionTypes.length; j++) {
+        let emojiElement = document.getElementById(
+          `emoji-${this.sortedReactionTypes[j]}${i}`
+        );
+        emojiElement?.classList.toggle('d-none');
+      }
+    } else {
+      for (let j = 2; j < this.sortedReactionTypes.length; j++) {
+        let emojiElement = document.getElementById(
+          `emoji-${this.sortedReactionTypes[j]}${i}`
+        );
+        emojiElement?.classList.toggle('d-none');
+      }
     }
-  } else {
-    for (let j = 2; j < this.sortedReactionTypes.length; j++) {
-      let emojiElement = document.getElementById(
-        `emoji-${this.sortedReactionTypes[j]}${i}`
-      );
-      emojiElement?.classList.toggle('d-none');
-    }
-  }
   }
 
   showEmojiBubble(i: any) {
@@ -224,7 +224,7 @@ export class ChatMessageComponent implements OnInit {
     this.userName = localStorageItem;
   }
 
-  viewUsersProfile(userId:any) {
+  viewUsersProfile(userId: any) {
     this.dialog.open(DialogProfileviewOfOthersComponent, {
       data: {
         userId: userId,
@@ -238,8 +238,8 @@ export class ChatMessageComponent implements OnInit {
       data: {
         messageType: 'chat',
         messageData: this.messageData,
-        existingUser : this.existingUser,
-        channelID : this.channelID,
+        existingUser: this.existingUser,
+        channelID: this.channelID,
         userID: this.userservice.userDBId
       }
     })
@@ -263,7 +263,7 @@ export class ChatMessageComponent implements OnInit {
 
 
   checkForPDF() {
-    let name:string = this.messageData.uploadFileName;
+    let name: string = this.messageData.uploadFileName;
     let splitedName: string[] = name.split('.');
     let lastPc: string = splitedName[splitedName.length - 1];
     return lastPc
@@ -274,14 +274,14 @@ export class ChatMessageComponent implements OnInit {
       data: { typeOfMessage: msg },
     });
   }
-  
+
 
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
   addEmoji(event: any) {
-    let input:any = document.getElementById('messageChatContent');
+    let input: any = document.getElementById('messageChatContent');
     const text = `${input.value}${event.emoji.native}`;
     input.value = text;
     this.showEmojiPicker = false;
@@ -299,9 +299,11 @@ export class ChatMessageComponent implements OnInit {
 
   getChannelUserNames() {
     this.channelUserNames = [];
-    this.channelUser.forEach((name:any) => {
-      this.channelUserNames.push(name['fullName']);
-    })
+    if (this.channelUser) {
+      this.channelUser.forEach((name: any) => {
+        this.channelUserNames.push(name['fullName']);
+      })
+    }
   }
 
 
@@ -324,14 +326,14 @@ export class ChatMessageComponent implements OnInit {
   handleNameClick(event: any): void {
     if (event.target.classList.contains('highlight-message-names')) {
       let clickedName = event.target.getAttribute('data-name');
-      let exist = this.channelUser.find((userName:any) => userName.fullName == clickedName);
-      if(exist) {
+      let exist = this.channelUser.find((userName: any) => userName.fullName == clickedName);
+      if (exist) {
         this.viewUsersProfile(exist.id)
       }
     }
   }
 
-  
+
 
 
 

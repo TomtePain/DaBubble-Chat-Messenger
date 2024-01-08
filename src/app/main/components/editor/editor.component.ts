@@ -234,6 +234,7 @@ export class EditorComponent implements OnInit {
    * retrieved from the editor service.
    */
   initializeChannelUsers() {
+    this.channelUsers = [];
     this.channelUsers = this.editorService.usersData
     this.searchResult = this.channelUsers
   }
@@ -272,6 +273,7 @@ export class EditorComponent implements OnInit {
   }
 
   searchUser(searchValue: string) {
+    console.log('channelUser:',this.channelUsers)
     this.searchResult = this.channelUsers.filter((el) => {
       return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
     });
