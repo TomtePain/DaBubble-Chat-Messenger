@@ -326,14 +326,12 @@ export class ChatMessageComponent implements OnInit {
       let clickedName = event.target.getAttribute('data-name');
       let exist = this.channelUser.find((userName:any) => userName.fullName == clickedName);
       if(exist) {
-        console.log('exist:', exist.id)
+        this.viewUsersProfile(exist.id)
       }
-      // Führen Sie hier die Aktionen für den Klick auf den Namen durch
-
-      console.log(`Name clicked: ${clickedName}`);
     }
   }
 
+  
 
 
 
