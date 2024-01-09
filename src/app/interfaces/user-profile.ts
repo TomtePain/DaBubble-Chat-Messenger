@@ -5,4 +5,5 @@ export interface UserProfile {
     photoURL: string;
     accessToChannels: [];
     isOnline: boolean;
+    id:string;
 }

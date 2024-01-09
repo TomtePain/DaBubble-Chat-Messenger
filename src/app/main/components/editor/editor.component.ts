@@ -26,7 +26,7 @@ export class EditorComponent implements OnInit {
   @Input() threadId!: string;
   @Input() channelId!: string;
   @Input() mainMessageId: any;
-  @Input() channelUser:any;
+  @Input() channelUser: any;
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchMarktUsers: boolean = false
@@ -43,6 +43,8 @@ export class EditorComponent implements OnInit {
   uploadedDataName: string = '';
   private routerSubscription: Subscription;
   currentChannel: Array<any> = [];
+  markedUsers: Array<any> = [];
+  markedUsersInText:Array<any> = [];
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -108,11 +110,14 @@ export class EditorComponent implements OnInit {
       user: this.userName,
       timestamp: timeStamp.getTime(),
       message: content.value,
+      markedUser: this.markedUsersInText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
       searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
+
+    this.checkMarkedUser(content.value);
 
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.channelDb + '/' + this.channelId + '/' + 'messages').then(() => {
@@ -121,6 +126,8 @@ export class EditorComponent implements OnInit {
         this.uploadedDataName = '';
         this.uploadedData = false;
         this.message = '';
+        this.markedUsers = [];
+        this.markedUsersInText = [];
         setTimeout(() => {
           this.scrollToBottom.emit()
         }, 500);
@@ -324,13 +331,24 @@ export class EditorComponent implements OnInit {
    *
    * @param {string} name - The name to be added to the message.
   */
-  addToMsg(name: string) {
+  addToMsg(name: string, id: string) {
     const textToAdd = this.message.substring(0, this.lastIndexOfAt + 1);
     this.message = `${textToAdd}` + `${name}`;
     this.searchMarktUsers = false;
     this.setCursor();
+    this.markedUsers.push(id);
   }
 
+  checkMarkedUser(message:string) {
+    this.markedUsers.forEach((user) => {
+      let existUser = this.userservice.allUsers.find((exist:any) => exist.id == user);
+      if(existUser.fullName == message.match(existUser.fullName)) {
+        if(!this.markedUsersInText.includes(existUser.id)){
+          this.markedUsersInText.push(existUser.id)
+        }
+      }
+    })
+  }
 
   /**
    * Event listener for the 'input' event that triggers when the user types in a textarea.
