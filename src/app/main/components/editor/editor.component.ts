@@ -26,6 +26,7 @@ export class EditorComponent implements OnInit {
   @Input() threadId!: string;
   @Input() channelId!: string;
   @Input() mainMessageId: any;
+  @Input() channelUser:any;
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchMarktUsers: boolean = false
@@ -41,6 +42,7 @@ export class EditorComponent implements OnInit {
   uploadedData: boolean = false;
   uploadedDataName: string = '';
   private routerSubscription: Subscription;
+  currentChannel: Array<any> = [];
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -57,7 +59,7 @@ export class EditorComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.editorService.subSingelData(this.channelId)
+    this.editorService.subSingelData(this.channelId);
   }
 
   ngOnDestroy() {
@@ -229,33 +231,36 @@ export class EditorComponent implements OnInit {
 
   // KW SEARCH SECTION
 
+
   /**
    * Initializes the channel users and search result by setting them to the user data
    * retrieved from the editor service.
    */
   initializeChannelUsers() {
-    this.channelUsers = this.editorService.usersData
-    this.channelUsers = this.removeDuplicatesFromJsonArray(this.channelUsers, 'uid');
-    this.searchResult = this.channelUsers
+    // this.channelUsers = this.editorService.usersData;
+    // this.channelUsers = this.removeDuplicatesFromJsonArray(this.channelUsers, 'uid');
+    this.channelUsers = this.channelUser;
+    this.searchResult = [];
+    this.searchResult = this.channelUsers;
   }
 
 
-  removeDuplicatesFromJsonArray(jsonArray:Array<any>, key:any) {
-    let newArray:Array<any> = [];
-    let keysSet = new Set();
-  
-    jsonArray.forEach((item:any) => {
-      let keyValue = item[key];
-  
-      if (!keysSet.has(keyValue)) {
-        keysSet.add(keyValue);
-        newArray.push(item);
-      }
-    });
-  
-    return newArray;
-  }
-  
+  // removeDuplicatesFromJsonArray(jsonArray: Array<any>, key: any) {
+  //   let newArray: Array<any> = [];
+  //   let keysSet = new Set();
+
+  //   jsonArray.forEach((item: any) => {
+  //     let keyValue = item[key];
+
+  //     if (!keysSet.has(keyValue)) {
+  //       keysSet.add(keyValue);
+  //       newArray.push(item);
+  //     }
+  //   });
+
+  //   return newArray;
+  // }
+
 
   /**
    * Updates the message by appending '@', sets the cursor, triggers the keyup event,
@@ -291,7 +296,6 @@ export class EditorComponent implements OnInit {
   }
 
   searchUser(searchValue: string) {
-    console.log('channelUser:', this.channelUsers)
     this.searchResult = this.channelUsers.filter((el) => {
       return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
     });
