@@ -5,7 +5,7 @@
 
   <!-- CONTENT FOR THE USE OF @-SIGN FUNCTION!!! -->
 
-  <div class="markt-users" *ngIf="searchMarktUsers">
+  <div class="markt-users" *ngIf="searchMarktUsers && isChatArea">
     <div class="users-box">
       <div class="user-box" *ngFor="let item of searchResult" (click)="addToMsg(item.fullName)">  
         <div class="image-container">
@@ -22,7 +22,7 @@
 
   <!-- Text input starts here -->
   <textarea type="text" placeholder="Nachricht an..." id="text" *ngIf="isChatArea" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageKeyBoard($event)"></textarea>
-  <textarea type="text" placeholder="Antworten..." id="thread-text" *ngIf="(isThreadArea && !isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageThreadKeyBoard($event)"></textarea>
+  <textarea type="text" placeholder="Antworten..." id="thread-text" *ngIf="(isThreadArea && !isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()"  #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageThreadKeyBoard($event)"></textarea>
   <textarea type="text" placeholder="Antworten und Thread erstellen..." id="new-thread-text" *ngIf="(isThreadArea && isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt($event)" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewThreadKeyBoard($event)"></textarea>
 
    <!-- File Upload starts here -->
@@ -39,7 +39,7 @@
        <img class="icon" (click)="fileInput.click()" src="/assets/images/plus-icon.png" alt="" />
       <div class="vertical-separator"></div>
       <img class="icon" src="/assets/images/reaction-icon.png" alt="" (click)="toggleEmojiPicker()" />
-      <img class="icon" src="/assets/images/add-icon.png" alt="" (click)="updateMessageAndSearch()" />
+      <img class="icon" src="/assets/images/add-icon.png" alt="" (click)="updateMessageAndSearch()" *ngIf="isChatArea">
     </div>
     <div>
       <img class="sendicon" src="/assets/images/send-icon.png" alt="" (click)="addNewMessage()" *ngIf="isChatArea">
