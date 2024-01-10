@@ -310,15 +310,32 @@ export class ChatMessageComponent implements OnInit {
   splitText(allowedNames: any[]): string {
     let result = this.messageData.message;
     let markedNames = document.querySelectorAll(".highlight-message-names");
+    let hidedIds = document.querySelectorAll(".hided-message-ids");
 
-    allowedNames.forEach((name) => {
-      const regex = new RegExp(`@${name}`, 'g');
-      result = result.replace(regex, `<span class="highlight-message-names">@${name}</span>`);
-    });
+    if (this.messageData.markedUser) {
+      this.messageData.markedUser.forEach((data: any) => {
+        const regex = new RegExp(`@${data.fullName}`, 'g');
+        result = result.replace(regex, `<span class="highlight-message-names">@${data.id}</span><span class="d-none hided-message-ids">${data.id}</span>`);
+      })
+    } else {
+      allowedNames.forEach((name) => {
+        const regex = new RegExp(`@${name}`, 'g');
+        result = result.replace(regex, `<span class="highlight-message-names">@${name}</span>`);
+      });
+    }
 
     markedNames.forEach((item) => {
-      item.setAttribute('data-name', item.innerHTML.slice(1))
+      if (this.messageData.markedUser) {
+        this.messageData.markedUser.forEach((data: any) => {
+          if (item.innerHTML.slice(1) == data.id) {
+            item.setAttribute('data-name', data.id);
+          }
+        });
+      } else {
+        // item.setAttribute('data-name', item.innerHTML.slice(1));
+      }
     })
+
 
     return result;
   }
@@ -326,10 +343,12 @@ export class ChatMessageComponent implements OnInit {
   handleNameClick(event: any): void {
     if (event.target.classList.contains('highlight-message-names')) {
       let clickedName = event.target.getAttribute('data-name');
-      let exist = this.channelUser.find((userName: any) => userName.fullName == clickedName);
+      let exist = this.channelUser.find((userName: any) => userName.id == clickedName);
       if (exist) {
         this.viewUsersProfile(exist.id)
       }
+
+
     }
   }
 

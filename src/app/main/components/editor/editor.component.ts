@@ -344,7 +344,10 @@ export class EditorComponent implements OnInit {
       let existUser = this.userservice.allUsers.find((exist:any) => exist.id == user);
       if(existUser.fullName == message.match(existUser.fullName)) {
         if(!this.markedUsersInText.includes(existUser.id)){
-          this.markedUsersInText.push(existUser.id)
+          this.markedUsersInText.push({
+            fullName: existUser.fullName,
+            id: existUser.id
+          });
         }
       }
     })
