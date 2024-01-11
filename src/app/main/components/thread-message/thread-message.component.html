@@ -37,7 +37,7 @@
         <button class="btn-prime red-btn d-none" id="openHidedDeleteBtnThread{{messageDataIndex}}" (click)="showDeleteMessageDialog()">Nachricht löschen</button>
       </div>
 
-      <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="message-thread-content" value="{{ messageData.message }}">
+      <textarea type="text" class="message-chat-info-content-edit scroll" *ngIf="editActive" id="message-thread-content" value="{{ messageData.message }}"></textarea>
       <div class="icon-area">
           <div class="icon" id="smiley" (click)="toggleEmojiPicker()"></div>
           <div class="edit-button-container">
