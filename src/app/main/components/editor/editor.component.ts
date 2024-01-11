@@ -27,6 +27,8 @@ export class EditorComponent implements OnInit {
   @Input() channelId!: string;
   @Input() mainMessageId: any;
   @Input() channelUser: any;
+  @Input() currentChannel: Array<any> = [];
+  @Input() channelType:string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchMarktUsers: boolean = false
@@ -42,7 +44,6 @@ export class EditorComponent implements OnInit {
   uploadedData: boolean = false;
   uploadedDataName: string = '';
   private routerSubscription: Subscription;
-  currentChannel: Array<any> = [];
   markedUsers: Array<any> = [];
   markedUsersInText:Array<any> = [];
 
@@ -62,6 +63,9 @@ export class EditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.editorService.subSingelData(this.channelId);
+    setTimeout(() => {
+      this.setDirectMessageBodyUser();
+    }, 500);
   }
 
   ngOnDestroy() {
@@ -466,5 +470,16 @@ export class EditorComponent implements OnInit {
     return lastPc
   }
 
+  setDirectMessageBodyUser() {
+    let body:any;
+    this.channelUser.forEach((user:any) => {
+      if(user.id != this.userName && !this.currentChannel[0].own ) {
+        body = user;
+      } else if (user.id == this.userName && this.currentChannel[0].own) {
+        body = user;
+      }
+    });
+    return body.fullName
+  }
 }
 
