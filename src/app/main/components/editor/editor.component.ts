@@ -28,7 +28,7 @@ export class EditorComponent implements OnInit {
   @Input() mainMessageId: any;
   @Input() channelUser: any;
   @Input() currentChannel: Array<any> = [];
-  @Input() channelType:string = '';
+  @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchMarktUsers: boolean = false
@@ -45,7 +45,7 @@ export class EditorComponent implements OnInit {
   uploadedDataName: string = '';
   private routerSubscription: Subscription;
   markedUsers: Array<any> = [];
-  markedUsersInText:Array<any> = [];
+  markedUsersInText: Array<any> = [];
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -343,11 +343,11 @@ export class EditorComponent implements OnInit {
     this.markedUsers.push(id);
   }
 
-  checkMarkedUser(message:string) {
+  checkMarkedUser(message: string) {
     this.markedUsers.forEach((user) => {
-      let existUser = this.userservice.allUsers.find((exist:any) => exist.id == user);
-      if(existUser.fullName == message.match(existUser.fullName)) {
-        if(!this.markedUsersInText.includes(existUser.id)){
+      let existUser = this.userservice.allUsers.find((exist: any) => exist.id == user);
+      if (existUser.fullName == message.match(existUser.fullName)) {
+        if (!this.markedUsersInText.includes(existUser.id)) {
           this.markedUsersInText.push({
             fullName: existUser.fullName,
             id: existUser.id
@@ -471,15 +471,17 @@ export class EditorComponent implements OnInit {
   }
 
   setDirectMessageBodyUser() {
-    let body:any;
-    this.channelUser.forEach((user:any) => {
-      if(user.id != this.userName && !this.currentChannel[0].own ) {
-        body = user;
-      } else if (user.id == this.userName && this.currentChannel[0].own) {
-        body = user;
-      }
-    });
-    return body.fullName
+    let body: any;
+    if (this.channelUser) {
+      this.channelUser.forEach((user: any) => {
+        if (user.id != this.userName && !this.currentChannel[0].own) {
+          body = user;
+        } else if (user.id == this.userName && this.currentChannel[0].own) {
+          body = user;
+        }
+      });
+      return body.fullName
+    }
   }
 }
 
