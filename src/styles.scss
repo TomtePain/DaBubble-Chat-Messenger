@@ -156,6 +156,18 @@ app-search {
   }
 }
 
+.highlight-message-names {
+  background-color: var(--ligth-purple-lines);
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--purple-1);
+  }
+}
+
 // STATIC Pages styles
 .staticpage-container {
   display: flex;

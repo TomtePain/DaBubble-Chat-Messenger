@@ -23,9 +23,10 @@ export class EditorComponent implements OnInit {
   @Input() isThreadArea: boolean = false;
   @Input() isNewThread: boolean = false;;
   @Input() isChatArea: boolean = false;
-  @Input() threadId!: string; 
+  @Input() threadId!: string;
   @Input() channelId!: string;
   @Input() mainMessageId: any;
+  @Input() channelUser: any;
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchMarktUsers: boolean = false
@@ -39,8 +40,11 @@ export class EditorComponent implements OnInit {
   message: any = '';
   lastAtPosition = -1;
   uploadedData: boolean = false;
-  uploadedDataName:string = '';
+  uploadedDataName: string = '';
   private routerSubscription: Subscription;
+  currentChannel: Array<any> = [];
+  markedUsers: Array<any> = [];
+  markedUsersInText:Array<any> = [];
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -54,10 +58,10 @@ export class EditorComponent implements OnInit {
       }
     });
   }
-  
+
 
   ngOnInit(): void {
-    this.editorService.subSingelData(this.channelId)
+    this.editorService.subSingelData(this.channelId);
   }
 
   ngOnDestroy() {
@@ -67,25 +71,25 @@ export class EditorComponent implements OnInit {
   addNewMessageKeyBoard(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
     if (!keyboardEvent.shiftKey) {
-    event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
-    this.addNewMessage();
-  }
+      event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
+      this.addNewMessage();
+    }
   }
 
   addNewMessageThreadKeyBoard(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
     if (!keyboardEvent.shiftKey) {
-    event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
-    this.addNewMessageThread();
-  }
+      event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
+      this.addNewMessageThread();
+    }
   }
 
   addNewThreadKeyBoard(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
     if (!keyboardEvent.shiftKey) {
-    event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
-    this.addNewThread();
-  }
+      event.preventDefault(); // This will prevent the default Enter key behavior (i.e., new line)
+      this.addNewThread();
+    }
   }
 
   addNewMessage() {
@@ -94,7 +98,7 @@ export class EditorComponent implements OnInit {
     let fileURL;
     let fileName;
 
-    if(this.editorService.fileUrl == '') {
+    if (this.editorService.fileUrl == '') {
       fileURL = false;
       fileName = false;
     } else {
@@ -106,11 +110,14 @@ export class EditorComponent implements OnInit {
       user: this.userName,
       timestamp: timeStamp.getTime(),
       message: content.value,
+      markedUser: this.markedUsersInText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
-      searchTerms: this.editorService.messageToSearchTerms(content.value) 
+      searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
+
+    this.checkMarkedUser(content.value);
 
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.channelDb + '/' + this.channelId + '/' + 'messages').then(() => {
@@ -119,6 +126,8 @@ export class EditorComponent implements OnInit {
         this.uploadedDataName = '';
         this.uploadedData = false;
         this.message = '';
+        this.markedUsers = [];
+        this.markedUsersInText = [];
         setTimeout(() => {
           this.scrollToBottom.emit()
         }, 500);
@@ -132,7 +141,7 @@ export class EditorComponent implements OnInit {
     let fileURL;
     let fileName;
 
-    if(this.editorService.fileUrl == '') {
+    if (this.editorService.fileUrl == '') {
       fileURL = false;
       fileName = false;
     } else {
@@ -147,7 +156,7 @@ export class EditorComponent implements OnInit {
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
-      searchTerms: this.editorService.messageToSearchTerms(content.value) 
+      searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
@@ -163,20 +172,20 @@ export class EditorComponent implements OnInit {
     let timeStamp = new Date();
     let content: any = document.getElementById('new-thread-text');
     let path = environment.channelDb + '/' + this.channelId + '/' + 'messages';
-    const docInstance:DocumentReference = doc(this.firestore, path, this.mainMessageId);
-    
+    const docInstance: DocumentReference = doc(this.firestore, path, this.mainMessageId);
+
     let fileURL;
     let fileName;
 
-    if(this.editorService.fileUrl == '') {
+    if (this.editorService.fileUrl == '') {
       fileURL = false;
       fileName = false;
     } else {
       fileURL = this.editorService.fileUrl;
       fileName = this.editorService.fileName
     }
-  
-  
+
+
     let newMessage = {
       user: this.userName,
       timestamp: timeStamp.getTime(),
@@ -184,32 +193,32 @@ export class EditorComponent implements OnInit {
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
-      searchTerms: this.editorService.messageToSearchTerms(content.value) 
+      searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
-  
+
     let newThread = {
       mainMessage: this.mainMessageId
     }
     if (content.value != '') {
-      
+
       //Create a new thread in DB including mainMessage ID
       this.crud.addItem(newThread, environment.threadDb).then(docRef => {
-      let newThreadId:string = docRef.id;
+        let newThreadId: string = docRef.id;
         //Then add threadId to mainMessage
         let updateData = {
           threadId: newThreadId,
         };
         this.crud.addItem(newMessage, environment.threadDb + '/' + docRef.id + '/' + 'messages')
         updateDoc(docInstance, updateData)
-        .catch((error) => {
-          console.error('Error creating newThread:', error);
-      })
-      content.value = '';
-      //route to new thread id
-    this.openThread(newThreadId)
-    });
+          .catch((error) => {
+            console.error('Error creating newThread:', error);
+          })
+        content.value = '';
+        //route to new thread id
+        this.openThread(newThreadId)
+      });
     }
-}
+  }
 
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
@@ -229,25 +238,47 @@ export class EditorComponent implements OnInit {
 
   // KW SEARCH SECTION
 
+
   /**
    * Initializes the channel users and search result by setting them to the user data
    * retrieved from the editor service.
    */
   initializeChannelUsers() {
-    this.channelUsers = this.editorService.usersData
-    this.searchResult = this.channelUsers
+    // this.channelUsers = this.editorService.usersData;
+    // this.channelUsers = this.removeDuplicatesFromJsonArray(this.channelUsers, 'uid');
+    this.channelUsers = this.channelUser;
+    this.searchResult = [];
+    this.searchResult = this.channelUsers;
   }
+
+
+  // removeDuplicatesFromJsonArray(jsonArray: Array<any>, key: any) {
+  //   let newArray: Array<any> = [];
+  //   let keysSet = new Set();
+
+  //   jsonArray.forEach((item: any) => {
+  //     let keyValue = item[key];
+
+  //     if (!keysSet.has(keyValue)) {
+  //       keysSet.add(keyValue);
+  //       newArray.push(item);
+  //     }
+  //   });
+
+  //   return newArray;
+  // }
+
 
   /**
    * Updates the message by appending '@', sets the cursor, triggers the keyup event,
    * and activates the search for market users.
    */
-  // updateMessageAndSearch() {
-  //   this.message = this.message + '@';
-  //   this.setCursor();
-  //   this.triggerKeyup();
-  //   this.activateSearchMarketUsers();
-  // }
+  updateMessageAndSearch() {
+    this.message = this.message + '@';
+    this.setCursor();
+    this.triggerKeyup();
+    this.activateSearchMarketUsers();
+  }
 
   /**
    * Activates the search for market users by setting the 'searchMarktUsers' flag to true
@@ -300,13 +331,27 @@ export class EditorComponent implements OnInit {
    *
    * @param {string} name - The name to be added to the message.
   */
-  addToMsg(name: string) {
+  addToMsg(name: string, id: string) {
     const textToAdd = this.message.substring(0, this.lastIndexOfAt + 1);
     this.message = `${textToAdd}` + `${name}`;
     this.searchMarktUsers = false;
     this.setCursor();
+    this.markedUsers.push(id);
   }
 
+  checkMarkedUser(message:string) {
+    this.markedUsers.forEach((user) => {
+      let existUser = this.userservice.allUsers.find((exist:any) => exist.id == user);
+      if(existUser.fullName == message.match(existUser.fullName)) {
+        if(!this.markedUsersInText.includes(existUser.id)){
+          this.markedUsersInText.push({
+            fullName: existUser.fullName,
+            id: existUser.id
+          });
+        }
+      }
+    })
+  }
 
   /**
    * Event listener for the 'input' event that triggers when the user types in a textarea.
@@ -316,24 +361,24 @@ export class EditorComponent implements OnInit {
    * @param {Event} event - The input event object.
    */
 
-  // @HostListener('input', ['$event'])
-  // onInput(event: Event): void {
-  //   const textarea = event.target as HTMLTextAreaElement;
-  //   const text = textarea.value;
-  //   const cursorIndex = textarea.selectionStart;
-  //   this.setCursor()
-  //   // Check if the '@' character is typed or '@' preceded by a newline character.
-  //   if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
-  //     this.activateSearchMarketUsers();
-  //   }
-  //   const atPosition = text.lastIndexOf('@');
-  //   if (atPosition === -1) {
-  //     this.searchMarktUsers = false;
-  //   } else if (atPosition !== this.lastAtPosition) {
-  //     this.searchMarktUsers = true;
-  //   }
-  //   this.lastAtPosition = atPosition;
-  // }
+  @HostListener('input', ['$event'])
+  onInput(event: Event): void {
+    const textarea = event.target as HTMLTextAreaElement;
+    const text = textarea.value;
+    const cursorIndex = textarea.selectionStart;
+    this.setCursor()
+    // Check if the '@' character is typed or '@' preceded by a newline character.
+    if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
+      this.activateSearchMarketUsers();
+    }
+    const atPosition = text.lastIndexOf('@');
+    if (atPosition === -1) {
+      this.searchMarktUsers = false;
+    } else if (atPosition !== this.lastAtPosition) {
+      this.searchMarktUsers = true;
+    }
+    this.lastAtPosition = atPosition;
+  }
 
   /**
    * Sets the cursor position in a textarea element to the end of the content.
@@ -388,7 +433,7 @@ export class EditorComponent implements OnInit {
         this.showUploadDialog('hochgeladen');
         this.editorService.uploadData(file);
         this.uploadedData = true;
-        this.uploadedDataName = file.name;        
+        this.uploadedDataName = file.name;
       } else {
         this.showUploadDialog('big data');
       }
@@ -407,19 +452,19 @@ export class EditorComponent implements OnInit {
       data: { typeOfMessage: msg },
     });
   }
-  
-    
 
-openThread(threadId:string) {
-  this.router.navigate([this.channelId, "thread", threadId]);
-}
 
-checkForPDF() {
-  let name:string = this.editorService.fileName;
-  let splitedName: string[] = name.split('.');
-  let lastPc: string = splitedName[splitedName.length - 1];
-  return lastPc
-}
+
+  openThread(threadId: string) {
+    this.router.navigate([this.channelId, "thread", threadId]);
+  }
+
+  checkForPDF() {
+    let name: string = this.editorService.fileName;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 1];
+    return lastPc
+  }
 
 }
 

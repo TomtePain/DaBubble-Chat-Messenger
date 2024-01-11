@@ -60,14 +60,14 @@
                 </ng-container>
 
                 <app-chat-message [messageData]="message" [messageDataIndex]="i"
-                    [channelID]="channelId" id="{{message.id}}"></app-chat-message>
+                    [channelID]="channelId" id="{{message.id}}" [channelUser]="existingUser" ></app-chat-message>
             </ng-container>
 
             <div id="anchor"></div>
         </div>
 
         <div class="editor-container">
-            <app-editor (scrollToBottom)="scrollToBottom()" [isChatArea]="true" [channelId]="channelId"></app-editor>
+            <app-editor (scrollToBottom)="scrollToBottom()" [isChatArea]="true" [channelId]="channelId" [channelUser]="existingUser"></app-editor>
         </div>
 
     </div>
