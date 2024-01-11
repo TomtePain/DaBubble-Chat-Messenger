@@ -310,17 +310,16 @@ export class ChatMessageComponent implements OnInit {
   splitText(allowedNames: any[]): string {
     let result = this.messageData.message;
     let markedNames = document.querySelectorAll(".highlight-message-names");
-    let hidedIds = document.querySelectorAll(".hided-message-ids");
 
     if (this.messageData.markedUser) {
       this.messageData.markedUser.forEach((data: any) => {
         const regex = new RegExp(`@${data.fullName}`, 'g');
-        result = result.replace(regex, `<span class="highlight-message-names">@${data.id}</span><span class="d-none hided-message-ids">${data.id}</span>`);
+        result = result.replace(regex, `<span class="highlight-message-names">@${data.id}</span>`);
       })
     } else {
       allowedNames.forEach((name) => {
-        const regex = new RegExp(`@${name}`, 'g');
-        result = result.replace(regex, `<span class="highlight-message-names">@${name}</span>`);
+        const regex = new RegExp(`@${name.fullName}`, 'g');
+        result = result.replace(regex, `<span class="highlight-message-names">@${name.id}</span>`);
       });
     }
 
@@ -329,13 +328,11 @@ export class ChatMessageComponent implements OnInit {
         this.messageData.markedUser.forEach((data: any) => {
           if (item.innerHTML.slice(1) == data.id) {
             item.setAttribute('data-name', data.id);
+            item.innerHTML = `@${data.fullName}`;
           }
         });
-      } else {
-        // item.setAttribute('data-name', item.innerHTML.slice(1));
-      }
+      } 
     })
-
 
     return result;
   }
@@ -347,8 +344,6 @@ export class ChatMessageComponent implements OnInit {
       if (exist) {
         this.viewUsersProfile(exist.id)
       }
-
-
     }
   }
 
