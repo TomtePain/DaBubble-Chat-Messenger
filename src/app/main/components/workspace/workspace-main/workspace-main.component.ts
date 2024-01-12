@@ -34,6 +34,13 @@ export class WorkspaceMainComponent {
     this.workspaceState.unsubscribe();
   }
 
+  // There is a global method in the app.component.ts that closes the workspace navigation when there is a click anywhere in the app. The HostListener below makes sure the navigation tree can be opened by click and the navigation within can be clicked though the global method is active.
+  @HostListener('click', ['$event'])
+  onClick(event: Event): void {
+    event.stopPropagation();
+  }
+
+
   //When the window is resized the innerWidth of the window is used to check if it is smaller than the smallerDesktopWidth. If it is smaller the workspace is set to false, so that the channel navigation gets hidden.
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
