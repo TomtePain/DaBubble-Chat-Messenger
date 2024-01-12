@@ -6,13 +6,15 @@ import { DialogAddChannelComponent } from '../components/workspace/dialog-add-ch
 import { CrudService } from './crud.service';
 import { UserService } from './user.service';
 import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TreeService {
 
-  constructor(public dialog: MatDialog, private firestore: Firestore, public router: Router, private userservice: UserService, private crud: CrudService) { }
+  private handleWorkspaceState = new Subject<boolean>();
+  workspaceState$ = this.handleWorkspaceState.asObservable();
   clickedTop: boolean = false;
   clickedBottom: boolean = false;
   userChannels: any = [];
@@ -23,6 +25,15 @@ export class TreeService {
   isNewMessage = false;
   isOwnChannel:boolean = false;
   allChannels: Array<any> = [];
+
+  constructor(public dialog: MatDialog, private firestore: Firestore, public router: Router, private userservice: UserService, private crud: CrudService) { }
+
+
+  closeWorkspace() {
+    if(window.innerWidth < environment.smallerDesktopWidth) {
+      this.handleWorkspaceState.next(false);
+    } 
+  }
 
   changeArrow(id: string, isTopArrow: boolean) {
     const element = document.querySelector(`#${id}`) as HTMLImageElement | null;
@@ -61,6 +72,7 @@ export class TreeService {
 
 
   async routeToDmChannel(selectedNode: any) {
+
     if (selectedNode.id === this.currentUserDbId) {
       this.routeToOwnDM();
       this.currentSelectedChannel = selectedNode.id;
@@ -108,6 +120,8 @@ export class TreeService {
     } else {
       this.createNewDm(selectedNode.id);
     }
+
+    // this.closeWorkspace();
   }
   
 
@@ -143,10 +157,12 @@ export class TreeService {
       this.router.navigate(['/', ownMessage.id]);
       // this.currentSelectedChannel = SUCHE NACH this.currentUserDbId in Users Channel und return doc.id;
     })
+    // this.closeWorkspace();
   }
 
 
   handleNodeClick(selectedNode: any) {   
+    this.closeWorkspace();
     this.isNewMessage = false;
     if (selectedNode.id === 'add') {
       this.openAddChannelDialog();
