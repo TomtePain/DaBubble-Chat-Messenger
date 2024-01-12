@@ -20,7 +20,6 @@ export class WorkspaceMainComponent {
     public firestore: Firestore,
     public crud: CrudService,
     public tree: TreeService,
-    private userservice: UserService
   ) {
     this.workspaceState = this.tree.workspaceState$.subscribe(value => {
       this.workspace = value;
