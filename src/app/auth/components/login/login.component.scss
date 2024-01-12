@@ -84,10 +84,11 @@
         position: relative;
         height: 1px;
         margin: 32px 0px 34px;
+        display: flex;
+        justify-content: center;
 
         p {
             position: absolute;
-            left: 44%;
             top: -8px;
             background-color: white;
             padding: 0px 8px;
@@ -167,6 +168,65 @@
             &:disabled {
                 border-radius: 25px;
                 background: var(--text-gray, #686868);
+            }
+        }
+    }
+}
+
+
+
+// MediaQuerys - Responsive Design
+
+@media (max-width: 450px) {
+    .login-container {
+        width: unset;
+        padding: 50px 10px;
+
+        h2 {
+            font-size: 38px;
+        }
+
+        p {
+            font-size: 14px;
+        }
+
+        .login-form {
+            align-items: center;
+
+            .input-box {
+                .icon {
+                    top: 12px;
+                }
+                input {
+                    font-size: 12px;
+                }
+            }
+        }
+
+        a {
+            font-size: 14px;
+        }
+
+        .seperate {
+            p {
+                font-size: 14px;
+            }
+        }
+
+        .google-login-btn {
+            font-size: 14px;
+            width: unset;
+            padding: 11px 20px;
+        }
+
+        .login-btns {
+            gap: unset;
+            justify-content: space-evenly;
+            width: 100%;
+            button {
+                font-size: 14px !important;
+                padding: 24px 10px !important;
+                width: 115px;
             }
         }
     }
