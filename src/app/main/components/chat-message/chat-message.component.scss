@@ -140,6 +140,7 @@
                 box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
                 align-items: center;
                 justify-content: center;
+                z-index: 1;
 
                 div {
                     width: 268px;
@@ -623,7 +624,7 @@
                     padding: 10px;
                     right: -60px;
                     top: 32px;
-                    left: unset;
+
 
                     div {
                         width: 200px;
@@ -635,3 +636,15 @@
         }
     }
 }
+
+@media (max-width: 730px) {
+    .own {
+        .reaction-bar {
+            .options {
+                .bubble-edit {
+                    left: -246px;
+                        top: 28px;}
+                    }
+                }
+            }
+        }
