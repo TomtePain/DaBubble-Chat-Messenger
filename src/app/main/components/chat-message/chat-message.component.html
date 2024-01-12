@@ -45,7 +45,7 @@
           <div #messageChatContent [innerHTML]="splitText(channelUserNames)" (click)="handleNameClick($event)"></div>
           <span class="updated-mark" style="margin-left: 4px;" *ngIf="messageData.updated">(bearbeitet)</span>
         </div>
-          <!-- {{ messageData.message }}  -->
+        
           <div class="show-uploaded-file" style="margin-top: 4px;" *ngIf="messageData.uploadFile">
 
             <div class="delete-upload-file">
