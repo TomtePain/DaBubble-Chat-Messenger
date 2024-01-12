@@ -148,4 +148,11 @@ export class ThreadMessageComponent implements OnInit{
   }
 
 
+  checkForPDF() {
+    let name: string = this.messageData.uploadFileName;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 1];
+    return lastPc
+  }
+
 }

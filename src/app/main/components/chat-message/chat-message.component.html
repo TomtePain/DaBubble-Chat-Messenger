@@ -40,9 +40,9 @@
           <p>{{ messageData.timestamp | date : 'shortTime' : 'de-DE' }} Uhr</p>
       </div>
 
-      <div class="message-chat-info-content">
+      <div class="message-chat-info-content" *ngIf="!editActive">
         <div style="display: flex; flex-direction: row; align-items: baseline;">
-          <div *ngIf="!editActive" #messageChatContent [innerHTML]="splitText(channelUserNames)" (click)="handleNameClick($event)"></div>
+          <div #messageChatContent [innerHTML]="splitText(channelUserNames)" (click)="handleNameClick($event)"></div>
           <span class="updated-mark" style="margin-left: 4px;" *ngIf="messageData.updated">(bearbeitet)</span>
         </div>
           <!-- {{ messageData.message }}  -->
