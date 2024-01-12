@@ -246,9 +246,9 @@
         }
 
         .edit-button-container {
-            // width: 306px;
             height: 49px;
             display: flex;
+            align-items: center;
             gap: 16px;
 
             button {
@@ -539,6 +539,7 @@
     position: absolute;
     right: 50px;
     width: max-content;
+    font-size: 14px;
     animation: slideOutBtn 125ms ease-in-out;
 
     &:hover {
