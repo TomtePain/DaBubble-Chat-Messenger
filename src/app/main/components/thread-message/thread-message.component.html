@@ -37,12 +37,14 @@
         <button class="btn-prime red-btn d-none" id="openHidedDeleteBtnThread{{messageDataIndex}}" (click)="showDeleteMessageDialog()">Nachricht löschen</button>
       </div>
 
-      <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="message-thread-content" value="{{ messageData.message }}">
+      <textarea type="text" class="message-chat-info-content-edit scroll" *ngIf="editActive" id="message-thread-content" value="{{ messageData.message }}"></textarea>
       <div class="icon-area">
           <div class="icon" id="smiley" (click)="toggleEmojiPicker()"></div>
           <div class="edit-button-container">
-              <button class="btn-secondary" (click)="closeEditMessage()">Abbrechen</button>
-              <button class="btn-prime" (click)="saveEditMessage(messageData)">Speichern</button>
+            <button class="btn-secondary hide-tablet" (click)="closeEditMessage()">Abbrechen</button>
+            <button class="btn-prime hide-tablet" (click)="saveEditMessage(messageData)">Speichern</button>
+            <div role="button" class="icons close-icon" (click)="closeEditMessage()"></div>
+            <div role="button" class="icons save-icon" (click)="saveEditMessage(messageData)"></div>
           </div>
       </div>
     </div>

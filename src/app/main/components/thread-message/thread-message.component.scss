@@ -202,11 +202,15 @@
   gap: 16px;
 
   .message-chat-info-content-edit {
-      border: unset;
-      background-color: white;
-      padding: 20px;
-      outline: none;
-      color: var(--text-gray);
+    border: unset;
+    background-color: white;
+    padding: 4px 8px 4px 20px;
+    margin-right: 8px;
+    resize: none;
+    outline: none;
+    font-size: 18px;
+    color: var(--text-gray);
+    min-height: 100px;
   }
 
   .icon-area {
@@ -235,13 +239,13 @@
       }
 
       .edit-button-container {
-          width: 306px;
           height: 49px;
           display: flex;
-          gap: 32px;
+          align-items: center;
+          gap: 16px;
 
           button {
-              font-size: 18px;
+              font-size: 14px;
               font-weight: 700;
               line-height: 24.55px;
           }
@@ -441,7 +445,7 @@
 }
 
 .options-for-delete {
-    background-image: url(http://localhost:4200/assets/images/icons/options_vert.png);
+    background-image: url(/assets/images/icons/options_vert.png);
     width: 40px;
     height: 40px;
     background-repeat: no-repeat;
@@ -451,6 +455,8 @@
     cursor: pointer;
     border-radius: 100%;
     position: relative;
+    right: -10px;
+    top: -8px;
 
     &:hover {
         background-color: #ECEEFE;
@@ -463,6 +469,7 @@
     position: absolute;
     right: 50px;
     width: max-content;
+    font-size: 14px;
     animation: slideOutBtn 125ms ease-in-out;
 
     &:hover {

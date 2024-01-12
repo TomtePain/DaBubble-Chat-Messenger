@@ -228,6 +228,49 @@ app-search {
   }
 }
 
+//ICONS
+.icons {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  padding: 8px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  border-radius: 100%;
+
+  &:hover {
+    background: var(--light-purple-bg);
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+.close-icon {
+  background-image: url(/assets/images/icons/close.png);
+
+  &:hover {
+    background-image: url(/assets/images/icons/close_purple.png);
+}
+}
+
+.save-icon {
+  background-image: url(/assets/images/icons/check_circle.png);
+
+  &:hover {
+    background-image: url(/assets/images/icons/check_circle_purple.png);
+}
+}
+
+.edit-icon {
+  background-image: url(/assets/images/icons/edit.png);
+
+  &:hover {
+    background-image: url(/assets/images/icons/edit_purple.png);
+
+}
+}
+
 // ONLY FOR WORK BY TOM
 
 @media (max-width: 500px) {
@@ -242,5 +285,17 @@ app-search {
   app-thread {
     width: 100%;
     z-index: 10;
+  }
+
+  .hide-tablet {
+    display: none !important;
+  }
+
+}
+
+@media (min-width: 1123px) {
+
+  .icons {
+    display: none !important;
   }
 }

@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { AuthService } from 'src/app/main/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { CrudService } from './crud.service';
+import { Subject } from 'rxjs';
 
 
 @Injectable({
@@ -16,10 +17,16 @@ export class SearchService {
   allUserDataInfo: Array<any> = [];
   existingUser: any;
   currentUser: string | null;
+  private handleSearchInput = new Subject<string>();
+  searchState$ = this.handleSearchInput.asObservable();
 
 
   constructor(private firestore: Firestore, private userService: UserService, private auth: AuthService, private crud: CrudService) { 
     this.currentUser = this.userService.userDBId;
+  }
+
+  clearSearch() {
+    this.handleSearchInput.next('');
   }
 
 

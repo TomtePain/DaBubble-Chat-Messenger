@@ -1,8 +1,13 @@
 .header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
     height: 70px;
+
+    img {
+        width: auto
+    }
 
     .searchbar {
         display: flex;
@@ -10,9 +15,9 @@
         justify-content: center;
         height: 100%;
         // max-width: 989px; //hidden by CHRISTIAN
-        margin-left: 92px; //hidden by CHRISTIAN
-        margin-right: 92px; //hidden by CHRISTIAN
-        width: 100%; //hidden by CHRISTIAN
+        padding-left: 2%; //hidden by CHRISTIAN
+        padding-right: 2%; //hidden by CHRISTIAN
+        width: 50%; //hidden by CHRISTIAN
 
 
 
@@ -22,8 +27,9 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        gap: 8px;
         cursor: pointer;
-        min-width: 342px;
+        min-width: 25%;
 
         .profile-icon {
             position: relative;
@@ -52,6 +58,8 @@
         .login-name {
             font-size: 32px;
             font-weight: 700;
+            text-align: right;
+            line-height: 100%;
         }
     }
 }
@@ -78,4 +86,19 @@
     .header {.profile {
         min-width: unset;
     }}
+  }
+
+
+  @media (max-width: 850px) {
+    .login-name {
+        display: none;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .header  {
+         img {
+            width: 20%;
+        }
+    }
   }

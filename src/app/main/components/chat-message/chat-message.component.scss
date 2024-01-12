@@ -140,6 +140,7 @@
                 box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
                 align-items: center;
                 justify-content: center;
+                z-index: 1;
 
                 div {
                     width: 268px;
@@ -211,9 +212,13 @@
     .message-chat-info-content-edit {
         border: unset;
         background-color: white;
-        padding: 20px;
+        padding: 4px 8px 4px 20px;
+        margin-right: 8px;
+        resize: none;
         outline: none;
+        font-size: 18px;
         color: var(--text-gray);
+        min-height: 100px;
     }
 
     .icon-area {
@@ -242,13 +247,13 @@
         }
 
         .edit-button-container {
-            width: 306px;
             height: 49px;
             display: flex;
-            gap: 32px;
+            align-items: center;
+            gap: 16px;
 
             button {
-                font-size: 18px;
+                font-size: 14px;
                 font-weight: 700;
                 line-height: 24.55px;
             }
@@ -483,7 +488,7 @@
 .delete-btn {
     height: 18px;
     width: 18px;
-    align-self: flex-start;
+    // align-self: flex-start;
     cursor: pointer;
     background-image: url(/assets/images/delete-24.png);
     background-repeat: no-repeat;
@@ -499,7 +504,8 @@
     display: flex;
     align-items: center;
     background-color: var(--light-purple-bg);
-    padding: 5px;
+    padding: 8px 16px;
+    gap: 16px;
     border-radius: 15px;
 
     img {
@@ -510,7 +516,7 @@
 }
 
 .options-for-delete {
-    background-image: url(http://localhost:4200/assets/images/icons/options_vert.png);
+    background-image: url(/assets/images/icons/options_vert.png);
     width: 40px;
     height: 40px;
     background-repeat: no-repeat;
@@ -520,6 +526,8 @@
     cursor: pointer;
     border-radius: 100%;
     position: relative;
+    right: -10px;
+    top: -8px;
 
     &:hover {
         background-color: #ECEEFE;
@@ -532,6 +540,7 @@
     position: absolute;
     right: 50px;
     width: max-content;
+    font-size: 14px;
     animation: slideOutBtn 125ms ease-in-out;
 
     &:hover {
@@ -615,7 +624,7 @@
                     padding: 10px;
                     right: -60px;
                     top: 32px;
-                    left: unset;
+
 
                     div {
                         width: 200px;
@@ -627,3 +636,15 @@
         }
     }
 }
+
+@media (max-width: 730px) {
+    .own {
+        .reaction-bar {
+            .options {
+                .bubble-edit {
+                    left: -246px;
+                        top: 28px;}
+                    }
+                }
+            }
+        }
