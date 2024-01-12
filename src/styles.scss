@@ -39,7 +39,6 @@ body {
   color: white;
   border: none;
   cursor: pointer;
-  font-size: 18px;
 
   &:hover {
     border-radius: 25px;
@@ -230,7 +229,7 @@ app-search {
 }
 
 //ICONS
-.icon {
+.icons {
   height: 24px;
   width: 24px;
   cursor: pointer;
@@ -242,6 +241,8 @@ app-search {
 
   &:hover {
     background: var(--light-purple-bg);
+    background-repeat: no-repeat;
+    background-position: center;
   }
 }
 
@@ -253,11 +254,20 @@ app-search {
 }
 }
 
-.send-icon {
+.save-icon {
   background-image: url(/assets/images/icons/check_circle.png);
 
   &:hover {
     background-image: url(/assets/images/icons/check_circle_purple.png);
+}
+}
+
+.edit-icon {
+  background-image: url(/assets/images/icons/edit.png);
+
+  &:hover {
+    background-image: url(/assets/images/icons/edit_purple.png);
+
 }
 }
 
@@ -278,8 +288,14 @@ app-search {
   }
 
   .hide-tablet {
-    display:none;
+    display: none !important;
   }
 
+}
 
+@media (min-width: 1123px) {
+
+  .icons {
+    display: none !important;
+  }
 }
