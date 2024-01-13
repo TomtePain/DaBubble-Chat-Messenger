@@ -31,6 +31,7 @@ mat-form-field {
     border-radius: 0px 20px 20px 20px;
     padding: 20px 21px 20px 21px;
     width: 50%;
+    max-height: 70%;
     display: flex;
     flex-direction: column;
     z-index: 100;
@@ -38,7 +39,7 @@ mat-form-field {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    overflow: auto;
+
     padding: 8px;
 
     &::-webkit-scrollbar {
@@ -128,15 +129,7 @@ mat-form-field {
       position: relative;
       border-radius: 100%;
     }
-  
-    // .online-state {
-    //   position: absolute;
-    //   width: 14px !important;
-    //   height: 14px !important;
-    //   top: 35px;
-    //   left: 37px;
-    //   z-index: 2;
-    // }
+
   }
 
  .divider {
@@ -152,4 +145,8 @@ mat-form-field {
       margin-left: 8px;
       font-size: 12px;
   }
+}
+
+@media (max-width: 620px){
+  mat-label {font-size: 14px}
 }
