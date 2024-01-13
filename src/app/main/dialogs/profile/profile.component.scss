@@ -123,7 +123,7 @@
 
     input.input-field {
       display: flex;
-      width: 270px;
+      width: calc(100% - 40px);
       padding: 15px 20px;
       align-items: flex-start;
       gap: 10px;

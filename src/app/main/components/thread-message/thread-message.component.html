@@ -6,7 +6,7 @@
     <div id="add-reaction-icon" (click)="showMoreEmojis(messageDataIndex)"></div>
     <div id="options-icon" (click)="bubbleEdit(messageDataIndex)" *ngIf="messageData.user == userName"></div>
     <div class="options" *ngIf="messageData.user == userName ">
-        <div class="bubble-edit d-none" id="bubble-thread-edit{{messageDataIndex}}">
+        <div [class.bubble-edit-reactionbar-extended]="reactionBarOpen" class="bubble-edit d-none" id="bubble-thread-edit{{messageDataIndex}}">
             <div (click)="openEditMessage(messageData, messageDataIndex)">Nachricht bearbeiten</div>
         </div>
     </div>

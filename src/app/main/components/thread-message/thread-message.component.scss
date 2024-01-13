@@ -132,23 +132,24 @@
               width: 268px;
               height: 53px;
               display: flex;
-              padding: 10px 20px 10px 20px;
+              padding: 4px 8px;
               border-radius: 0px 30px 30px 30px;
               box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
               align-items: center;
               justify-content: center;
+              z-index: 1;
 
               div {
                   width: 268px;
                   height: 33px;
                   border-radius: 100px;
-                  padding: 10px 20px 10px 20px;
+                  padding: 8px 16px;
                   gap: 15px;
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   font-weight: 600;
-                  font-size: 23px;
+                  font-size: 20px;
                   line-height: 32.74px;
               }
 
@@ -187,6 +188,13 @@
       }
   }
 }
+
+.bubble-edit-reactionbar-extended {
+    left: -269px !important;
+    top: 28px !important;
+    border-radius: 30px 0px 30px 30px !important;
+}
+
 
 .editor-container {
   border: 1px solid var(--main-bg-color);
@@ -537,5 +545,19 @@
       }
   }
 }
+
+
+// @media (max-width: 730px) {
+//     .own {
+//         .reaction-bar {
+//             .options {
+//                 .bubble-edit {
+//                     left: -269px;
+//                     top: 28px;
+//                     border-radius: 30px 0px 30px 30px;}
+//                     }
+//                 }
+//             }
+//         }
 
 
