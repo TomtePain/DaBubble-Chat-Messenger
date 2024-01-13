@@ -546,7 +546,63 @@
   }
 }
 
+@media (max-width: 620px){
+    .message-chat-info {
+        margin-left: 16px;
+        .reaction-container {
+            gap: 8px;
+            flex-wrap: wrap;
 
+            .tooltip {
+                display: none !important;
+            }
+        }
+
+        .reaction-view {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .message-chat-info-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 8px;
+            gap: 4px;
+        }
+    }
+
+    .own {
+        .message-chat-info {
+            margin-right: 16px;
+
+            .reaction-container {
+                gap: 8px;
+                flex-wrap: wrap;
+    
+                .tooltip {
+                    display: none !important;
+                }
+            }
+    
+            .reaction-view {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 4px;
+            }
+
+
+            .message-chat-info-footer {
+                flex-direction: column;
+                align-items: flex-end;
+                margin-right: 8px;
+                gap: 4px;
+            }
+        }
+
+        
+    }
+    }
 // @media (max-width: 730px) {
 //     .own {
 //         .reaction-bar {

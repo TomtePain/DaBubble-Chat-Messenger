@@ -152,6 +152,7 @@ export class TreeService {
 
 
   routeToOwnDM() {
+    this.closeWorkspace();
     this.crud.getItem(environment.channelDb).subscribe((channel) => {
       let ownMessage = channel.find((exist: { ids: string | null; }) => exist.ids == this.currentUserDbId)
       this.router.navigate(['/', ownMessage.id]);
