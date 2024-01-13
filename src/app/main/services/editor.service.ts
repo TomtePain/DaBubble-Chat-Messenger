@@ -46,10 +46,11 @@ export class EditorService {
           );
 
           // Convert and append the user data to the 'usersData' array.
-          const userData = userDataSnapshot.data() as UserProfile;
-          if (userData) {
-            this.usersData.push(userData);
-          }
+          ////// CHANGED BY TOM
+          // const userData = userDataSnapshot.data() as UserProfile;
+          // if (userData) {
+          //   this.usersData.push(userData);
+          // }
         }
       }
     } catch (error) {

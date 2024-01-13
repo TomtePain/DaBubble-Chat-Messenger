@@ -248,9 +248,9 @@ export class EditorComponent implements OnInit {
    * retrieved from the editor service.
    */
   initializeChannelUsers() {
-    // this.channelUsers = this.editorService.usersData;
+    this.channelUsers = this.editorService.usersData;
     // this.channelUsers = this.removeDuplicatesFromJsonArray(this.channelUsers, 'uid');
-    this.channelUsers = this.channelUser;
+    // this.channelUsers = this.channelUser;
     this.searchResult = [];
     this.searchResult = this.channelUsers;
   }
