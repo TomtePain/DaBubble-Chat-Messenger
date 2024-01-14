@@ -106,6 +106,8 @@ h3{
     justify-content: flex-end;
 }
 
+
+
 @media screen and (max-width: 1570px) {
 .workspace-card {
 position: absolute;
@@ -119,5 +121,47 @@ box-shadow: 3px 10px 48px -15px #000000;
 @media (max-width: 1122px) {
     .mr30 {
         margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    .workspace-card {
+        position: absolute;
+        left: 0px;
+        border-radius: 0;
+        width: calc(100% - 64px);
+        height: calc(100% - 143px);
+        overflow: scroll;
+        box-shadow: none;
+
+        .workspace-header {
+            display: none;
+        }
+    }
+
+    .workspace {
+        display: none;
+    }
+
+    .workspace-mobile {
+        // display: flex;
+        position: absolute;
+        z-index: 99;
+        top: 28px;
+        left: 20px;
+        // background-color: blue;
+        width: 30px;
+        height: 30px;
+
+        img {
+            width: 30px;
+        }
+    }
+}
+
+@media screen and (min-width: 501px) {
+    .workspace-mobile {
+        display: none !important;
     }
 }

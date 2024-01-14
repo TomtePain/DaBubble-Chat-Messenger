@@ -142,36 +142,12 @@
   }
 }
 
-.chat-top {
-  display: none;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 16px;
-  background: var(--main-bg-color);
-
-  div {
-      display: flex;
-      align-items: center;
-      font-size: 18px;
-      font-weight: 700;
-      gap: 10px;
-  }
-}
-
 .editor-container {
   width: calc(100% - 70px);
   padding: 38px 35px;
 }
 
 @media (max-width: 500px) {
-
-  .chat-top {
-      display: flex;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-  }
 
   .chat-container {
       position: absolute;
@@ -198,7 +174,7 @@
 
           .right {
               justify-content: flex-end;
-              width: auto;
+              // width: auto;
           }
       }
   }

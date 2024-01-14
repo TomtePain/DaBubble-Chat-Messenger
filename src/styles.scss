@@ -299,11 +299,13 @@ app-search {
 // ONLY FOR WORK BY TOM
 
 @media (max-width: 500px) {
-  .header, .workspace-card, .workspace {
+  .header
+  // ,
+  // .workspace-card
+  // ,.workspace 
+  {
     display: none !important;
   }
-
-
 }
 
 @media (max-width: 1122px) {
