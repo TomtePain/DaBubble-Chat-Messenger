@@ -150,11 +150,12 @@
 @media (max-width: 500px) {
 
   .chat-container {
-      position: absolute;
-      top: 80px;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      // position: absolute;
+      // top: 80px;
+      // left: 0;
+      // right: 0;
+      // bottom: 0;
+      min-width: unset;
       background-color: white;
       height: calc(100vh - 80px);
       border-radius: unset;
@@ -178,6 +179,11 @@
           }
       }
   }
+
+  .editor-container {
+    width: calc(100% - 20px);
+    padding: 10px;
+  }
 }
 
 @media (max-width: 1122px) {
@@ -185,3 +191,8 @@
       max-width: none;
   }
 }
+
+@media screen and (max-width: 500px) {
+  .chat-container {
+    min-width: unset;
+}}
