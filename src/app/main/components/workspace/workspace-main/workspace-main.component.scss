@@ -127,11 +127,12 @@ box-shadow: 3px 10px 48px -15px #000000;
 @media screen and (max-width: 500px) {
 
     .workspace-card {
-        position: absolute;
+        position: relative;
         left: 0px;
         border-radius: 0;
-        width: calc(100% - 64px);
-        height: calc(100% - 143px);
+        width: calc(100vw - 32px);
+        height: calc(100vh - 110px);
+        padding: 15px 16px;
         overflow: scroll;
         box-shadow: none;
 
@@ -153,6 +154,7 @@ box-shadow: 3px 10px 48px -15px #000000;
         // background-color: blue;
         width: 30px;
         height: 30px;
+        cursor: pointer;
 
         img {
             width: 30px;

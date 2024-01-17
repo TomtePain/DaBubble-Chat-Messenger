@@ -63,7 +63,7 @@
     </form>
 </div>
 
-<div mat-dialog-content class="profile-icon-container" *ngIf="profileImageEdit">
+<div mat-dialog-content class="profile-icon-container scroll" *ngIf="profileImageEdit">
     <div class="head">
         <h2>Wähle deinen Avatar</h2>
     </div>
@@ -78,9 +78,9 @@
         <div class="images">
             <img src='{{"./assets/images/profile-icons/big/avatar-" +(i+1) + ".png"}}' alt="" *ngFor="let _ of [].constructor(6), let i = index" (click)="setProfileImage('./assets/images/profile-icons/big/avatar-' +(i+1) + '.png')">
         </div>
-        <div>
-            eigenes Bild verwenden
-            <button class="btn-prime" (click)="triggerInput()">Datei hochladen</button>
+        <div class="own-image-upload">
+            oder eigenes Bild verwenden
+            <button class="btn-prime upload-btn" (click)="triggerInput()">Datei hochladen</button>
             <input type='file' id="getFile" style="display:none" (change)="upload($event)" accept=".png,.jpg">
         </div>
     </div>

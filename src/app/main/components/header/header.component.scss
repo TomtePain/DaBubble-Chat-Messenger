@@ -146,12 +146,20 @@
 
 @media (max-width: 500px) {
 
+    ::ng-deep .profile-dialog {
+        position: absolute;
+        right: 16px;
+        top: 65px;
+
+    }
+
     .profile-icon {
             img {
                 width: 50px;
                 height: 50px;
                 fill: var(--White, #FFF);
                 border-radius: 100%;
+                cursor: pointer;
             }
 
         }
