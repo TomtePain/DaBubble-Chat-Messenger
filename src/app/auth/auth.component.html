@@ -5,6 +5,7 @@
     </ngx-typed-js>
 </div>
 
+<ng-container *ngIf="!isShown">
 <div class="auth-container">
     <div class="header">
         <img src="./assets/images/logo.png" alt="" [@setLogoAnimation]="isShown ? 'open' : 'closed'" class="image">
@@ -17,14 +18,16 @@
         <router-outlet></router-outlet>
     </div>
 </div>
+
 <div class="reg-bottom">
-<div class="reg-container" *ngIf="!hideRegister">
-    <p>Neu bei DABubble?</p>
-    <button routerLink="register">Konto erstellen</button>
-</div>
+    <div class="reg-container" *ngIf="!hideRegister">
+        <p>Neu bei DABubble?</p>
+        <button routerLink="register">Konto erstellen</button>
+    </div>
 </div>
 <div class="footer-container">
     <button routerLink="/imprint">Impressum</button>
     <button routerLink="/privacy">Datenschutz</button>
 </div>
+</ng-container>
 <app-alert></app-alert>

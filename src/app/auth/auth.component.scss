@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
+    // height: 102vh;
 
     .typing {
         font-size: 60px;
@@ -47,6 +48,7 @@
   justify-content: center;
   align-items: center;
   gap: 32px;
+  padding-bottom: 32px;
 
   button {
     padding: 8px 16px;
