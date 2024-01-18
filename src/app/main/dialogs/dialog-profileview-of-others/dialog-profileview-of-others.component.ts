@@ -48,5 +48,6 @@ export class DialogProfileviewOfOthersComponent implements OnInit {
   messagetoUser(user:any) {
     this.tree.routeToDmChannel(user);
     this.closeDialog();
+    this.dialog.closeAll();
   }
 }
