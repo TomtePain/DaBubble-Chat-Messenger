@@ -49,34 +49,34 @@ export class AuthComponent implements OnInit {
     this.alertMessage = message;
   }
 
-  constructor(private router: Router, private auth:Auth) {
+  constructor(private router: Router, private auth: Auth) {
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((ev: NavigationEnd) => {
-        let url = ev.url;
-        if (url.startsWith('/auth/register') || url.startsWith('/auth/setnewpassword')) {
-          this.hideRegister = true
-        } else {
-          this.hideRegister = false
-        }
+        this.updateHideRegister(ev.url);
       });
   }
   
   ngOnInit(): void {
     const currentPath = this.router.url;
+    this.updateHideRegister(currentPath);
     if (currentPath === '/auth') {
-      this.router.navigate(['/auth/login']); // Weiterleitung zu /auth/login
+      this.router.navigate(['/auth/login']); // Redirect to /auth/login
     }
+  }
+  
+  updateHideRegister(url: string) {
+    this.hideRegister = url.startsWith('/auth/register') || url.startsWith('/auth/setnewpassword');
   }
   
   startAnimation() {
     const currentPath = this.router.url;
     if (currentPath !== '/auth/login') {
       this.isShown = false;
-  } else {
-    setTimeout(() => {
-      this.isShown = false;
-    }, 500)
+    } else {
+      setTimeout(() => {
+        this.isShown = false;
+      }, 500)
+    }
   }
-}
 }

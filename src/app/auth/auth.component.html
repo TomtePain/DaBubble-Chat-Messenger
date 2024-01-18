@@ -17,8 +17,14 @@
         <router-outlet></router-outlet>
     </div>
 </div>
+<div class="reg-bottom">
+<div class="reg-container" *ngIf="!hideRegister">
+    <p>Neu bei DABubble?</p>
+    <button routerLink="register">Konto erstellen</button>
+</div>
+</div>
 <div class="footer-container">
-    <button>Impressum</button>
-    <button>Datenschutz</button>
+    <button routerLink="/imprint">Impressum</button>
+    <button routerLink="/privacy">Datenschutz</button>
 </div>
 <app-alert></app-alert>

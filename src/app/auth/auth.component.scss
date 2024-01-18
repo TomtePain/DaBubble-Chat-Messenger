@@ -59,19 +59,11 @@
     background: none;
 
     &:hover {
-        border-radius: 25px;
-        border: 1px solid var(--ligth-purple-lines);
+      color: var(--purple-1);
     }
 
     &:active {
-        border-radius: 25px;
-        background: var(--purple-2, #444DF2);
-        color: white;
-    }
-
-    &:disabled {
-        border-radius: 25px;
-        background: var(--text-gray, #686868);
+      color: var(--purple-1);
     }
 }
 }
@@ -92,6 +84,9 @@
     }
   }
 
+  .reg-bottom {
+    display: none !important;
+  }
 // MediaQuerys - Responsive Design
 
 @media (max-width: 600px) {
@@ -106,7 +101,7 @@
   }
 
   .auth-container {
-    padding: 75px 16px 48px;
+    padding: 75px 16px 32px;
   }
 }
 
@@ -118,6 +113,36 @@
 
       div {
         display: none;
+      }
+    }
+  }
+
+  .reg-bottom {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    padding: 0px 0px 16px 0px;
+
+    button {
+      display: flex;
+      padding: 7px 18px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 25px;
+      border: 1px solid var(--Purple-2, #797EF3);
+      color: var(--Purple-1, #444DF2);
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      background: none;
+      cursor: pointer;
+
+      &:hover {
+        color: white;
+        background: var(--Purple-2, #797EF3);
       }
     }
   }
