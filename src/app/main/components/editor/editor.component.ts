@@ -157,15 +157,21 @@ export class EditorComponent implements OnInit {
       user: this.userName,
       timestamp: timeStamp.getTime(),
       message: content.value,
+      markedUser: this.markedUsersInText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
       searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
+
+    this.checkMarkedUser(content.value);
+
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
       content.value = '';
       this.message = '';
+      this.markedUsers = [];
+      this.markedUsersInText = [];
       setTimeout(() => {
         this.scrollToBottom.emit()
       }, 500)
@@ -194,11 +200,14 @@ export class EditorComponent implements OnInit {
       user: this.userName,
       timestamp: timeStamp.getTime(),
       message: content.value,
+      markedUser: this.markedUsersInText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
       searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
+
+    this.checkMarkedUser(content.value);
 
     let newThread = {
       mainMessage: this.mainMessageId
@@ -218,6 +227,8 @@ export class EditorComponent implements OnInit {
             console.error('Error creating newThread:', error);
           })
         content.value = '';
+        this.markedUsers = [];
+        this.markedUsersInText = [];
         //route to new thread id
         this.openThread(newThreadId)
       });
