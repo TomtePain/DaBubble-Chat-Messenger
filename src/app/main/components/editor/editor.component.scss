@@ -58,7 +58,8 @@
 
 .emoji-mart {
   position: absolute;
-  top: 25%;
+  left: 62px;
+  bottom: 200px;
   z-index: 99;
 }
 
@@ -160,3 +161,19 @@
     }
   }
 }
+
+@media screen and (max-width: 500px) {
+  .emoji-mart {
+    left: 8px;
+    bottom: 77px;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .emoji-mart {
+    left: 50%;
+    bottom: 20%;
+  }
+
+}
+

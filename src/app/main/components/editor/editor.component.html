@@ -51,5 +51,4 @@
 </div>
 
 <!-- Emoji picker starts here -->
-<emoji-mart class="emoji-mart" *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)" title="Pick your emoji…"
-  [darkMode]="false"></emoji-mart>
+<emoji-mart class="emoji-mart emojis-chat" *ngIf="showEmojiPicker" (emojiSelect)="addEmoji($event)" title="Pick your emoji…" [darkMode]="false"></emoji-mart>
