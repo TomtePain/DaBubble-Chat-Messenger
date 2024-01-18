@@ -91,3 +91,69 @@
       opacity: 1;
     }
   }
+
+// MediaQuerys - Responsive Design
+
+@media (max-width: 600px) {
+  .intro-container {
+    img {
+      width: 100px;
+    }
+
+    .typing {
+      font-size: 48px;
+    }
+  }
+
+  .auth-container {
+    padding: 75px 16px 48px;
+  }
+}
+
+@media (max-width: 500px) {
+  .auth-container {
+    .header {
+      display: flex !important;
+      justify-content: center;
+
+      div {
+        display: none;
+      }
+    }
+  }
+}
+
+
+
+@media (max-width: 400px) {
+
+  .footer-container {
+    flex-direction: column;
+    gap: 0px;
+    padding-bottom: 16px;
+  }
+
+  .intro-container {
+    img {
+      width: 70px;
+    }
+
+    .typing {
+      font-size: 32px;
+    }
+  }
+}
+
+
+
+@media (max-width: 300px) {
+  .intro-container {
+    img {
+      width: 70px;
+    }
+
+    .typing {
+      font-size: 32px;
+    }
+  }
+}

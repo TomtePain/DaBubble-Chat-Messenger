@@ -24,13 +24,13 @@ const fadeOut = trigger('fadeOut', [
 
 const setLogoAnimation = trigger('setLogoAnimation', [
   state('open', style({
-    transform: 'translate(398px, 311px)',
+    transform: 'translate(0px, 200px)',
   })),
   state('closed', style({
     transform: 'translate(0px, 0px)',
   })),
   transition('open => closed', [
-    animate('1s')
+    animate('225ms')
   ]),
 ])
 

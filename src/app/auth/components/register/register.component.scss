@@ -273,3 +273,37 @@
     font-size: 14px;
     font-weight: 600;
 }
+
+@media screen and (max-width: 450px) {
+    .reg-container {
+        padding: 26px 21px;
+        width: calc(100% - 42px);
+
+        .head {
+            h2 {
+                font-size: 32px;
+            }
+
+            .arrow-back {
+                left: 0px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .reg-container {
+        padding: 26px 21px;
+        width: calc(100% - 42px);
+
+        .head {
+            h2 {
+                font-size: 32px;
+            }
+
+            .arrow-back {
+                left: 0px;
+            }
+        }
+    }
+}
