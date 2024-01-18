@@ -8,6 +8,8 @@ import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profile
 import { UserService } from '../../services/user.service';
 import { EditorService } from '../../services/editor.service';
 import { DialogDeleteMessageComponent } from '../chat-message/dialog-delete-message/dialog-delete-message.component';
+import { deleteObject, getStorage, ref } from '@angular/fire/storage';
+import { UploadComponent } from '../../dialogs/upload/upload.component';
 
 @Component({
   selector: 'app-thread-message',
@@ -154,6 +156,28 @@ export class ThreadMessageComponent implements OnInit{
     let splitedName: string[] = name.split('.');
     let lastPc: string = splitedName[splitedName.length - 1];
     return lastPc
+  }
+
+  deleteUploadedFile() {
+    const storage = getStorage();
+    const spaceRef = ref(storage, `/upload/${this.userservice.userDBId}/` + this.messageData.uploadFileName);
+    let path = environment.threadDb + '/' + this.threadId + '/' + 'messages';
+    const docInstance = doc(this.firestore, path, this.messageData.id);
+
+    deleteObject(spaceRef).then(() => {
+      let updateData = {
+        uploadFile: false,
+        uploadFileName: false,
+      };
+      this.updateDataInDb(docInstance, updateData);
+      this.showUploadDialog('delete data');
+    })
+  }
+
+  showUploadDialog(msg: string) {
+    const dialogRef = this.dialog.open(UploadComponent, {
+      data: { typeOfMessage: msg },
+    });
   }
 
   /////// START FOR NEW BUILD /////

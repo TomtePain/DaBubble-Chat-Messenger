@@ -61,6 +61,14 @@
       </div>
 
       <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="message-thread-content" value="{{ messageData.message }}">
+      <div class="delete-file-block" *ngIf="messageData.uploadFile">
+        <img src="{{ messageData.uploadFile }}" alt="" *ngIf="checkForPDF() != 'pdf'">
+        <img src="/assets/images/icons/pdf-128.png" alt="" *ngIf="checkForPDF() == 'pdf'">
+        <div style="display: flex; flex-direction: column;">
+          <div class="delete-btn" (click)="deleteUploadedFile()"></div>
+          <span style="margin-left: 5px; font-size: 10px;">{{ messageData.uploadFileName }}</span>
+        </div>          
+      </div>
       <div class="icon-area">
           <div class="icon" id="smiley" (click)="toggleEmojiPicker()"></div>
           <div class="edit-button-container">
