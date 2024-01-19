@@ -15,7 +15,7 @@
 
     &> .arrow-back{
         position: absolute;
-        top: 62px;
+        top: 55px;
         left: 52px;
         font-size: 29px;
         cursor: pointer;
@@ -27,6 +27,9 @@
         font-weight: 700;
         line-height: 55px;
         margin-bottom: 0px;
+        text-align: center;
+        padding-left: 32px;
+        margin-right: 32px;
     }
 
     &>p {
@@ -115,6 +118,7 @@
             gap: 10px;
             background-color: var(--purple-1);
             color: white;
+            font-weight: 700;
 
             &:hover {
                 border-radius: 25px;
@@ -179,6 +183,7 @@
             font-weight: 700;
             line-height: 55px;
             margin: 0;
+            text-align: center;
         }
 
         p {
@@ -274,21 +279,67 @@
     font-weight: 600;
 }
 
-@media screen and (max-width: 450px) {
-    .reg-container {
-        padding: 26px 21px;
-        width: calc(100% - 42px);
+@media screen and (max-width: 650px) {
+    .profile-icon-container {
+        padding: 20px 40px;
+        gap: 8px;
+        width: unset;
 
         .head {
             h2 {
                 font-size: 32px;
             }
 
-            .arrow-back {
-                left: 0px;
+            p {
+                font-size: 18px;
+                padding: 24px 0px;
+            }
+        }
+
+        .person-icon {
+            height: 80px;
+            width: 80px;
+            margin-bottom: 8px;
+        }
+
+       
+    }
+}
+
+
+@media screen and (max-width: 450px) {
+    .reg-container {
+        padding: 26px 21px;
+        width: calc(100% - 42px);
+
+        
+        h2 {
+            font-size: 32px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        .arrow-back {
+            top: 32px;
+            left: 16px;
+        }
+        
+        .reg-btns {
+            justify-content: center;
+        }
+    }
+    
+    .profile-icon-container{
+        .chooseImage-container {
+            .reg-btns {
+                flex-direction: column-reverse;
+                align-items: center;
             }
         }
     }
+
 }
 
 @media screen and (max-width: 350px) {
@@ -296,14 +347,18 @@
         padding: 26px 21px;
         width: calc(100% - 42px);
 
-        .head {
-            h2 {
-                font-size: 32px;
-            }
-
-            .arrow-back {
-                left: 0px;
-            }
+        h2 {
+            font-size: 32px;
         }
+
+        .arrow-back {
+                left: 8px;
+        }
+    }
+}
+
+@media screen and (max-width: 290px) {
+    .profile-icon-container {
+        padding: 10px 20px;
     }
 }
