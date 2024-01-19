@@ -19,6 +19,10 @@
         left: 52px;
         font-size: 29px;
         cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
     }
 
     &>h2 {
@@ -329,7 +333,18 @@
         .reg-btns {
             justify-content: center;
         }
-    }
+
+        .reg-form {
+            align-items: center;
+      
+            .input-box {
+              input {
+                font-size: 18px;
+                padding: 16px 20px 16px 64px;
+                width: calc(100% - 84px);
+              }
+            }
+        }
     
     .profile-icon-container{
         .chooseImage-container {
@@ -340,6 +355,7 @@
         }
     }
 
+}
 }
 
 @media screen and (max-width: 350px) {

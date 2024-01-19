@@ -13,13 +13,17 @@
     <app-tree class="scroll"></app-tree>
 </div>
 <div class="workspace" (click)="toggleWorkspace()">
-    <div class="rotate">
-        Workspace-Menü schließen
-        <img class="rotate-90" src="assets/workspace-images/workspace-show-menu.svg" alt="">
-        <!-- <img *ngIf="workspace" src="assets/images/icons/hide-workspace.png" alt="">
-        <img *ngIf="!workspace" src="assets/images/icons/show-workspace.png" alt=""> -->
+    <div class="workspace-toggle">
+        <div>Workspace-Menü schließen</div>
+        <!-- <img class="rotate-90" src="assets/workspace-images/workspace-show-menu.svg" alt=""> -->
+        <div class="workspace-icon rotate-90" [ngClass]="{'workspace-hide': workspace, 'workspace-show': !workspace}">
+            <div *ngIf="workspace"></div>
+            <div *ngIf="!workspace"></div>
+        </div>
+    </div> 
 </div>
-<div class="workspace-mobile" (click)="toggleWorkspace()">
-    <img *ngIf="workspace" src="/assets/images/icons/hide-workspace.png" alt="">
-    <img *ngIf="!workspace" src="assets/images/icons/show-workspace.png" alt="">
+<div class="workspace-toggle-mobile" [ngClass]="{'workspace-hide': workspace, 'workspace-show': !workspace}" (click)="toggleWorkspace()">
+    <div *ngIf="workspace"></div>
+    <div *ngIf="!workspace"></div>
+    <!-- <img *ngIf="!workspace" src="assets/images/icons/show-workspace.png" alt=""> -->
 </div>

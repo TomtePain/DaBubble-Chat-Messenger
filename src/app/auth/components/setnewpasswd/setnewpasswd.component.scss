@@ -155,6 +155,17 @@
     .restpwd-btns {
       justify-content: center;
     }
+
+    .reg-form {
+
+      .input-box {
+        input {
+          font-size: 18px;
+          padding: 16px 20px 16px 64px;
+          width: calc(100% - 84px);
+        }
+      }
+    }
   }
 }
 
