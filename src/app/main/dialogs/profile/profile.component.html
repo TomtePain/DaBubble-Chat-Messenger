@@ -12,7 +12,8 @@
 <div mat-dialog-content class="profile-info" *ngIf="!profileEdit && !profileImageEdit">
     <div class="name">
         <h3>{{ userFullName }}</h3>
-        <button mat-button color="primary" (click)="editProfile()">Bearbeiten</button>
+        <button class="btn-prime hide-tablet" (click)="editProfile()">Bearbeiten</button>
+        <div role="button" class="icons edit-icon" (click)="editProfile()"></div>
     </div>
     <div class="status">
         <div class="status-icon"></div>
@@ -79,17 +80,17 @@
         </div>
         <div>
             eigenes Bild verwenden
-            <button mat-stroked-button color="primary" (click)="triggerInput()">Datei hochladen</button>
+            <button class="btn-prime" (click)="triggerInput()">Datei hochladen</button>
             <input type='file' id="getFile" style="display:none" (change)="upload($event)" accept=".png,.jpg">
         </div>
     </div>
     <div class="reg-btns">
-        <button mat-stroked-button color="primary" (click)="cancelEditProfile()">Abbrechen</button>
-        <button mat-raised-button color="primary" (click)="saveProfileImageChange()">Speichern</button>
+        <button class="btn-secondary" (click)="cancelEditProfile()">Abbrechen</button>
+        <button class="btn-prime" (click)="saveProfileImageChange()">Speichern</button>
     </div>
 </div>
 
 <div class="action-bar" mat-dialog-actions *ngIf="profileEdit">
-    <button mat-stroked-button color="primary" (click)="cancelEditProfile()">Abbrechen</button>
-    <button mat-raised-button color="primary" [disabled]="!profileForm.valid" [disabled]="currentUserIsGuest" (click)="updateUserData()">Speichern</button>
+    <button class="btn-secondary" (click)="cancelEditProfile()">Abbrechen</button>
+    <button class="btn-prime" [disabled]="!profileForm.valid" [disabled]="currentUserIsGuest" (click)="updateUserData()">Speichern</button>
 </div>

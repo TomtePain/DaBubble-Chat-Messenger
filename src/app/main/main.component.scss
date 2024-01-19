@@ -9,6 +9,10 @@
     }
 }
 
+.workspace-open {
+    display: flex;
+}
+
 @media (max-width: 500px) {
     .view {
         display: none;

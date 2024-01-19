@@ -67,21 +67,23 @@
         </div>
         
 
-        <input type="text" class="message-chat-info-content-edit" *ngIf="editActive" id="messageChatContent" value="{{ messageData.message }}">
+        <textarea class="message-chat-info-content-edit scroll" *ngIf="editActive" id="messageChatContent" value="{{ messageData.message }}"></textarea>
         <div class="delete-file-block" *ngIf="messageData.uploadFile">
           <img src="{{ messageData.uploadFile }}" alt="" *ngIf="checkForPDF() != 'pdf'">
           <img src="/assets/images/icons/pdf-128.png" alt="" *ngIf="checkForPDF() == 'pdf'">
-          <div style="display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%">
+            <span style="margin-left: 8px; font-size: 10px;">{{ messageData.uploadFileName }}</span>
             <div class="delete-btn" (click)="deleteUploadedFile()"></div>
-            <span style="margin-left: 5px; font-size: 10px;">{{ messageData.uploadFileName }}</span>
           </div>          
         </div>
         <div class="icon-area">
             <div class="icon" id="smiley" (click)="toggleEmojiPicker()"></div>
             <div class="edit-button-container">
-                <button class="btn-secondary" (click)="closeEditMessage()">Abbrechen</button>
-                <button class="btn-prime" (click)="saveEditMessage(messageData)">Speichern</button>
-            </div>
+                <button class="btn-secondary hide-tablet" (click)="closeEditMessage()">Abbrechen</button>
+                <button class="btn-prime hide-tablet" (click)="saveEditMessage(messageData)">Speichern</button>
+                <div role="button" class="icons close-icon" (click)="closeEditMessage()"></div>
+                <div role="button" class="icons save-icon" (click)="saveEditMessage(messageData)"></div>
+              </div>
         </div>
       </div>
       

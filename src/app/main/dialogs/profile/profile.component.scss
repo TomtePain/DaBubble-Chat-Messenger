@@ -12,21 +12,6 @@
     font-size: 24px;
     font-weight: 700;
   }
-
-  .mat-mdc-icon-button {
-    &:hover {
-      color: #535af1;
-      background-color: #eceefe;
-    }
-
-    &:active {
-      background-color: #eceefe !important;
-    }
-
-    &:focus {
-      background-color: #eceefe !important;
-    }
-  }
 }
 
 .profile-img {
@@ -39,7 +24,6 @@
     // width: 70px;
     // height: 70px;
     width: 200px;
-    height: 200px;
     fill: var(--White, #fff);
     border-radius: 100%;
   }
@@ -56,13 +40,6 @@
     justify-content: space-between;
     align-items: center;
  
-    button {
-        font-size: 18px;
-        &:hover {
-            font-weight: 600;
-          }
-    }
-
     h3 {
       font-size: 32px;
       font-weight: 700;
@@ -105,7 +82,7 @@
       a {
         text-decoration: none;
         color: #1381ff;
-        font-size: 14px;
+        font-size: 18px;
 
         &:visited {
           color: #1381ff;
@@ -145,7 +122,7 @@
 
     input.input-field {
       display: flex;
-      width: 270px;
+      width: calc(100% - 40px);
       padding: 15px 20px;
       align-items: flex-start;
       gap: 10px;
@@ -167,6 +144,9 @@
 .mat-mdc-dialog-actions {
   justify-content: center !important;
   margin-bottom: 32px;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 // from register.component.scss
@@ -289,4 +269,55 @@
   padding-left: 16px;
   font-size: 14px;
   font-weight: 600;
+}
+
+@media (max-width: 620px) {
+
+  .profile-header {
+    padding: 20px 40px;
+  }
+
+.profile-info {
+  .name {
+    h3 {
+      font-size: 23px;
+    }
+
+    h4 {
+      font-size: 16px;
+    }
+  }
+}
+.profile-img {
+  img {
+    width: 100px;
+  }
+}
+
+
+
+.profile-icon-container {
+  gap: 1rem;
+
+  .person-icon {
+    height: 80px;
+    width: 80px;
+
+    img {
+      width:80px;
+    }
+  }
+
+  .chooseimage-container {
+    .images {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 40px;
+      }
+    }
+  }
+}
+
 }

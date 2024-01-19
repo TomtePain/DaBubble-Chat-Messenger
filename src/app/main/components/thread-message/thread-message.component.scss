@@ -132,23 +132,24 @@
               width: 268px;
               height: 53px;
               display: flex;
-              padding: 10px 20px 10px 20px;
+              padding: 4px 8px;
               border-radius: 0px 30px 30px 30px;
               box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
               align-items: center;
               justify-content: center;
+              z-index: 1;
 
               div {
                   width: 268px;
                   height: 33px;
                   border-radius: 100px;
-                  padding: 10px 20px 10px 20px;
+                  padding: 8px 16px;
                   gap: 15px;
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   font-weight: 600;
-                  font-size: 23px;
+                  font-size: 20px;
                   line-height: 32.74px;
               }
 
@@ -188,6 +189,13 @@
   }
 }
 
+.bubble-edit-reactionbar-extended {
+    left: -269px !important;
+    top: 28px !important;
+    border-radius: 30px 0px 30px 30px !important;
+}
+
+
 .editor-container {
   border: 1px solid var(--main-bg-color);
   background-color: white;
@@ -202,11 +210,15 @@
   gap: 16px;
 
   .message-chat-info-content-edit {
-      border: unset;
-      background-color: white;
-      padding: 20px;
-      outline: none;
-      color: var(--text-gray);
+    border: unset;
+    background-color: white;
+    padding: 4px 8px 4px 20px;
+    margin-right: 8px;
+    resize: none;
+    outline: none;
+    font-size: 18px;
+    color: var(--text-gray);
+    min-height: 100px;
   }
 
   .icon-area {
@@ -235,13 +247,13 @@
       }
 
       .edit-button-container {
-          width: 306px;
           height: 49px;
           display: flex;
-          gap: 32px;
+          align-items: center;
+          gap: 16px;
 
           button {
-              font-size: 18px;
+              font-size: 14px;
               font-weight: 700;
               line-height: 24.55px;
           }
@@ -441,7 +453,7 @@
 }
 
 .options-for-delete {
-    background-image: url(http://localhost:4200/assets/images/icons/options_vert.png);
+    background-image: url(/assets/images/icons/options_vert.png);
     width: 40px;
     height: 40px;
     background-repeat: no-repeat;
@@ -451,6 +463,8 @@
     cursor: pointer;
     border-radius: 100%;
     position: relative;
+    right: -10px;
+    top: -8px;
 
     &:hover {
         background-color: #ECEEFE;
@@ -463,6 +477,7 @@
     position: absolute;
     right: 50px;
     width: max-content;
+    font-size: 14px;
     animation: slideOutBtn 125ms ease-in-out;
 
     &:hover {
@@ -530,5 +545,75 @@
       }
   }
 }
+
+@media (max-width: 620px){
+    .message-chat-info {
+        margin-left: 16px;
+        .reaction-container {
+            gap: 8px;
+            flex-wrap: wrap;
+
+            .tooltip {
+                display: none !important;
+            }
+        }
+
+        .reaction-view {
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .message-chat-info-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 8px;
+            gap: 4px;
+        }
+    }
+
+    .own {
+        .message-chat-info {
+            margin-right: 16px;
+
+            .reaction-container {
+                gap: 8px;
+                flex-wrap: wrap;
+    
+                .tooltip {
+                    display: none !important;
+                }
+            }
+    
+            .reaction-view {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 4px;
+            }
+
+
+            .message-chat-info-footer {
+                flex-direction: column;
+                align-items: flex-end;
+                margin-right: 8px;
+                gap: 4px;
+            }
+        }
+
+        
+    }
+    }
+// @media (max-width: 730px) {
+//     .own {
+//         .reaction-bar {
+//             .options {
+//                 .bubble-edit {
+//                     left: -269px;
+//                     top: 28px;
+//                     border-radius: 30px 0px 30px 30px;}
+//                     }
+//                 }
+//             }
+//         }
 
 

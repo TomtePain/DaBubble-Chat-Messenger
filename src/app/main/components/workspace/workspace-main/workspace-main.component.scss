@@ -8,9 +8,9 @@
     background-color: white;
     // height: 940px; // Changed by TOM 
     height: calc(80vh - 60px); // Added by TOM
-    overflow: auto;
-    
+    overflow: auto;   
 }
+
 
 .workspace{
     display: flex;
@@ -30,7 +30,11 @@
     font-size: 20px;
     font-weight: 500;
     overflow: hidden; // Added by TOM 
-    z-index: 5; // Added by TOM
+    z-index: 20; // Added by TOM
+}
+
+.mr30 {
+    margin-right: 30px;
 }
 
 .rotate{
@@ -105,9 +109,15 @@ h3{
 @media screen and (max-width: 1570px) {
 .workspace-card {
 position: absolute;
-left: 64px;
-z-index: 99;
+left: 20px;
+z-index: 9;
 -webkit-box-shadow: 3px 10px 48px -15px #000000;
 box-shadow: 3px 10px 48px -15px #000000;
 }
+}
+
+@media (max-width: 1122px) {
+    .mr30 {
+        margin-right: 0;
+    }
 }

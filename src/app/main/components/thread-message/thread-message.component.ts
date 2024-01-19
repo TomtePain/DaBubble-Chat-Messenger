@@ -30,6 +30,7 @@ export class ThreadMessageComponent implements OnInit{
   existingUser:any;
   showEmojiPicker = false;
   channelUserNames:Array<any> = [];
+  reactionBarOpen: boolean = false;
 
   constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService, public editorService: EditorService) {}
 
@@ -81,6 +82,9 @@ export class ThreadMessageComponent implements OnInit{
   }
 
   showMoreEmojis(i: any) {
+    this.reactionBarOpen = !this.reactionBarOpen;
+    console.log("this.reactionBarOpen", this.reactionBarOpen);
+    
     for (let j = 0; j < this.sortedReactionTypes.length; j++) {
       let emojiElement = document.getElementById(
         `thread-emoji-${this.sortedReactionTypes[j]}${i}`
@@ -103,6 +107,8 @@ export class ThreadMessageComponent implements OnInit{
   toggleReaction(type: string, messageId: string, reactionData: any) {
     if (this.threadId) {
       this.reactionservice.toggleReaction(type, messageId, reactionData, 'thread', this.threadId);
+      this.reactionBarOpen = false;
+      console.log("this.reactionBarOpen", this.reactionBarOpen);
   } else {
     console.error('this.threadId does not exists');
   }

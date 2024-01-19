@@ -3,7 +3,8 @@
 }
 
 .dialog-edit-content {
-    width: calc(872px - 80px);
+    width: 60vw;
+    max-width: calc(872px - 80px);
     height: calc(616px - 80px);
     border-radius: 0px 30px 30px 30px;
     padding: 40px;

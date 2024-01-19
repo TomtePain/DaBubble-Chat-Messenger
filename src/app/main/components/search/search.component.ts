@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { SearchService } from '../../services/search.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profileview-of-others/dialog-profileview-of-others.component';
 import { UserService } from '../../services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -17,9 +18,19 @@ export class SearchComponent {
   searchInput!: string;
   allUserDataInfo: Array<any> = [];
   searchTimeout: any = null;
+  private searchState: Subscription;  
 
 constructor(private searchService: SearchService, public dialog: MatDialog, private userservice:UserService) {
+  this.searchState = this.searchService.searchState$.subscribe(value => {
+    this.search(value);
+  });
   }
+
+// There is a global method in the app.component.ts that resets the search when there is a click anywhere in the app. The HostListener below makes sure the search field and results can still be clicked though the global method is active.
+@HostListener('click', ['$event'])
+onClick(event: Event): void {
+  event.stopPropagation();
+}
 
 search(input: string) {
   // Clear the existing timeout
