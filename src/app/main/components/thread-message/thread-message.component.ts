@@ -14,7 +14,7 @@ import { UploadComponent } from '../../dialogs/upload/upload.component';
 @Component({
   selector: 'app-thread-message',
   templateUrl: './thread-message.component.html',
-  styleUrls: ['./thread-message.component.scss', '../chat-message/chat-message.component.scss']
+  styleUrls: ['./thread-message.component.scss']
 })
 export class ThreadMessageComponent implements OnInit{
   @Input() messageData: any;

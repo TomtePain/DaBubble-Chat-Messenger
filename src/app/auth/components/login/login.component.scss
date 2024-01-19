@@ -88,7 +88,6 @@
 
     p {
       position: absolute;
-      left: 44%;
       top: -8px;
       background-color: white;
       padding: 0px 8px;
@@ -195,12 +194,10 @@
       align-items: center;
 
       .input-box {
-        .icon {
-          top: 12px;
-        }
-
         input {
           font-size: 18px;
+          padding: 16px 20px 16px 64px;
+          width: calc(100% - 84px);
         }
       }
     }
