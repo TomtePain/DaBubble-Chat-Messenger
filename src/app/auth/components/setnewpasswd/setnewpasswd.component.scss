@@ -22,8 +22,8 @@
 
     .arrow-back {
       position: absolute;
-      left: -39px;
-    //   top: 16px;
+      left: -28px;
+      top: 4px;
       cursor: pointer;
     }
 
@@ -147,7 +147,7 @@
       }
 
       .arrow-back {
-        top: 0;
+        top: -4px;
         left: 0;
       }
     }

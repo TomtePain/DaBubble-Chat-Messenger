@@ -186,6 +186,7 @@
         .reaction-view {
             display: flex;
             flex-direction: row-reverse;
+            flex-wrap: wrap;
             align-items: center;
             gap: 10px;
         }

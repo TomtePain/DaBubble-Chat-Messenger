@@ -16,9 +16,10 @@
     <div class="rotate">
         Workspace-Menü schließen
         <img class="rotate-90" src="assets/workspace-images/workspace-show-menu.svg" alt="">
-    </div>
+        <!-- <img *ngIf="workspace" src="assets/images/icons/hide-workspace.png" alt="">
+        <img *ngIf="!workspace" src="assets/images/icons/show-workspace.png" alt=""> -->
 </div>
 <div class="workspace-mobile" (click)="toggleWorkspace()">
-    <img *ngIf="workspace"src="assets/images/icons/hide-workspace.png" alt="">
+    <img *ngIf="workspace" src="/assets/images/icons/hide-workspace.png" alt="">
     <img *ngIf="!workspace" src="assets/images/icons/show-workspace.png" alt="">
 </div>

@@ -3,7 +3,6 @@ import { Firestore } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 import { CrudService } from 'src/app/main/services/crud.service';
 import { TreeService } from 'src/app/main/services/tree.service';
-import { UserService } from 'src/app/main/services/user.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
