@@ -340,7 +340,7 @@ export class ChatMessageComponent implements OnInit {
   handleNameClick(event: any): void {
     if (event.target.classList.contains('highlight-message-names')) {
       let clickedName = event.target.getAttribute('data-name');
-      let exist = this.channelUser.find((userName: any) => userName.id == clickedName);
+      let exist = this.editorService.usersData.find((userName: any) => userName.id == clickedName);
       if (exist) {
         this.viewUsersProfile(exist.id)
       }

@@ -27,6 +27,8 @@ export class EditorComponent implements OnInit {
   @Input() channelId!: string;
   @Input() mainMessageId: any;
   @Input() channelUser: any;
+  @Input() currentChannel: Array<any> = [];
+  @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchMarktUsers: boolean = false
@@ -42,9 +44,8 @@ export class EditorComponent implements OnInit {
   uploadedData: boolean = false;
   uploadedDataName: string = '';
   private routerSubscription: Subscription;
-  currentChannel: Array<any> = [];
   markedUsers: Array<any> = [];
-  markedUsersInText:Array<any> = [];
+  markedUsersInText: Array<any> = [];
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -62,6 +63,9 @@ export class EditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.editorService.subSingelData(this.channelId);
+    setTimeout(() => {
+      this.setDirectMessageBodyUser();
+    }, 500);
   }
 
   ngOnDestroy() {
@@ -153,15 +157,21 @@ export class EditorComponent implements OnInit {
       user: this.userName,
       timestamp: timeStamp.getTime(),
       message: content.value,
+      markedUser: this.markedUsersInText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
       searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
+
+    this.checkMarkedUser(content.value);
+
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
       content.value = '';
       this.message = '';
+      this.markedUsers = [];
+      this.markedUsersInText = [];
       setTimeout(() => {
         this.scrollToBottom.emit()
       }, 500)
@@ -190,11 +200,14 @@ export class EditorComponent implements OnInit {
       user: this.userName,
       timestamp: timeStamp.getTime(),
       message: content.value,
+      markedUser: this.markedUsersInText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
       searchTerms: this.editorService.messageToSearchTerms(content.value)
     }
+
+    this.checkMarkedUser(content.value);
 
     let newThread = {
       mainMessage: this.mainMessageId
@@ -214,6 +227,8 @@ export class EditorComponent implements OnInit {
             console.error('Error creating newThread:', error);
           })
         content.value = '';
+        this.markedUsers = [];
+        this.markedUsersInText = [];
         //route to new thread id
         this.openThread(newThreadId)
       });
@@ -244,9 +259,9 @@ export class EditorComponent implements OnInit {
    * retrieved from the editor service.
    */
   initializeChannelUsers() {
-    // this.channelUsers = this.editorService.usersData;
+    this.channelUsers = this.editorService.usersData;
     // this.channelUsers = this.removeDuplicatesFromJsonArray(this.channelUsers, 'uid');
-    this.channelUsers = this.channelUser;
+    // this.channelUsers = this.channelUser;
     this.searchResult = [];
     this.searchResult = this.channelUsers;
   }
@@ -339,11 +354,11 @@ export class EditorComponent implements OnInit {
     this.markedUsers.push(id);
   }
 
-  checkMarkedUser(message:string) {
+  checkMarkedUser(message: string) {
     this.markedUsers.forEach((user) => {
-      let existUser = this.userservice.allUsers.find((exist:any) => exist.id == user);
-      if(existUser.fullName == message.match(existUser.fullName)) {
-        if(!this.markedUsersInText.includes(existUser.id)){
+      let existUser = this.userservice.allUsers.find((exist: any) => exist.id == user);
+      if (existUser.fullName == message.match(existUser.fullName)) {
+        if (!this.markedUsersInText.includes(existUser.id)) {
           this.markedUsersInText.push({
             fullName: existUser.fullName,
             id: existUser.id
@@ -466,5 +481,18 @@ export class EditorComponent implements OnInit {
     return lastPc
   }
 
+  setDirectMessageBodyUser() {
+    let body: any;
+    if (this.channelUser) {
+      this.channelUser.forEach((user: any) => {
+        if (user.id != this.userName && !this.currentChannel[0].own) {
+          body = user;
+        } else if (user.id == this.userName && this.currentChannel[0].own) {
+          body = user;
+        }
+      });
+      return body.fullName
+    }
+  }
 }
 

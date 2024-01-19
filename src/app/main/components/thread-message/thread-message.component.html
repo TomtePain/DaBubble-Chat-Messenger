@@ -27,9 +27,32 @@
             <h3 *ngIf="existingUser" (click)="viewUsersProfile(existingUser.id)" >{{ existingUser.fullName }}</h3>
             <p>{{ messageData.timestamp | date : 'shortTime' : 'de-DE' }} Uhr</p>
         </div>
-        <div class="message-chat-info-content" *ngIf="!editActive" #messageChatContent>
-            {{ messageData.message }} <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
+
+        <!-- NEW BUILD !!! -->
+
+        <div class="message-chat-info-content" *ngIf="!editActive">
+          <div style="display: flex; flex-direction: row; align-items: baseline;">
+            <div #messageChatContent [innerHTML]="splitText(channelUserNames)" (click)="handleNameClick($event)"></div>
+            <span class="updated-mark" style="margin-left: 4px;" *ngIf="messageData.updated">(bearbeitet)</span>
+          </div>
+          
+            <div class="show-uploaded-file" style="margin-top: 4px;" *ngIf="messageData.uploadFile">
+  
+              <div class="delete-upload-file">
+                <img  src="/assets/images/close.png" alt="">
+              </div>
+          
+              <a *ngIf="checkForPDF() != 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="{{ messageData.uploadFile }}" alt=""></a>
+              <a *ngIf="checkForPDF() == 'pdf'" href="{{ messageData.uploadFile }}" target="_blank"><img src="/assets/images/icons/pdf-128.png" alt=""></a>
+            </div>
+            <span style="font-size: 10px;" *ngIf="messageData.uploadFileName" >{{ messageData.uploadFileName }}</span>
         </div>
+
+        <!-- BUILD END!!!  -->
+
+        <!-- <div class="message-chat-info-content" *ngIf="!editActive" #messageChatContent>
+            {{ messageData.message }} <span class="updated-mark" *ngIf="messageData.updated">(bearbeitet)</span>
+        </div> -->
 
     <div *ngIf="editActive" class="editor-container">
 
@@ -38,6 +61,14 @@
       </div>
 
       <textarea type="text" class="message-chat-info-content-edit scroll" *ngIf="editActive" id="message-thread-content" value="{{ messageData.message }}"></textarea>
+      <div class="delete-file-block" *ngIf="messageData.uploadFile">
+        <img src="{{ messageData.uploadFile }}" alt="" *ngIf="checkForPDF() != 'pdf'">
+        <img src="/assets/images/icons/pdf-128.png" alt="" *ngIf="checkForPDF() == 'pdf'">
+        <div style="display: flex; flex-direction: column;">
+          <div class="delete-btn" (click)="deleteUploadedFile()"></div>
+          <span style="margin-left: 5px; font-size: 10px;">{{ messageData.uploadFileName }}</span>
+        </div>          
+      </div>
       <div class="icon-area">
           <div class="icon" id="smiley" (click)="toggleEmojiPicker()"></div>
           <div class="edit-button-container">
