@@ -13,7 +13,7 @@
             <mat-icon>expand_more</mat-icon>
         </button>
         <mat-menu #profileMenu="matMenu" class="profile-dialog">
-            <button mat-menu-item (click)="openDialog()">
+            <button mat-menu-item style="background-color: transparent;" (click)="openDialog()">
                 <span class="menu-item">Profil</span>
             </button>
             <button mat-menu-item (click)="logOutUser()">
@@ -23,3 +23,20 @@
     </div>
 </div>
 
+<!-- Header for mobile view -->
+<div class="header-mobile">
+
+    <div>
+        <!-- General view -->
+        <img class="logo" src="./assets/images/logo.png" alt="">
+
+        <!-- Channel view -->
+        <!-- <img class="arrow-icon" src="/assets/images/icons/arrow_left.png" alt=""> -->
+        <!-- <img class="thread-icon" src="/assets/images/icons/workspace-logo.png" alt=""> -->
+        <!-- Code learning -->
+    </div>
+    <!-- <img class="thread-icon" src="/assets/images/profile-icons/avatar-1.png" alt=""> -->
+    <div class="profile-icon" (click)="openMenu()">
+        <img [src]="userProfileImage" alt="Profilbild">
+    </div>
+</div>

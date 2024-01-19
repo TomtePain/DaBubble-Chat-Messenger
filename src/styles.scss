@@ -198,13 +198,12 @@ app-search {
   display: flex;
   flex-direction: column;
   gap: 32px;
-  width: calc(100% - 150px);
   justify-content: center;
   align-items: center;
-  padding: 75px 75px 48px;
+  padding: 32px 32px 16px;
   font-size: 18px;
 
-  .header {
+  .static-logo {
     width: 100%;
 
     img {
@@ -236,6 +235,7 @@ app-search {
       font-weight: 700;
       line-height: 55px;
       margin-bottom: 0px;
+      word-wrap: break-word;
     }
 
     & > p {
@@ -243,6 +243,7 @@ app-search {
       line-height: 24px;
       text-align: left;
       margin-bottom: 0px;
+      word-wrap: break-word;
     }
 
     .text {
@@ -296,13 +297,50 @@ app-search {
 }
 }
 
+.emojis-chat {
+  z-index: 99;
+}
 // ONLY FOR WORK BY TOM
 
 @media (max-width: 500px) {
-  .header, .workspace-card, .workspace {
+  .header
+  // ,
+  // .workspace-card
+  // ,.workspace 
+  {
     display: none !important;
   }
 
+  .staticpage-container {
+    .static-logo {
+      width: calc(100vw - 50px);
+      display: flex;
+      justify-content: center;
+
+      img {
+        width: 200px;
+      }
+    }
+    .content {
+      padding: 24px;
+      width: calc(100vw - 82px);
+      overflow: hidden;
+      gap: 16px;
+
+      h2 {
+        font-size: 24px;
+        line-height: 120%;
+      }
+
+      div {
+        line-height: 120%;
+      }
+
+    .text {
+      margin-top: 0px;
+    }
+    }
+  }
 
 }
 
@@ -323,4 +361,30 @@ app-search {
   .icons {
     display: none !important;
   }
+}
+
+@media screen and (max-width: 900px) {
+  .emojis-chat {
+    position: absolute;
+    bottom: 175px;
+    left: 35px;
+    margin-right: 16px;
+  }
+}
+
+@media screen and (max-width: 419px) {
+  .emojis-chat {
+    bottom: 225px;
+    left: 8px;
+    right: 8px;
+    margin: 0px;
+
+    .emoji-mart {
+      width: 100% !important;
+    }
+  }
+
+  .emoji-mart-scroll {
+    height: 15vh !important;
+}
 }

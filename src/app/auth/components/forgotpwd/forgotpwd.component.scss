@@ -102,6 +102,7 @@
                 gap: 10px;
                 background-color: var(--purple-1);
                 color: white;
+                font-weight: 700;
     
                 &:hover {
                     border-radius: 25px;
@@ -120,4 +121,36 @@
             }
     
         }
+}
+
+@media screen and (max-width: 450px) {
+    .forgotpwd-container {
+        padding: 26px 21px;
+        width: calc(100% - 42px);
+        gap: 16px;
+
+        .head {
+            h2 {
+                font-size: 32px;
+                line-height: 120%;
+                padding: 0px 16px;
+            }
+
+            .arrow-back {
+                top: 0;
+                left: 0;
+            }
+        }
+
+        .forgetpwd-btns {
+            justify-content: center;
+        }
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .forgotpwd-container {
+        padding: 26px 21px;
+        width: calc(100% - 42px);
+    }
 }

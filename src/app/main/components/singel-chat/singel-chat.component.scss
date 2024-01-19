@@ -90,25 +90,6 @@
     }
 }
 
-
-
-
-.chat-top {
-    display: none;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 16px;
-    background: var(--main-bg-color);
-
-    div {
-        display: flex;
-        align-items: center;
-        font-size: 18px;
-        font-weight: 700;
-        gap: 10px;
-    }
-}
-
 .arrow-icon {
     height: 25px;
     width: 25px;
@@ -117,11 +98,6 @@
 .close-icon {
     height: 24px;
     width: 24px;
-}
-
-.thread-icon {
-    height: 50px;
-    width: 50px;
 }
 
 .editor-container {
@@ -151,6 +127,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
+        min-width: 100%;
 
         .chat-header {
             padding: 10px 16px;

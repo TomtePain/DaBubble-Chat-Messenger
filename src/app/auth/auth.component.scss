@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     z-index: 999;
+    // height: 102vh;
 
     .typing {
         font-size: 60px;
@@ -47,6 +48,7 @@
   justify-content: center;
   align-items: center;
   gap: 32px;
+  padding-bottom: 32px;
 
   button {
     padding: 8px 16px;
@@ -59,19 +61,11 @@
     background: none;
 
     &:hover {
-        border-radius: 25px;
-        border: 1px solid var(--ligth-purple-lines);
+      color: var(--purple-1);
     }
 
     &:active {
-        border-radius: 25px;
-        background: var(--purple-2, #444DF2);
-        color: white;
-    }
-
-    &:disabled {
-        border-radius: 25px;
-        background: var(--text-gray, #686868);
+      color: var(--purple-1);
     }
 }
 }
@@ -92,63 +86,101 @@
     }
   }
 
+  .reg-bottom {
+    display: none !important;
+  }
+// MediaQuerys - Responsive Design
 
-  // MediaQuerys - Responsive Design
-
-  @media (max-width: 600px) {
-    .intro-container {
-      img {
-        width: 100px;
-      }
-
-      .typing {
-        font-size: 48px;
-      }
+@media (max-width: 600px) {
+  .intro-container {
+    img {
+      width: 100px;
     }
 
-    .auth-container {
-      padding: 75px 16px 48px;
+    .typing {
+      font-size: 48px;
     }
   }
 
-  @media (max-width: 500px) {
-    .auth-container {
-      .header {
-        display: flex !important;
-        justify-content: center;
-        
-        div {
-          display: none;
-        }
-      }
-    }
+  .auth-container {
+    padding: 75px 16px 32px;
   }
+}
 
+@media (max-width: 500px) {
+  .auth-container {
+    .header {
+      display: flex !important;
+      justify-content: center;
 
-
-  @media (max-width: 400px) {
-    
-    .intro-container {
-      img {
-        width: 70px;
-      }
-
-      .typing {
-        font-size: 32px;
+      div {
+        display: none;
       }
     }
   }
 
+  .reg-bottom {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    padding: 0px 0px 16px 0px;
 
+    button {
+      display: flex;
+      padding: 7px 18px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 25px;
+      border: 1px solid var(--Purple-2, #797EF3);
+      color: var(--Purple-1, #444DF2);
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      background: none;
+      cursor: pointer;
 
-  @media (max-width: 300px) {
-    .intro-container {
-      img {
-        width: 70px;
-      }
-
-      .typing {
-        font-size: 32px;
+      &:hover {
+        color: white;
+        background: var(--Purple-2, #797EF3);
       }
     }
   }
+}
+
+
+
+@media (max-width: 400px) {
+
+  .footer-container {
+    flex-direction: column;
+    gap: 0px;
+    padding-bottom: 16px;
+  }
+
+  .intro-container {
+    img {
+      width: 70px;
+    }
+
+    .typing {
+      font-size: 32px;
+    }
+  }
+}
+
+
+
+@media (max-width: 300px) {
+  .intro-container {
+    img {
+      width: 70px;
+    }
+
+    .typing {
+      font-size: 32px;
+    }
+  }
+}

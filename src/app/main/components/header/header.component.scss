@@ -69,8 +69,6 @@
     padding: 30px;
     gap: 15px;
 }
-
-
 .mat-mdc-menu-item:not([disabled]):hover {
     padding: 10px, 45px, 10px, 45px;
     border-radius: 100px;
@@ -81,6 +79,42 @@
         color: var(--purple-3)
     }
   }
+
+//mobile
+
+.header-mobile {
+    // display: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 16px;
+    background: var(--main-bg-color);
+
+    div {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        font-weight: 700;
+        gap: 10px;
+        margin-left: 48px;
+    }
+
+    .logo {
+        height: 45px;
+        position: relative;
+        left: 10px;
+    }
+}
+
+.arrow-icon {
+    height: 25px;
+    width: 25px;
+}
+
+.thread-icon {
+    height: 50px;
+    width: 50px;
+}
 
 @media (max-width: 1122px) {
     .header {.profile {
@@ -102,3 +136,40 @@
         }
     }
   }
+
+
+@media (min-width: 501px) {
+    .header-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 500px) {
+
+    ::ng-deep .profile-dialog {
+        position: absolute;
+        right: 16px;
+        top: 65px;
+
+    }
+
+    .profile-icon {
+            img {
+                width: 50px;
+                height: 50px;
+                fill: var(--White, #FFF);
+                border-radius: 100%;
+                cursor: pointer;
+            }
+
+        }
+}
+
+@media (max-width: 340px) {
+
+    .header-mobile {
+        .logo {
+        height: 25px;
+        }
+    }
+}

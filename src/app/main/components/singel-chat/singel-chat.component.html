@@ -1,10 +1,4 @@
 <div class="chat-flex">
-    <!-- TODO for mobile view
-        <div class="chat-top">
-        <div><img class="arrow-icon" src="/assets/images/icons/arrow_left.png" alt=""><img class="thread-icon"
-                src="/assets/images/icons/workspace-logo.png" alt=""> Code Learning</div> <img class="thread-icon"
-            src="/assets/images/profile-icons/avatar-1.png" alt="">
-    </div> -->
 
     <div class="chat-container" [ngClass]="{'hide-tablet': hideMainChatOnSmallerScreens}">
         <app-singel-chat-header class="chat-header" [channelID]="channelId" [currentUser]="userName"
