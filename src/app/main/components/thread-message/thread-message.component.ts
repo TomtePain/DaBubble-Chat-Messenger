@@ -8,11 +8,13 @@ import { DialogProfileviewOfOthersComponent } from '../../dialogs/dialog-profile
 import { UserService } from '../../services/user.service';
 import { EditorService } from '../../services/editor.service';
 import { DialogDeleteMessageComponent } from '../chat-message/dialog-delete-message/dialog-delete-message.component';
+import { deleteObject, getStorage, ref } from '@angular/fire/storage';
+import { UploadComponent } from '../../dialogs/upload/upload.component';
 
 @Component({
   selector: 'app-thread-message',
   templateUrl: './thread-message.component.html',
-  styleUrls: ['./thread-message.component.scss']
+  styleUrls: ['./thread-message.component.scss', '../chat-message/chat-message.component.scss']
 })
 export class ThreadMessageComponent implements OnInit{
   @Input() messageData: any;
@@ -27,6 +29,7 @@ export class ThreadMessageComponent implements OnInit{
   allUserDataInfo:Array<any> = [];
   existingUser:any;
   showEmojiPicker = false;
+  channelUserNames:Array<any> = [];
   reactionBarOpen: boolean = false;
 
   constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService, public editorService: EditorService) {}
@@ -153,5 +156,86 @@ export class ThreadMessageComponent implements OnInit{
     open?.classList.toggle('d-none');
   }
 
+
+  checkForPDF() {
+    let name: string = this.messageData.uploadFileName;
+    let splitedName: string[] = name.split('.');
+    let lastPc: string = splitedName[splitedName.length - 1];
+    return lastPc
+  }
+
+  deleteUploadedFile() {
+    const storage = getStorage();
+    const spaceRef = ref(storage, `/upload/${this.userservice.userDBId}/` + this.messageData.uploadFileName);
+    let path = environment.threadDb + '/' + this.threadId + '/' + 'messages';
+    const docInstance = doc(this.firestore, path, this.messageData.id);
+
+    deleteObject(spaceRef).then(() => {
+      let updateData = {
+        uploadFile: false,
+        uploadFileName: false,
+      };
+      this.updateDataInDb(docInstance, updateData);
+      this.showUploadDialog('delete data');
+    })
+  }
+
+  showUploadDialog(msg: string) {
+    const dialogRef = this.dialog.open(UploadComponent, {
+      data: { typeOfMessage: msg },
+    });
+  }
+
+  /////// START FOR NEW BUILD /////
+
+  getChannelUserNames() {
+    this.channelUserNames = [];
+    if (this.editorService.usersData) {
+      this.editorService.usersData.forEach((name: any) => {
+        this.channelUserNames.push(name['fullName']);
+      })
+    }
+  }
+
+
+  splitText(allowedNames: any[]): string {
+    let result = this.messageData.message;
+    let markedNames = document.querySelectorAll(".highlight-message-names");
+
+    if (this.messageData.markedUser) {
+      this.messageData.markedUser.forEach((data: any) => {
+        const regex = new RegExp(`@${data.fullName}`, 'g');
+        result = result.replace(regex, `<span class="highlight-message-names">@${data.id}</span>`);
+      })
+    } else {
+      allowedNames.forEach((name) => {
+        const regex = new RegExp(`@${name.fullName}`, 'g');
+        result = result.replace(regex, `<span class="highlight-message-names">@${name.id}</span>`);
+      });
+    }
+
+    markedNames.forEach((item) => {
+      if (this.messageData.markedUser) {
+        this.messageData.markedUser.forEach((data: any) => {
+          if (item.innerHTML.slice(1) == data.id) {
+            item.setAttribute('data-name', data.id);
+            item.innerHTML = `@${data.fullName}`;
+          }
+        });
+      } 
+    })
+
+    return result;
+  }
+
+  handleNameClick(event: any): void {
+    if (event.target.classList.contains('highlight-message-names')) {
+      let clickedName = event.target.getAttribute('data-name');
+      let exist = this.editorService.usersData.find((userName: any) => userName.id == clickedName);
+      if (exist) {
+        this.viewUsersProfile(exist.id)
+      }
+    }
+  }
 
 }

@@ -15,6 +15,7 @@ import { SingelChatHeaderComponent } from '../singel-chat-header/singel-chat-hea
 import { Subscription, filter } from 'rxjs';
 import { RefreshService } from '../../services/refresh.service';
 import { ScrollService } from '../../services/scroll.service';
+import { EditorService } from '../../services/editor.service';
 
 @Component({
   selector: 'app-singel-chat',
@@ -45,6 +46,7 @@ export class SingelChatComponent implements OnInit {
     public firestore: Firestore,
     public crud: CrudService,
     public userservice: UserService,
+    public editorService: EditorService,
     private scrollService: ScrollService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -203,10 +205,15 @@ export class SingelChatComponent implements OnInit {
 
   checkUserDataFromDb() {
     this.existingUser = [];
+    this.editorService.usersData = [];
     let channelUser = this.currentChannel[0].ids;
     channelUser.forEach((element:any) => {
       let existUser = this.userservice.allUsers.find((exist:any) => exist.id == element);
-      if(existUser) { this.existingUser.push(existUser) };
+      if(existUser) {
+        this.existingUser.push(existUser);
+        this.editorService.usersData.push(existUser);
+       };
     });
+    // this.editorService.usersData = this.existingUser;
   }
 }
