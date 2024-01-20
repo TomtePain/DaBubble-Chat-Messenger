@@ -1,12 +1,7 @@
 <div class="container">
     <h3>Neue Nachricht</h3>
-    <input (input)="searching($event)" type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
-    <div *ngFor="let selected of selectedUser">
-        <div >
-            <img [src]="selected.photoURL" alt="">
-            <p>{{selected.fullName}}</p>
-        </div>
-    </div>
+    <input (keyup)="searching($event)" type="text" placeholder="An: #channel, oder @jemand">
+    
     <div *ngIf="this.tree.isSearchActive" class="search-container" >
         <div class="scroll">
             <div *ngFor="let channel of channelsUser" (click)="this.tree.handleNodeClick(channel)">
@@ -16,7 +11,7 @@
                 </div>
                 
             </div>
-            <div *ngFor="let user of messageUser; index as i">
+            <div *ngFor="let user of searchResult; index as i">
                 <div class="search-result" (click)="checkForDm(i)">
                     <p>@</p>
                     <img [src]="user.photoURL" alt="">
