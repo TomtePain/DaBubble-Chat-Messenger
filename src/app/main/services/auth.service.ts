@@ -74,6 +74,7 @@ export class AuthService {
           accessToChannel: [],
           isOnline: false,
           email: email,
+          uploadFileCounter: 0
         };
         sendEmailVerification(resp.user);
         this.crud.addItem(userData, environment.userDb).then((docRef) => {
@@ -112,8 +113,9 @@ export class AuthService {
         searchTerms: this.generateSearchTerms(fullName as string, email as string),
         photoURL: userPhotoURL,
         accessToChannel: [],
-        isOnline: false,
+        isOnline: true,
         email: email,
+        uploadFileCounter: 0
       };
 
       if (userIsReg.length > 0) {

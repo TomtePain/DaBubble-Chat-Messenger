@@ -170,6 +170,9 @@ export class EditorComponent implements OnInit {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
       content.value = '';
       this.message = '';
+      this.editorService.fileUrl = '';
+      this.uploadedDataName = '';
+      this.uploadedData = false;
       this.markedUsers = [];
       this.markedUsersInText = [];
       setTimeout(() => {
@@ -227,6 +230,9 @@ export class EditorComponent implements OnInit {
             console.error('Error creating newThread:', error);
           })
         content.value = '';
+        this.editorService.fileUrl = '';
+        this.uploadedDataName = '';
+        this.uploadedData = false;
         this.markedUsers = [];
         this.markedUsersInText = [];
         //route to new thread id

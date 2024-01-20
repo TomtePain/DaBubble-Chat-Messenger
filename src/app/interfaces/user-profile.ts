@@ -6,4 +6,5 @@ export interface UserProfile {
     accessToChannels: [];
     isOnline: boolean;
     id:string;
+    uploadFileCounter: number;
 }
