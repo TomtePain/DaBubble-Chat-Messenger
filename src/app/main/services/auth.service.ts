@@ -51,7 +51,9 @@ export class AuthService {
     private crud: CrudService,
     private tree: TreeService,
     private userservice: UserService
-  ) {}
+  ) {
+    console.log('')
+  }
 
   regUser(
     regFormValue: any,
@@ -119,7 +121,7 @@ export class AuthService {
       };
 
       if (userIsReg.length > 0) {
-        setDoc(doc(itemCollection, userIsReg), userData);
+        // setDoc(doc(itemCollection, userIsReg), userData);
       } else {
         this.crud.addItem(userData, environment.userDb).then((docRef) => {
           this.upDateChannelUser(docRef);
