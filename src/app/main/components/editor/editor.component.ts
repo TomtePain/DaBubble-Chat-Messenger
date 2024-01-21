@@ -31,7 +31,7 @@ export class EditorComponent implements OnInit {
   @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
-  searchResultForChannel: Array<any> = [];
+  searchResultForChannel: Array<any> = this.editorService.allChannel;
   searchMarktUsers: boolean = false;
   searchMarktChannel: boolean = false;
   searchUserInput: string = '';
@@ -507,9 +507,15 @@ export class EditorComponent implements OnInit {
   // SEARCH FOR CHANNEL
 
   searchForChannelToMark(event:KeyboardEvent) {
+    let area:any = document.getElementById('text');
+
     if (event.key === '#') {
-      console.log('Die #-Taste wurde gedrückt!')
+      this.searchMarktChannel = true;
+    }
+    if(!area.value.trim().includes('#')) {
+      this.searchMarktChannel = false;
     }
   }
+
 }
 
