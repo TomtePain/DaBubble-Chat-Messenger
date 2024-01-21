@@ -31,7 +31,9 @@ export class EditorComponent implements OnInit {
   @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
-  searchMarktUsers: boolean = false
+  searchResultForChannel: Array<any> = [];
+  searchMarktUsers: boolean = false;
+  searchMarktChannel: boolean = false;
   searchUserInput: string = '';
   lastIndexOfAt: number = 0;
   timestamp: any;
@@ -498,6 +500,15 @@ export class EditorComponent implements OnInit {
         }
       });
       return body.fullName
+    }
+  }
+
+  /////////////////////////////////////
+  // SEARCH FOR CHANNEL
+
+  searchForChannelToMark(event:KeyboardEvent) {
+    if (event.key === '#') {
+      console.log('Die #-Taste wurde gedrückt!')
     }
   }
 }
