@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, getDocs, updateDoc, query, where } from '@angular/fire/firestore';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { environment } from 'src/environments/environment';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { from } from 'rxjs';
 import { UserService } from './user.service';
+import { CrudService } from './crud.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,11 @@ export class EditorService {
   fileUrl: string = '';
   fileName: string = '';
   newFileName: string = '';
+  allChannel: Array<any> = [];
 
-  constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService) { }
+  constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService, public crud: CrudService) {
+    this.getAllChannels();
+   }
 
   /**
    * Retrieves and populates user data for a single document identified by 'docId' from Firestore.
@@ -107,6 +111,22 @@ export class EditorService {
   messageToLowercase(message: string) {
     const messageLowercase = message.toLowerCase();
     return messageLowercase;
+  }
+
+
+  async getAllChannels() {
+    let channelsRef = collection(this.firestore, environment.channelDb);
+    let selectedChannel = await getDocs(
+      query(
+        channelsRef,
+        where('type', '==', 'channel')
+      )
+    );
+
+    selectedChannel.forEach((doc:any) => {
+      this.allChannel.push({ id: doc.id, ... doc.data() });
+    });
+    console.log('allchannel:', this.allChannel)
   }
 
 
