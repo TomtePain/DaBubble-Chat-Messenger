@@ -19,7 +19,7 @@
 
   <div class="markt-users" *ngIf="searchMarktChannel">
     <div class="users-box">
-      <div class="user-box" *ngFor="let item of searchResultForChannel" (click)="addChannelintoMSG(item.name)">
+      <div class="user-box" *ngFor="let item of searchResultForChannel" (click)="addChannelintoMSG(item.name, item.id)">
         <div>#{{ item.name }}</div>
       </div>
     </div>

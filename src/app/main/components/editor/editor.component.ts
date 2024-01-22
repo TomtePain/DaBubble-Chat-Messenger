@@ -49,6 +49,8 @@ export class EditorComponent implements OnInit {
   private routerSubscription: Subscription;
   markedUsers: Array<any> = [];
   markedUsersInText: Array<any> = [];
+  markedChannel: Array<any> = [];
+  markedChannelinText: Array<any> = [];
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -118,6 +120,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       markedUser: this.markedUsersInText,
+      markedChannel: this.markedChannelinText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
@@ -125,6 +128,7 @@ export class EditorComponent implements OnInit {
     }
 
     this.checkMarkedUser(content.value);
+    this.checkMarkedChannel(content.value);
 
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.channelDb + '/' + this.channelId + '/' + 'messages').then(() => {
@@ -135,6 +139,8 @@ export class EditorComponent implements OnInit {
         this.message = '';
         this.markedUsers = [];
         this.markedUsersInText = [];
+        this.markedChannel = [];
+        this.markedChannelinText = [];
         setTimeout(() => {
           this.scrollToBottom.emit()
         }, 500);
@@ -537,12 +543,26 @@ export class EditorComponent implements OnInit {
     });
   }
 
-  addChannelintoMSG(value:any){
+  addChannelintoMSG(value:any, id:any){
     const textToAdd = this.message.substring(0, this.lastIndexOfRaute + 1);
     this.message = `${textToAdd}` + `${value}`
     this.searchMarktChannel = false;
+    this.markedChannel.push(id)
   }
 
+  checkMarkedChannel(message: string) {
+    this.markedChannel.forEach((channel) => {
+      let existChannel = this.editorService.allChannel.find((exist: any) => exist.id == channel);
+      if (existChannel.name == message.match(existChannel.name)) {
+        if (!this.markedChannelinText.includes(existChannel.id)) {
+          this.markedChannelinText.push({
+            name: existChannel.name,
+            id: existChannel.id
+          });
+        }
+      }
+    })
+  }
 
 }
 

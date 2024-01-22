@@ -17,6 +17,7 @@ import { DialogDeleteMessageComponent } from './dialog-delete-message/dialog-del
 import { getStorage, ref, deleteObject } from '@angular/fire/storage';
 import { UploadComponent } from '../../dialogs/upload/upload.component';
 import { EditorService } from '../../services/editor.service';
+import { TreeService } from '../../services/tree.service';
 
 @Component({
   selector: 'app-chat-message',
@@ -53,7 +54,8 @@ export class ChatMessageComponent implements OnInit {
     private userservice: UserService,
     private router: Router,
     public dialog: MatDialog,
-    public editorService: EditorService
+    public editorService: EditorService,
+    public tree: TreeService
   ) { }
 
   ngOnInit(): void {
@@ -322,6 +324,12 @@ export class ChatMessageComponent implements OnInit {
         result = result.replace(regex, `<span class="highlight-message-names">@${name.id}</span>`);
       });
     }
+    if(this.messageData.markedChannel) {
+      this.messageData.markedChannel.forEach((data:any) => {
+        const regex = new RegExp(`#${data.name}`, 'g');
+        result = result.replace(regex, `<span class="highlight-message-names">#${data.id}</span>`)
+      })
+    }
 
     markedNames.forEach((item) => {
       if (this.messageData.markedUser) {
@@ -331,7 +339,15 @@ export class ChatMessageComponent implements OnInit {
             item.innerHTML = `@${data.fullName}`;
           }
         });
-      } 
+      }
+      if(this.messageData.markedChannel) {
+        this.messageData.markedChannel.forEach((data: any) => {
+          if(item.innerHTML.slice(1) == data.id) {
+            item.setAttribute('data-name', data.id);
+            item.innerHTML = `#${data.name}`
+          }
+        });
+      }
     })
 
     return result;
@@ -341,8 +357,13 @@ export class ChatMessageComponent implements OnInit {
     if (event.target.classList.contains('highlight-message-names')) {
       let clickedName = event.target.getAttribute('data-name');
       let exist = this.editorService.usersData.find((userName: any) => userName.id == clickedName);
+      let existChannel = this.editorService.allChannel.find((channel:any) => channel.id == clickedName);
       if (exist) {
         this.viewUsersProfile(exist.id)
+      }
+      if(existChannel) {
+        // this.tree.handleNodeClick(existChannel)
+        this.router.navigate(['/', existChannel.id]);
       }
     }
   }
