@@ -31,11 +31,13 @@ export class EditorComponent implements OnInit {
   @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
-  searchResultForChannel: Array<any> = this.editorService.allChannel;
+  searchResultForChannel: Array<any> = [];
+  searchTermForChannel: string = '';
   searchMarktUsers: boolean = false;
   searchMarktChannel: boolean = false;
   searchUserInput: string = '';
   lastIndexOfAt: number = 0;
+  lastIndexOfRaute: number = 0;
   timestamp: any;
   userName: any = this.userservice.userDBId;
   user: Array<any> = [];
@@ -506,16 +508,37 @@ export class EditorComponent implements OnInit {
   /////////////////////////////////////
   // SEARCH FOR CHANNEL
 
-  searchForChannelToMark(event:KeyboardEvent) {
-    let area:any = document.getElementById('text');
+  searchForChannelToMark(event: KeyboardEvent) {
+    let area: any = document.getElementById('text');
 
     if (event.key === '#') {
       this.searchMarktChannel = true;
+      this.valuesofHash();
     }
-    if(!area.value.trim().includes('#')) {
+    if (!area.value.trim().includes('#')) {
       this.searchMarktChannel = false;
     }
   }
+
+  initChannels() {
+    this.searchResultForChannel = [];
+    this.searchResultForChannel = this.editorService.allChannel;
+  }
+
+
+  valuesofHash() {
+    this.searchResultForChannel = this.filterItems(this.searchTermForChannel);
+  }
+
+  filterItems(searchTerm: string): string[] {
+    return this.editorService.allChannel.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  }
+
+  addChannelintoMSG(value:any){
+    this.message = `${this.message}` + `${value}`
+    this.searchMarktChannel = false;
+  }
+
 
 }
 
