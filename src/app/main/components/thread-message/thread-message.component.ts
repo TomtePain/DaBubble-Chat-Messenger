@@ -10,6 +10,7 @@ import { EditorService } from '../../services/editor.service';
 import { DialogDeleteMessageComponent } from '../chat-message/dialog-delete-message/dialog-delete-message.component';
 import { deleteObject, getStorage, ref } from '@angular/fire/storage';
 import { UploadComponent } from '../../dialogs/upload/upload.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thread-message',
@@ -32,7 +33,7 @@ export class ThreadMessageComponent implements OnInit{
   channelUserNames:Array<any> = [];
   reactionBarOpen: boolean = false;
 
-  constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService, public editorService: EditorService) {}
+  constructor(public firestore: Firestore, public crud: CrudService, public reactionservice:ReactionService, public dialog: MatDialog, private userservice: UserService, public editorService: EditorService, private router: Router) {}
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -214,6 +215,13 @@ export class ThreadMessageComponent implements OnInit{
       });
     }
 
+    if(this.messageData.markedChannel) {
+      this.messageData.markedChannel.forEach((data:any) => {
+        const regex = new RegExp(`#${data.name}`, 'g');
+        result = result.replace(regex, `<span class="highlight-message-names">#${data.id}</span>`)
+      })
+    }
+
     markedNames.forEach((item) => {
       if (this.messageData.markedUser) {
         this.messageData.markedUser.forEach((data: any) => {
@@ -223,6 +231,14 @@ export class ThreadMessageComponent implements OnInit{
           }
         });
       } 
+      if(this.messageData.markedChannel) {
+        this.messageData.markedChannel.forEach((data: any) => {
+          if(item.innerHTML.slice(1) == data.id) {
+            item.setAttribute('data-name', data.id);
+            item.innerHTML = `#${data.name}`
+          }
+        });
+      }
     })
 
     return result;
@@ -232,8 +248,13 @@ export class ThreadMessageComponent implements OnInit{
     if (event.target.classList.contains('highlight-message-names')) {
       let clickedName = event.target.getAttribute('data-name');
       let exist = this.editorService.usersData.find((userName: any) => userName.id == clickedName);
+      let existChannel = this.editorService.allChannel.find((channel:any) => channel.id == clickedName);
       if (exist) {
         this.viewUsersProfile(exist.id)
+      }
+      if(existChannel) {
+        // this.tree.handleNodeClick(existChannel)
+        this.router.navigate(['/', existChannel.id]);
       }
     }
   }
