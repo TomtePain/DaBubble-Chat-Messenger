@@ -119,14 +119,15 @@ export class EditorService {
     let selectedChannel = await getDocs(
       query(
         channelsRef,
-        where('type', '==', 'channel')
+        where('type', '==', 'channel'),
+        where('ids', 'array-contains', this.userservice.userDBId)
       )
     );
 
     selectedChannel.forEach((doc:any) => {
       this.allChannel.push({ id: doc.id, ... doc.data() });
     });
-    console.log('allchannel:', this.allChannel)
+    console.log('allchannel:', this.allChannel);
   }
 
 
