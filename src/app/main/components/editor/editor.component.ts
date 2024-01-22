@@ -167,6 +167,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       markedUser: this.markedUsersInText,
+      markedChannel: this.markedChannelinText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
@@ -174,6 +175,7 @@ export class EditorComponent implements OnInit {
     }
 
     this.checkMarkedUser(content.value);
+    this.checkMarkedChannel(content.value);
 
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
@@ -184,6 +186,8 @@ export class EditorComponent implements OnInit {
       this.uploadedData = false;
       this.markedUsers = [];
       this.markedUsersInText = [];
+      this.markedChannel = [];
+      this.markedChannelinText = [];
       setTimeout(() => {
         this.scrollToBottom.emit()
       }, 500)
@@ -213,6 +217,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       markedUser: this.markedUsersInText,
+      markedChannel: this.markedChannelinText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
@@ -220,6 +225,7 @@ export class EditorComponent implements OnInit {
     }
 
     this.checkMarkedUser(content.value);
+    this.checkMarkedChannel(content.value);
 
     let newThread = {
       mainMessage: this.mainMessageId
@@ -244,6 +250,8 @@ export class EditorComponent implements OnInit {
         this.uploadedData = false;
         this.markedUsers = [];
         this.markedUsersInText = [];
+        this.markedChannel = [];
+        this.markedChannelinText = [];
         //route to new thread id
         this.openThread(newThreadId)
       });
@@ -521,6 +529,8 @@ export class EditorComponent implements OnInit {
 
   searchForChannelToMark(event: KeyboardEvent) {
     let area: any = document.getElementById('text');
+    let threadtext:any = document.getElementById('thread-text');
+    let newthread:any = document.getElementById('new-thread-text');
 
     if (event.key === '#') {
       this.searchMarktChannel = true;
@@ -528,7 +538,7 @@ export class EditorComponent implements OnInit {
     }
     if (!area.value.trim().includes('#')) {
       this.searchMarktChannel = false;
-    }
+    } 
   }
 
   initChannels() {
