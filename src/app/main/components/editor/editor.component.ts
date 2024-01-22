@@ -513,7 +513,8 @@ export class EditorComponent implements OnInit {
 
     if (event.key === '#') {
       this.searchMarktChannel = true;
-      this.valuesofHash();
+      // this.valuesofHash();
+      this.initChannels();
     }
     if (!area.value.trim().includes('#')) {
       this.searchMarktChannel = false;
