@@ -32,7 +32,6 @@ export class EditorComponent implements OnInit {
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchResultForChannel: Array<any> = [];
-  searchTermForChannel: string = '';
   searchMarktUsers: boolean = false;
   searchMarktChannel: boolean = false;
   searchUserInput: string = '';
@@ -345,9 +344,15 @@ export class EditorComponent implements OnInit {
   showForMarkt(event: any) {
     let currentValue: string = this.message.trim();
     this.lastIndexOfAt = currentValue.lastIndexOf('@');
+    this.lastIndexOfRaute = currentValue.lastIndexOf('#');
+
     if (this.lastIndexOfAt !== -1) {
       const textNachLetztemAt = currentValue.substring(this.lastIndexOfAt + 1);
       this.searchUser(textNachLetztemAt);
+    }
+    if(this.lastIndexOfRaute !== -1) {
+      let textAfterRaute = currentValue.substring(this.lastIndexOfRaute + 1);
+      this.filterItems(textAfterRaute);
     }
   }
 
@@ -513,7 +518,6 @@ export class EditorComponent implements OnInit {
 
     if (event.key === '#') {
       this.searchMarktChannel = true;
-      // this.valuesofHash();
       this.initChannels();
     }
     if (!area.value.trim().includes('#')) {
@@ -527,16 +531,15 @@ export class EditorComponent implements OnInit {
   }
 
 
-  valuesofHash() {
-    this.searchResultForChannel = this.filterItems(this.searchTermForChannel);
-  }
-
-  filterItems(searchTerm: string): string[] {
-    return this.editorService.allChannel.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  filterItems(searchTerm: string) {
+    this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
+      return el.name.toLowerCase().includes(searchTerm.toLocaleLowerCase());
+    });
   }
 
   addChannelintoMSG(value:any){
-    this.message = `${this.message}` + `${value}`
+    const textToAdd = this.message.substring(0, this.lastIndexOfRaute + 1);
+    this.message = `${textToAdd}` + `${value}`
     this.searchMarktChannel = false;
   }
 
