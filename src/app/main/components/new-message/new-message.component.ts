@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CrudService } from '../../services/crud.service';
 import { TreeService } from '../../services/tree.service';
-import { UserService} from '../../services/user.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-new-message',
@@ -12,14 +12,20 @@ export class NewMessageComponent {
   messageUser: any = this.userservice.allUsers;
   channelsUser: any = [];
   selectedUser: any = [];
+  searchResult:Array<any> = [];
 
   constructor(private crud: CrudService, public tree: TreeService, private userservice: UserService) {
-   
+
   }
 
 
-  checkForDm(i:number){
-    this.tree.routeToDmChannel(this.messageUser[i]);
+  checkForDm(i: number) {
+    this.tree.routeToDmChannel(this.searchResult[i]);
+  }
+
+  initializeChannelUsers() {
+    this.searchResult = [];
+    this.searchResult = this.messageUser;
   }
 
   searching(event: any) {
@@ -27,20 +33,22 @@ export class NewMessageComponent {
     this.channelsUser = this.tree.userChannels;
     if (searchTerm !== '') {
       this.tree.isSearchActive = true;
-      this.channelsUser = this.filterDataByName(this.channelsUser,searchTerm);
-      this.messageUser = this.filterDataByName2(this.messageUser,searchTerm);
+      this.channelsUser = this.filterDataByName(this.channelsUser, searchTerm);
+      this.selectedUser = this.searchUser(searchTerm);
     } else {
-     this.tree.isSearchActive = false;
+      this.tree.isSearchActive = false;
     }
   }
 
-  filterDataByName2(data: any[], searchTerm: string): any[] {
-    searchTerm = searchTerm.toLowerCase();  
-    return data.filter(item => item.fullName.toLowerCase().includes(searchTerm));
-  }
-
   filterDataByName(data: any[], searchTerm: string): any[] {
-    searchTerm = searchTerm.toLowerCase();  
+    searchTerm = searchTerm.toLowerCase();
     return data.filter(item => item.name.toLowerCase().includes(searchTerm));
   }
+
+  searchUser(searchValue: string) {
+    this.searchResult = this.messageUser.filter((el: any) => {
+      return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
+    })
+  }
+
 }

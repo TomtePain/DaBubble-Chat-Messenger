@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, getDocs, updateDoc, query, where } from '@angular/fire/firestore';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { environment } from 'src/environments/environment';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { from } from 'rxjs';
 import { UserService } from './user.service';
+import { CrudService } from './crud.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,11 @@ export class EditorService {
   fileUrl: string = '';
   fileName: string = '';
   newFileName: string = '';
+  allChannel: Array<any> = [];
 
-  constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService) { }
+  constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService, public crud: CrudService) {
+    this.getAllChannels();
+   }
 
   /**
    * Retrieves and populates user data for a single document identified by 'docId' from Firestore.
@@ -79,34 +83,51 @@ export class EditorService {
     this.uploadDataToStore(file);
   }
 
-  updateUploadCounter(counter:number) {
+  updateUploadCounter(counter: number) {
     const docInstance = doc(this.firestore, environment.userDb, this.userservice.userDBId as string);
     let updateCounter = {
-      uploadFileCounter : counter
+      uploadFileCounter: counter
     };
     updateDoc(docInstance, updateCounter);
   }
 
   messageToSearchTerms(sentence: string): string[] {
-  // Clean the sentence and remove non-word characters, except spaces
-  const messageWordsOnly = sentence.trim().replace(/[^\p{L}\p{N}\s]/gu, "");
-  
-  // Convert the cleaned sentence to lowercase
-  const messageLowerCase = messageWordsOnly.toLowerCase();
+    // Clean the sentence and remove non-word characters, except spaces
+    const messageWordsOnly = sentence.trim().replace(/[^\p{L}\p{N}\s]/gu, "");
 
-  // Split the lowercase sentence into words based on spaces
-  const regex = /\s+/;
-  let array = messageLowerCase.split(regex).filter(word => word.length > 0);
+    // Convert the cleaned sentence to lowercase
+    const messageLowerCase = messageWordsOnly.toLowerCase();
 
-  // Add the entire lowercase sentence as a separate element
-  array.push(messageLowerCase);
-  
-  return array;
+    // Split the lowercase sentence into words based on spaces
+    const regex = /\s+/;
+    let array = messageLowerCase.split(regex).filter(word => word.length > 0);
+
+    // Add the entire lowercase sentence as a separate element
+    array.push(messageLowerCase);
+
+    return array;
   }
-  
+
   messageToLowercase(message: string) {
     const messageLowercase = message.toLowerCase();
     return messageLowercase;
+  }
+
+
+  async getAllChannels() {
+    let channelsRef = collection(this.firestore, environment.channelDb);
+    let selectedChannel = await getDocs(
+      query(
+        channelsRef,
+        where('type', '==', 'channel'),
+        where('ids', 'array-contains', this.userservice.userDBId)
+      )
+    );
+
+    selectedChannel.forEach((doc:any) => {
+      this.allChannel.push({ id: doc.id, ... doc.data() });
+    });
+    console.log('allchannel:', this.allChannel);
   }
 
 

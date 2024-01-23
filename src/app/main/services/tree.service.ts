@@ -159,6 +159,8 @@ export class TreeService {
       // this.currentSelectedChannel = SUCHE NACH this.currentUserDbId in Users Channel und return doc.id;
     })
     // this.closeWorkspace();
+    this.isSearchActive = false;
+    this.isNewMessage = false;
   }
 
 

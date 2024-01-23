@@ -31,9 +31,12 @@ export class EditorComponent implements OnInit {
   @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   searchResult: Array<UserProfile> = [];
-  searchMarktUsers: boolean = false
+  searchResultForChannel: Array<any> = [];
+  searchMarktUsers: boolean = false;
+  searchMarktChannel: boolean = false;
   searchUserInput: string = '';
   lastIndexOfAt: number = 0;
+  lastIndexOfRaute: number = 0;
   timestamp: any;
   userName: any = this.userservice.userDBId;
   user: Array<any> = [];
@@ -46,6 +49,8 @@ export class EditorComponent implements OnInit {
   private routerSubscription: Subscription;
   markedUsers: Array<any> = [];
   markedUsersInText: Array<any> = [];
+  markedChannel: Array<any> = [];
+  markedChannelinText: Array<any> = [];
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -115,6 +120,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       markedUser: this.markedUsersInText,
+      markedChannel: this.markedChannelinText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
@@ -122,6 +128,7 @@ export class EditorComponent implements OnInit {
     }
 
     this.checkMarkedUser(content.value);
+    this.checkMarkedChannel(content.value);
 
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.channelDb + '/' + this.channelId + '/' + 'messages').then(() => {
@@ -132,6 +139,8 @@ export class EditorComponent implements OnInit {
         this.message = '';
         this.markedUsers = [];
         this.markedUsersInText = [];
+        this.markedChannel = [];
+        this.markedChannelinText = [];
         setTimeout(() => {
           this.scrollToBottom.emit()
         }, 500);
@@ -158,6 +167,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       markedUser: this.markedUsersInText,
+      markedChannel: this.markedChannelinText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
@@ -165,13 +175,19 @@ export class EditorComponent implements OnInit {
     }
 
     this.checkMarkedUser(content.value);
+    this.checkMarkedChannel(content.value);
 
     if (content.value != '') {
       this.crud.addItem(newMessage, environment.threadDb + '/' + this.threadId + '/' + 'messages');
       content.value = '';
       this.message = '';
+      this.editorService.fileUrl = '';
+      this.uploadedDataName = '';
+      this.uploadedData = false;
       this.markedUsers = [];
       this.markedUsersInText = [];
+      this.markedChannel = [];
+      this.markedChannelinText = [];
       setTimeout(() => {
         this.scrollToBottom.emit()
       }, 500)
@@ -201,6 +217,7 @@ export class EditorComponent implements OnInit {
       timestamp: timeStamp.getTime(),
       message: content.value,
       markedUser: this.markedUsersInText,
+      markedChannel: this.markedChannelinText,
       uploadFile: fileURL,
       uploadFileName: fileName,
       messageLowercase: this.editorService.messageToLowercase(content.value),
@@ -208,6 +225,7 @@ export class EditorComponent implements OnInit {
     }
 
     this.checkMarkedUser(content.value);
+    this.checkMarkedChannel(content.value);
 
     let newThread = {
       mainMessage: this.mainMessageId
@@ -227,8 +245,13 @@ export class EditorComponent implements OnInit {
             console.error('Error creating newThread:', error);
           })
         content.value = '';
+        this.editorService.fileUrl = '';
+        this.uploadedDataName = '';
+        this.uploadedData = false;
         this.markedUsers = [];
         this.markedUsersInText = [];
+        this.markedChannel = [];
+        this.markedChannelinText = [];
         //route to new thread id
         this.openThread(newThreadId)
       });
@@ -335,9 +358,15 @@ export class EditorComponent implements OnInit {
   showForMarkt(event: any) {
     let currentValue: string = this.message.trim();
     this.lastIndexOfAt = currentValue.lastIndexOf('@');
+    this.lastIndexOfRaute = currentValue.lastIndexOf('#');
+
     if (this.lastIndexOfAt !== -1) {
       const textNachLetztemAt = currentValue.substring(this.lastIndexOfAt + 1);
       this.searchUser(textNachLetztemAt);
+    }
+    if(this.lastIndexOfRaute !== -1) {
+      let textAfterRaute = currentValue.substring(this.lastIndexOfRaute + 1);
+      this.filterItems(textAfterRaute);
     }
   }
 
@@ -494,5 +523,56 @@ export class EditorComponent implements OnInit {
       return body.fullName
     }
   }
+
+  /////////////////////////////////////
+  // SEARCH FOR CHANNEL
+
+  searchForChannelToMark(event: KeyboardEvent) {
+    let area: any = document.getElementById('text');
+    let threadtext:any = document.getElementById('thread-text');
+    let newthread:any = document.getElementById('new-thread-text');
+
+    if (event.key === '#') {
+      this.searchMarktChannel = true;
+      this.initChannels();
+    }
+    if (!area.value.trim().includes('#')) {
+      this.searchMarktChannel = false;
+    } 
+  }
+
+  initChannels() {
+    this.searchResultForChannel = [];
+    this.searchResultForChannel = this.editorService.allChannel;
+  }
+
+
+  filterItems(searchTerm: string) {
+    this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
+      return el.name.toLowerCase().includes(searchTerm.toLocaleLowerCase());
+    });
+  }
+
+  addChannelintoMSG(value:any, id:any){
+    const textToAdd = this.message.substring(0, this.lastIndexOfRaute + 1);
+    this.message = `${textToAdd}` + `${value}`
+    this.searchMarktChannel = false;
+    this.markedChannel.push(id)
+  }
+
+  checkMarkedChannel(message: string) {
+    this.markedChannel.forEach((channel) => {
+      let existChannel = this.editorService.allChannel.find((exist: any) => exist.id == channel);
+      if (existChannel.name == message.match(existChannel.name)) {
+        if (!this.markedChannelinText.includes(existChannel.id)) {
+          this.markedChannelinText.push({
+            name: existChannel.name,
+            id: existChannel.id
+          });
+        }
+      }
+    })
+  }
+
 }
 
