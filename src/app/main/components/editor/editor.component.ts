@@ -44,6 +44,7 @@ export class EditorComponent implements OnInit {
   showEmojiPicker = false;
   message: any = '';
   lastAtPosition = -1;
+  lastHashPosition = -1;
   uploadedData: boolean = false;
   uploadedDataName: string = '';
   private routerSubscription: Subscription;
@@ -289,24 +290,6 @@ export class EditorComponent implements OnInit {
     this.searchResult = this.channelUsers;
   }
 
-
-  // removeDuplicatesFromJsonArray(jsonArray: Array<any>, key: any) {
-  //   let newArray: Array<any> = [];
-  //   let keysSet = new Set();
-
-  //   jsonArray.forEach((item: any) => {
-  //     let keyValue = item[key];
-
-  //     if (!keysSet.has(keyValue)) {
-  //       keysSet.add(keyValue);
-  //       newArray.push(item);
-  //     }
-  //   });
-
-  //   return newArray;
-  // }
-
-
   /**
    * Updates the message by appending '@', sets the cursor, triggers the keyup event,
    * and activates the search for market users.
@@ -346,7 +329,6 @@ export class EditorComponent implements OnInit {
     });
     if (this.searchResult.length <= 1) {
       this.searchMarktUsers = false;
-      // this.addToMsg(this.searchResult[0].fullName)
     }
   }
 
@@ -355,7 +337,7 @@ export class EditorComponent implements OnInit {
    *
    * @param {any} event - The event triggering the display of market user content.
    */
-  showForMarkt(event: any) {
+  showForMarkt() {
     let currentValue: string = this.message.trim();
     this.lastIndexOfAt = currentValue.lastIndexOf('@');
     this.lastIndexOfRaute = currentValue.lastIndexOf('#');
@@ -415,13 +397,26 @@ export class EditorComponent implements OnInit {
     if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
       this.activateSearchMarketUsers();
     }
+    // Check if the '@' character is typed or '@' preceded by a newline character.
+    if (text.charAt(cursorIndex - 1) === '#' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '#')) {
+      this.activateSearchForChannelToMark();
+    }
     const atPosition = text.lastIndexOf('@');
+    const hashPosition = text.lastIndexOf('#');
     if (atPosition === -1) {
       this.searchMarktUsers = false;
-    } else if (atPosition !== this.lastAtPosition) {
+    }
+    if (hashPosition === -1) {
+      this.searchMarktChannel = false;
+    }
+    else if (atPosition !== this.lastAtPosition) {
       this.searchMarktUsers = true;
     }
+    else if (hashPosition !== this.lastAtPosition) {
+      this.searchMarktChannel = true;
+    }
     this.lastAtPosition = atPosition;
+    this.lastHashPosition = hashPosition;
   }
 
   /**
@@ -524,21 +519,11 @@ export class EditorComponent implements OnInit {
     }
   }
 
-  /////////////////////////////////////
   // SEARCH FOR CHANNEL
 
-  searchForChannelToMark(event: KeyboardEvent) {
-    let area: any = document.getElementById('text');
-    let threadtext:any = document.getElementById('thread-text');
-    let newthread:any = document.getElementById('new-thread-text');
-
-    if (event.key === '#') {
-      this.searchMarktChannel = true;
-      this.initChannels();
-    }
-    if (!area.value.trim().includes('#')) {
-      this.searchMarktChannel = false;
-    } 
+  activateSearchForChannelToMark() {
+    this.searchMarktChannel = true;
+    this.initChannels();
   }
 
   initChannels() {
@@ -551,6 +536,9 @@ export class EditorComponent implements OnInit {
     this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
       return el.name.toLowerCase().includes(searchTerm.toLocaleLowerCase());
     });
+    if (this.searchResultForChannel.length <= 1) {
+      this.searchMarktChannel = false;
+    }
   }
 
   addChannelintoMSG(value:any, id:any){
@@ -560,7 +548,7 @@ export class EditorComponent implements OnInit {
     this.markedChannel.push(id)
   }
 
-  checkMarkedChannel(message: string) {
+  checkMarkedChannel(message: string) {   
     this.markedChannel.forEach((channel) => {
       let existChannel = this.editorService.allChannel.find((exist: any) => exist.id == channel);
       if (existChannel.name == message.match(existChannel.name)) {
