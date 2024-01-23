@@ -16,6 +16,12 @@
             <button mat-menu-item style="background-color: transparent;" (click)="openDialog()">
                 <span class="menu-item">Profil</span>
             </button>
+            <button mat-menu-item routerLink="/imprint">
+                <span class="menu-item">Imprint</span>
+            </button>
+            <button mat-menu-item routerLink="/privacy">
+                <span class="menu-item">Privacy</span>
+            </button>
             <button mat-menu-item (click)="logOutUser()">
                 <span class="menu-item">Log out</span>
             </button>
@@ -29,13 +35,7 @@
     <div>
         <!-- General view -->
         <img class="logo" src="./assets/images/logo.png" alt="">
-
-        <!-- Channel view -->
-        <!-- <img class="arrow-icon" src="/assets/images/icons/arrow_left.png" alt=""> -->
-        <!-- <img class="thread-icon" src="/assets/images/icons/workspace-logo.png" alt=""> -->
-        <!-- Code learning -->
     </div>
-    <!-- <img class="thread-icon" src="/assets/images/profile-icons/avatar-1.png" alt=""> -->
     <div class="profile-icon" (click)="openMenu()">
         <img [src]="userProfileImage" alt="Profilbild">
     </div>
