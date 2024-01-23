@@ -94,6 +94,12 @@ body {
   display: none !important;
 }
 
+.edited-msg {
+  display: flex; 
+  flex-direction: row; 
+  align-items: baseline;
+}
+
 .scroll {
   overflow-y: scroll;
   scroll-behavior: smooth;
@@ -388,3 +394,10 @@ app-search {
     height: 15vh !important;
 }
 }
+
+@media screen and (max-width: 500px) {
+  .edited-msg {
+    flex-direction: column; 
+  }
+}
+

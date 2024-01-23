@@ -22,8 +22,8 @@
 
     .arrow-back {
       position: absolute;
-      left: -39px;
-    //   top: 16px;
+      left: -28px;
+      top: 8px;
       cursor: pointer;
     }
 
@@ -33,6 +33,7 @@
       font-weight: 700;
       line-height: 55px;
       margin-bottom: 0px;
+      margin-left: 8px;
     }
   }
 
@@ -147,13 +148,24 @@
       }
 
       .arrow-back {
-        top: 0;
+        top: -4px;
         left: 0;
       }
     }
 
     .restpwd-btns {
       justify-content: center;
+    }
+
+    .reg-form {
+
+      .input-box {
+        input {
+          font-size: 18px;
+          padding: 16px 20px 16px 64px;
+          width: calc(100% - 84px);
+        }
+      }
     }
   }
 }

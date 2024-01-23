@@ -31,7 +31,7 @@
         <!-- NEW BUILD !!! -->
 
         <div class="message-chat-info-content" *ngIf="!editActive">
-          <div style="display: flex; flex-direction: row; align-items: baseline;">
+          <div class="edited-msg">
             <div #messageChatContent [innerHTML]="splitText(channelUserNames)" (click)="handleNameClick($event)"></div>
             <span class="updated-mark" style="margin-left: 4px;" *ngIf="messageData.updated">(bearbeitet)</span>
           </div>

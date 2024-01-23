@@ -194,5 +194,61 @@
 
 @media screen and (max-width: 500px) {
   .chat-container {
-    min-width: unset;
-}}
+    min-width: unset;  
+  }
+
+  .separator {
+    .threadanswers {
+      width: 30%;
+    }
+  
+    .line {
+      width: 70%;
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+
+  .separator {
+    .threadanswers {
+      width: 40%;
+    }
+  
+    .line {
+      width: 60%;
+    }
+  }
+}
+
+@media screen and (max-width: 360px) {
+
+  .separator {
+    .threadanswers {
+      width: 50%;
+    }
+  
+    .line {
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 300px) {
+
+  .separator {
+    margin-top: 0px;
+    padding-bottom: 8px;
+    flex-direction: column;
+    gap: 8px;
+  
+    .threadanswers {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .line {
+      width: 100%;
+    }
+  }
+}
