@@ -1,6 +1,6 @@
 <div class="container">
     <h3>Neue Nachricht</h3>
-    <input (keyup)="searching($event)" type="text" placeholder="An: #channel, oder @jemand">
+    <input (keyup)="searching($event)" type="text" placeholder="An: Channel oder User">
     
     <div *ngIf="this.tree.isSearchActive" class="search-container" >
         <div class="scroll">
