@@ -116,9 +116,32 @@
   align-items: center;
   gap: 16px;
   height: 100%;
+  cursor: pointer;
 
   p {
     margin: 0px;
+  }
+
+  &:hover {
+    background-color: var(--main-bg-color);
+    border-radius: 30px;
+  }
+}
+
+.channel-box {
+  font-size: 20px;
+  
+  &:hover {
+    background-color: var(--main-bg-color);
+    border-radius: 30px;
+  }
+
+  div {
+    padding-left: 8px;
+    padding-right: 8px;
+    height: 34px;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -177,3 +200,11 @@
 
 }
 
+@media screen and (max-width:450px) {
+  .markt-users {
+    margin-left: unset;
+    left: 10px;
+    width: -webkit-fill-available;
+    right: 10px;
+  }
+}
