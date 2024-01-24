@@ -399,5 +399,9 @@ app-search {
   .edited-msg {
     flex-direction: column; 
   }
+
+  app-new-message {
+    width: 100%;
+  }
 }
 

@@ -1,6 +1,7 @@
 input {
     padding: 15px 20px 15px 20px;
     border-radius: 30px;
+    font-size: 18px;
     width: calc(100% - 45px);
     gap: 10px;
     border: 1px solid #ADB0D9;
@@ -76,4 +77,46 @@ h3 {
     &:hover p {
         color: #535AF1;
       }
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        padding: 20px 0;
+
+        h3 {
+            display: none !important;
+        }
+
+        input {
+            height: unset;
+        }
+    }
+
+    .search-container {
+        width: calc(100% - 45px - 42px);
+        top: 80px;
+    }
+
+
+}
+
+@media screen and (max-width: 300px) {
+
+    .container {
+        input {
+            font-size: 14px;
+        }
+    }
+
+    .search-result {
+        padding: 4px 12px 4px 12px;
+        font-size: 14px;
+        margin-top: 8px;
+        gap: 8px;
+
+        img {
+            height: 32px;
+            width: 32px;
+        }
+    }
 }
