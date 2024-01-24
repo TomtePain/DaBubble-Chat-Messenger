@@ -4,7 +4,6 @@
     gap: 20px;
     display: flex;
     flex-direction: column;
-    // width: 630px;
     border-radius: 30px;
 
 }
@@ -26,6 +25,7 @@
 
 input {
     margin: 0;
+    font-size: 18px;
 }
 
 h3 {
@@ -121,7 +121,7 @@ p {
     max-height: 180px;
     display: flex;
     flex-direction: column;
-    margin-top: -10px;
+    margin-top: -21px;
 
 }
 
@@ -239,5 +239,23 @@ p {
     width: 100%;
     &:focus {
         outline: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .search-container {
+    padding: 4px 12px 4px 12px;
+    gap: 8px;
+    font-size: 16px;
+
+    .image-container {
+        height: 32px;
+        width: 32px;
+    }
+
+    img {
+        height: 32px;
+        width: 32px;
+    }
     }
 }

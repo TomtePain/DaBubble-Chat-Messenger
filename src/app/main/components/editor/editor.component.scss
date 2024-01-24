@@ -113,10 +113,12 @@
 
 .user-box {
   display: flex;
+  padding: 4px 20px 4px 20px;
+  gap: 15px;
+  border-radius: 35px;
+  font-size: 18px;
   align-items: center;
-  gap: 16px;
-  height: 100%;
-  font-size: 20px;
+  height: 58px;
   cursor: pointer;
 
   p {
@@ -151,14 +153,14 @@
   background-color: white;
   position: absolute;
   border: 1px solid rgb(173, 176, 217);
-  border-radius: 0px 20px 20px 20px;
+  border-radius: 20px 20px 20px 0px;
   padding: 20px 21px 20px 21px;
   width: 335px;
   min-height: 171px;
   max-height: 180px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 180px;
+  margin-bottom: 167px;
   z-index: 99;
 }
 

@@ -3,7 +3,7 @@
     <input (keyup)="searching($event)" type="text" placeholder="An: Channel oder User suchen">
     
     <div *ngIf="this.tree.isSearchActive" class="search-container" >
-        <div class="scroll">
+        <div class="search-result-container scroll">
             <div *ngFor="let channel of channelsUser" (click)="this.tree.handleNodeClick(channel)">
                 <div class="search-result">
                     <p>#</p>
