@@ -536,7 +536,7 @@ export class EditorComponent implements OnInit {
     this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
       return el.name.toLowerCase().includes(searchTerm.toLocaleLowerCase());
     });
-    if (this.searchResultForChannel.length <= 1) {
+    if (this.searchResultForChannel.length <= 0) {
       this.searchMarktChannel = false;
     }
   }
