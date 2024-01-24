@@ -51,6 +51,7 @@ export class SetnewpasswdComponent {
     if (this.mode === 'verifyEmail') {
       this.verifyEmail();
     }
+    this.auth.isShown = false;
   }
 
   resetPassword() {

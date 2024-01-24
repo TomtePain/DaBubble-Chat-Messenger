@@ -50,11 +50,12 @@ export class LoginComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   })
-  constructor(public fb: FormBuilder, private userAuth: AuthService, private router: Router) {
+  constructor(public fb: FormBuilder, private userAuth: AuthService, private router: Router, public authservice: AuthService) {
 
   }
 
   ngOnInit() {
+    this.isShown = this.authservice.isShown;
   }
 
   login() {
@@ -85,8 +86,8 @@ export class LoginComponent implements OnInit {
 
   startAnimation() {
     const currentPath = this.router.url;
-    if (currentPath == '/auth/login') {
-      this.isShown = false;
+    if (currentPath != '/auth/login') {
+      this.authservice.isShown = false;
     } else {
       setTimeout(() => {
         this.isShown = false;
