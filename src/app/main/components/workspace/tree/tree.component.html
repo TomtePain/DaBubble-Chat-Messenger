@@ -38,7 +38,7 @@
       <div class="dm-container" (click)="this.tree.routeToDmChannel(node)" id="{{node.id}}" [class.selected]="isSelected(node.id)"> 
         <div class="container-img">
           <img class="profile-img-container" src="{{node.img}}" alt="">
-          <img class="online-state" [src]="node.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">
+          <!-- <img class="online-state" [src]="node.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt=""> -->
         </div>
         <p>{{node.name}} <span *ngIf="node.id == currentUserDbId">(Du)</span></p> 
       </div>

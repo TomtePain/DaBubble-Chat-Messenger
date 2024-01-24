@@ -29,8 +29,8 @@
     <div class="user-container" *ngFor="let user of existingUser" (click)="viewUsersProfile(user.id)">
         <div class="user-img-container" *ngIf="user.id != currentUser && !own">
             <img class="user-avatar"  src="{{ user.photoURL }}" alt="">
-            <img class="online-state" *ngIf="!user.isOnline" src="/assets/workspace-images/offline.svg" alt="">
-            <img class="online-state" *ngIf="user.isOnline" src="/assets/workspace-images/online.svg" alt="">
+            <!-- <img class="online-state" *ngIf="!user.isOnline" src="/assets/workspace-images/offline.svg" alt="">
+            <img class="online-state" *ngIf="user.isOnline" src="/assets/workspace-images/online.svg" alt=""> -->
         </div>
         <span *ngIf="user.id != currentUser" class="user-name">{{ user.fullName }}</span>
     </div>
@@ -40,8 +40,8 @@
     <div class="user-container" *ngFor="let user of existingUser" (click)="viewUsersProfile(user.id)">
         <div class="user-img-container" *ngIf="user.id == currentUser">
             <img class="user-avatar"  src="{{ user.photoURL }}" alt="">
-            <img class="online-state" *ngIf="!user.isOnline" src="/assets/workspace-images/offline.svg" alt="">
-            <img class="online-state" *ngIf="user.isOnline" src="/assets/workspace-images/online.svg" alt="">
+            <!-- <img class="online-state" *ngIf="!user.isOnline" src="/assets/workspace-images/offline.svg" alt="">
+            <img class="online-state" *ngIf="user.isOnline" src="/assets/workspace-images/online.svg" alt=""> -->
         </div>
         <span *ngIf="user.id == currentUser" class="user-name">{{ user.fullName }} (Du)</span>
     </div>
