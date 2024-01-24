@@ -198,6 +198,18 @@
 
 // MediaQuerys - Responsive Design
 
+@media (max-width: 600px) {
+  .intro-container {
+    img {
+      width: 100px;
+    }
+
+    .typing {
+      font-size: 48px;
+    }
+  }
+}
+
 @media (max-width: 450px) {
   .login-container {
     width: unset;
@@ -276,6 +288,18 @@
     .login-btns {
     flex-direction: column;
     gap: 8px;
+  }
+}
+
+@media (max-width: 300px) {
+  .intro-container {
+    img {
+      width: 70px;
+    }
+
+    .typing {
+      font-size: 32px;
+    }
   }
 }
 

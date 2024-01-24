@@ -12,8 +12,7 @@ import { filter } from 'rxjs';
 })
 export class AuthComponent implements OnInit {
   hideRegister: boolean = false;
-  isShown: boolean = false;
-
+  
   alertMessage: string = '';
   onAlertTriggered(message: any) {
     this.alertMessage = message;
