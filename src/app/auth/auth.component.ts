@@ -4,45 +4,45 @@ import { Auth } from '@angular/fire/auth';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
-const fadeOut = trigger('fadeOut', [
-  state(
-    'open',
-    style({
-      opacity: 1,
-      transform: 'translate3d(0, 0, 1px)'
-    })
-  ),
-  state(
-    'close',
-    style({
-      opacity: 0,
-      display: 'none',
-    })
-  ),
-  transition('open => *', [animate('0.5s ease-out')]),
-]);
+// const fadeOut = trigger('fadeOut', [
+//   state(
+//     'open',
+//     style({
+//       opacity: 1,
+//       transform: 'translate3d(0, 0, 1px)'
+//     })
+//   ),
+//   state(
+//     'close',
+//     style({
+//       opacity: 0,
+//       display: 'none',
+//     })
+//   ),
+//   transition('open => *', [animate('0.5s ease-out')]),
+// ]);
 
-const setLogoAnimation = trigger('setLogoAnimation', [
-  state('open', style({
-    transform: 'translate(0px, 200px)',
-  })),
-  state('closed', style({
-    transform: 'translate(0px, 0px)',
-  })),
-  transition('open => closed', [
-    animate('225ms')
-  ]),
-])
+// const setLogoAnimation = trigger('setLogoAnimation', [
+//   state('open', style({
+//     transform: 'translate(0px, 200px)',
+//   })),
+//   state('closed', style({
+//     transform: 'translate(0px, 0px)',
+//   })),
+//   transition('open => closed', [
+//     animate('225ms')
+//   ]),
+// ])
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  animations: [fadeOut, setLogoAnimation]
+  // animations: [fadeOut, setLogoAnimation]
 })
 export class AuthComponent implements OnInit {
   hideRegister: boolean = false;
-  isShown: boolean = true;
+  isShown: boolean = false;
 
   alertMessage: string = '';
   onAlertTriggered(message: any) {
@@ -69,14 +69,14 @@ export class AuthComponent implements OnInit {
     this.hideRegister = url.startsWith('/auth/register') || url.startsWith('/auth/setnewpassword');
   }
   
-  startAnimation() {
-    const currentPath = this.router.url;
-    if (currentPath !== '/auth/login') {
-      this.isShown = false;
-    } else {
-      setTimeout(() => {
-        this.isShown = false;
-      }, 500)
-    }
-  }
+  // startAnimation() {
+  //   const currentPath = this.router.url;
+  //   if (currentPath !== '/auth/login') {
+  //     this.isShown = false;
+  //   } else {
+  //     setTimeout(() => {
+  //       this.isShown = false;
+  //     }, 500)
+  //   }
+  // }
 }
