@@ -327,7 +327,7 @@ export class EditorComponent implements OnInit {
     this.searchResult = this.channelUsers.filter((el) => {
       return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
     });
-    if (this.searchResult.length <= 1) {
+    if (this.searchResult.length <= 0) {
       this.searchMarktUsers = false;
     }
   }
