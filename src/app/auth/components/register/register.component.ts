@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
@@ -14,7 +14,7 @@ import { AlertService } from '../alert/alert.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   showChooseProfile: boolean = false;
   regEmailError: boolean = false;
   errorEmail: string = 'example@example.com'
@@ -31,6 +31,10 @@ export class RegisterComponent {
 
 
   constructor(public fb: FormBuilder, public auth: Auth, private route: Router, private firestore: Firestore, private userAuth: AuthService, private storage: Storage, public user:UserService, private alertService: AlertService, private userservice: UserService) {
+  }
+
+  ngOnInit(): void {
+    this.userAuth.isShown = false;
   }
 
   chooseProfile() {

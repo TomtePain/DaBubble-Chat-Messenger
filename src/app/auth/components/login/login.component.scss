@@ -1,3 +1,25 @@
+.intro-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(0deg, #313AE5 0%, #797EF3 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  // height: 102vh;
+
+  .typing {
+      font-size: 60px;
+      font-weight: 700;
+      padding-left: 32px;
+      color: white;
+  }
+}
+
+
 .login-container {
   border-radius: 30px;
   background: #fff;
@@ -176,6 +198,18 @@
 
 // MediaQuerys - Responsive Design
 
+@media (max-width: 600px) {
+  .intro-container {
+    img {
+      width: 100px;
+    }
+
+    .typing {
+      font-size: 48px;
+    }
+  }
+}
+
 @media (max-width: 450px) {
   .login-container {
     width: unset;
@@ -254,6 +288,18 @@
     .login-btns {
     flex-direction: column;
     gap: 8px;
+  }
+}
+
+@media (max-width: 300px) {
+  .intro-container {
+    img {
+      width: 70px;
+    }
+
+    .typing {
+      font-size: 32px;
+    }
   }
 }
 

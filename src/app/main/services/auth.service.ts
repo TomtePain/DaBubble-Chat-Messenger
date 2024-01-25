@@ -42,6 +42,7 @@ import { UserService } from './user.service';
 export class AuthService {
   loggedUserId: string = '';
   error: boolean = false;
+  isShown:boolean = true;
 
   constructor(
     public auth: Auth,
