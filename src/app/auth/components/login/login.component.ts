@@ -44,7 +44,7 @@ const setLogoAnimation = trigger('setLogoAnimation', [
 export class LoginComponent implements OnInit {
 
   isShown: boolean = true;
-
+  btnDisabled: boolean = false;
   submit = false;
   loginForm = this.fb.group({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -60,15 +60,23 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.submit = true;
+    this.btnDisabled = true;
     const { email, password } = this.loginForm.value
     if (!this.loginForm.valid || !email || !password) {
       return;
     }
     this.userAuth.signIn(email, password);
+    setTimeout(() => {
+      this.btnDisabled = false;
+    }, 25000);
   }
 
   googleWithAuth() {
     this.userAuth.googleWithAuth();
+    this.btnDisabled = true;
+    setTimeout(() => {
+      this.btnDisabled = false;
+    }, 25000);
   }
 
   guestLogin() {

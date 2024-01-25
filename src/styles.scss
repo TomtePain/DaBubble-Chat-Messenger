@@ -312,6 +312,11 @@ app-search {
 .emojis-chat {
   z-index: 99;
 }
+
+.disabledbutton {
+pointer-events: none;
+opacity: 0.4;
+}
 // ONLY FOR WORK BY TOM
 
 @media (max-width: 500px) {
