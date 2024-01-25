@@ -129,8 +129,8 @@ body {
   &::-webkit-scrollbar {
       // display: none;
       width: 4px;
-      background-color: var(--main-bg-color);
-      background-color: white;
+      // background-color: var(--main-bg-color);
+      background-color: transparent;
       border-radius: 3px;
   }
 
