@@ -21,8 +21,8 @@
             <div class="search-container" *ngFor=" let user of dmUsers" (click)="addUserToChannel(user.photoURL,user.fullName,user.id)">
                 <div class="image-container">
                     <img src="{{user.photoURL}}" alt="">
-                    <img class="online-state"
-                        [src]="user.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">
+                    <!-- <img class="online-state"
+                        [src]="user.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt=""> -->
                 </div>
                 <p>{{user.fullName}}</p>
             </div>

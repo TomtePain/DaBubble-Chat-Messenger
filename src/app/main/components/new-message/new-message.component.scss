@@ -1,6 +1,7 @@
 input {
     padding: 15px 20px 15px 20px;
     border-radius: 30px;
+    font-size: 18px;
     width: calc(100% - 45px);
     gap: 10px;
     border: 1px solid #ADB0D9;
@@ -43,7 +44,7 @@ h3 {
     padding: 20px 21px 20px 21px;
     width: 335px;
     min-height: 171px;
-    max-height: 180px;
+    max-height: 270px;
     display: flex;
     flex-direction: column;
     margin-top: -10px;
@@ -56,7 +57,7 @@ h3 {
     border-radius: 35px;
     font-size: 18px;
     align-items: center;
-    margin-top: 15px;
+    height: 58px;
     cursor: pointer;
 
     p {
@@ -76,4 +77,71 @@ h3 {
     &:hover p {
         color: #535AF1;
       }
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        padding: 20px 0;
+
+        h3 {
+            display: none !important;
+        }
+
+        input {
+            height: unset;
+        }
+    }
+
+    .search-container {
+        width: calc(100% - 45px - 42px);
+        top: 80px;
+        gap: 12px;
+        min-height: 215px;
+    
+        .search-result-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+    }
+
+    .search-result {
+        padding: 4px 12px 4px 12px;
+        margin-top: 0;
+        gap: 12px;
+        height: 40px;
+
+        img {
+            height: 32px;
+            width: 32px;
+        }
+    }
+
+
+}
+
+@media screen and (max-width: 300px) {
+
+    .container {
+        input {
+            font-size: 14px;
+        }
+    }
+
+    .search-container {
+        width: calc(100% - 45px - 24px);
+        padding: 12px 15px 12px 15px;
+    }
+
+    .search-result {
+        padding: 4px 12px 4px 12px;
+        font-size: 14px;
+        margin-top: 0px;
+        gap: 4px;
+
+        img {
+            height: 32px;
+            width: 32px;
+        }
+    }
 }

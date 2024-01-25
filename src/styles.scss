@@ -225,8 +225,8 @@ app-search {
     flex-direction: column;
     padding: 50px 53px;
     width: calc(100% - 106px);
-    max-width: 520px;
-    gap: 32px;
+    max-width: 1920px;
+    gap: 16px;
 
     .content-header {
       display: flex;
@@ -398,6 +398,10 @@ app-search {
 @media screen and (max-width: 500px) {
   .edited-msg {
     flex-direction: column; 
+  }
+
+  app-new-message {
+    width: 100%;
   }
 }
 

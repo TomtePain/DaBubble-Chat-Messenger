@@ -10,7 +10,7 @@
       <div class="user-box" *ngFor="let item of searchResult" (click)="addToMsg(item.fullName, item.id)">  <!--- REPLACE item.fullName for Name -->
         <div class="image-container">
           <img src="{{item.photoURL}}" alt="">
-          <img class="online-state" [src]="item.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt="">
+          <!-- <img class="online-state" [src]="item.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt=""> -->
         </div>
         <div>{{ item.fullName }}</div>
       </div>

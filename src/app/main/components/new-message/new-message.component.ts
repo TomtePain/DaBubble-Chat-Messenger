@@ -15,7 +15,7 @@ export class NewMessageComponent {
   searchResult:Array<any> = [];
 
   constructor(private crud: CrudService, public tree: TreeService, private userservice: UserService) {
-
+    this.tree.isSearchActive = false;
   }
 
 
