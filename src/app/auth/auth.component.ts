@@ -8,7 +8,6 @@ import { filter } from 'rxjs';
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  // animations: [fadeOut, setLogoAnimation]
 })
 export class AuthComponent implements OnInit {
   hideRegister: boolean = false;

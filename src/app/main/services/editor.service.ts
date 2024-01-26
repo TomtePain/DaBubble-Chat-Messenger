@@ -127,7 +127,6 @@ export class EditorService {
     selectedChannel.forEach((doc:any) => {
       this.allChannel.push({ id: doc.id, ... doc.data() });
     });
-    console.log('allchannel:', this.allChannel);
   }
 
 

@@ -4,8 +4,8 @@
     <img src="assets/add-channel/close.svg" alt="close" (click)="closeDialog()">
   </div>
     
-    <p>Channels dienen deinem Team zur Kommunikation.
-       Am besten sollten sie themenbezogen sein #marketing zum Beispiel.
+    <p>Channels dienen Deinem Team zur Kommunikation.
+       Am besten sollten sie Themenbezogen sein #marketing zum Beispiel.
     </p>
   
     <form class="form-container" (ngSubmit)="onFormSubmit()" [formGroup]="channelForm">
@@ -13,7 +13,7 @@
         <p><b>Channel-Name</b></p>
       </div>
         <input type="text" class="hashtag" placeholder="z.B. Kooperationsprojekte" formControlName="channelName" name="channelName" required>
-         <mat-error *ngIf="channelForm.get('channelName')?.dirty && channelForm.get('channelName')?.invalid">Channel muss midestens aus 3 Zeichen bestehen</mat-error>
+         <mat-error *ngIf="channelForm.get('channelName')?.dirty && channelForm.get('channelName')?.invalid">Channel muss mindestens aus 3 Zeichen bestehen</mat-error>
       <div>
         <p><b>Beschreibung</b> (optional)</p>
       </div>

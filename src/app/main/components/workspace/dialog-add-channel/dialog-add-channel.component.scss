@@ -52,6 +52,7 @@ input {
     width:calc(100% - 60px);
     height: 25px;
     gap: 15px;
+    font-size: 18px;
 
     &:hover{
         border: 1px solid var(--purple-2);

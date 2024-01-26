@@ -69,9 +69,6 @@ export class EditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.editorService.subSingelData(this.channelId);
-    setTimeout(() => {
-      this.setDirectMessageBodyUser();
-    }, 500);
   }
 
   ngOnDestroy() {

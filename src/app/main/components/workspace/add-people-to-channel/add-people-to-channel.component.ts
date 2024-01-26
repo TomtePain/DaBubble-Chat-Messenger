@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EditorService } from 'src/app/main/services/editor.service';
+import { UserService } from 'src/app/main/services/user.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class AddPeopleToChannelComponent {
   uid: string = '';
   placeholder: boolean = true;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private crud: CrudService, private editorService: EditorService, private firestore: Firestore, private dialogRef: MatDialogRef<AddPeopleToChannelComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private crud: CrudService, private editorService: EditorService, private firestore: Firestore, private dialogRef: MatDialogRef<AddPeopleToChannelComponent>, public userservice: UserService) { }
   @ViewChild('userInput') inputField: any;
   ngOnInit() {
     this.getVariables();
@@ -87,6 +88,7 @@ export class AddPeopleToChannelComponent {
 
 
   addUserToChannel(img: string, name: string, id: string) {
+    let inputField:any = document.getElementById('search-user-input-field');
     if (img && name && id) {
       const addedUser = {
         photoURL: img,
@@ -102,14 +104,13 @@ export class AddPeopleToChannelComponent {
 
       if (index === -1) {
         this.addedToChannel.push(addedUser);
+        inputField.value = '';
       } 
     }
   }
 
   removeFromAddList(i: number) {
     this.addedToChannel.splice(i, 1);
-    console.log('test:',this.addedToChannel);
-
   }
 
   searchUserNew(event: any) {
@@ -123,7 +124,6 @@ export class AddPeopleToChannelComponent {
         this.dmUsers = response.filter((doc) =>
           this.checkFieldsContainSearchTerm(doc, searchTerm) 
         );
-        
       } else {
         this.searchUser = false;
       }
@@ -132,7 +132,6 @@ export class AddPeopleToChannelComponent {
   }
   
   private checkFieldsContainSearchTerm(doc: any, searchTerm: string): boolean {
-    // console.log('Search term is', searchTerm, 'Doc full name is', doc.fullName);
     return doc.fullName.toLowerCase().includes(searchTerm.toLowerCase());
   }
 

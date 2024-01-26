@@ -14,8 +14,8 @@
         </div>
         <div *ngIf="addPeople">
             <div  class="round-input"  (click)="setPlaceholder()">
-                <input type="text" (keyup)="searchUserNew($event)" placeholder="Name eingeben" class="search-user-input-field">
-                <div class="added-to-channel-container" *ngFor="let added of addedToChannel;let i = index">
+                <input type="text" (keyup)="searchUserNew($event)" placeholder="Name eingeben" class="search-user-input-field" id="search-user-input-field">
+                <div class="added-to-channel-container" *ngFor="let added of addedToChannel; let i = index">
                  <div class="added-to-channel-users ">
                     <img class="added-to-channel-img" src="{{added.photoURL}}" alt="profile-img">
                     <p>{{added.fullName}}</p>
@@ -26,11 +26,13 @@
             <div class="add-person-container" *ngIf="searchUser">
                 <div class="scroll-x">
                     <div class="search-container" *ngFor=" let user of dmUsers" (click)="addUserToChannel(user.photoURL,user.fullName,user.id)">
-                        <div class="image-container" >
-                            <img src="{{user.photoURL}}" alt="">
+                        <div class="search-results" *ngIf="user.id != this.userservice.userDBId">
+                            <div class="image-container" >
+                                <img src="{{user.photoURL}}" alt="">
                             <!-- <img class="online-state" [src]="user.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt=""> -->
+                            </div>
+                            <p>{{user.fullName}}</p>
                         </div>
-                        <p>{{user.fullName}}</p>
                     </div>
                 </div>
             </div>
