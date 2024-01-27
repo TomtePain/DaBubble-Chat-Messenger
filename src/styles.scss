@@ -53,6 +53,7 @@ body {
   &:disabled {
     border-radius: 25px;
     background: var(--text-gray, #686868);
+    color: white;
   }
 }
 
@@ -83,7 +84,7 @@ body {
   &:disabled {
     border-radius: 25px;
     border: 1px solid var(--text-gray, #686868);
-    color: var(--text-gray, #686868);
+    color: white;
   }
 }
 .mat-mdc-dialog-container .mdc-dialog__surface {
