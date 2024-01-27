@@ -24,12 +24,12 @@
         <p>ODER</p>
     </div>
 
-    <div class="google-login-btn" [ngClass]="{'disabledbutton': btnDisabled}" (click)="googleWithAuth()">
+    <div class="google-login-btn" [ngClass]="{'disabledbutton': isBtnDisabled}" (click)="googleWithAuth()">
         <img src="./assets/images/google-icon.png" alt="google-icon">
         Anmelden mit Google
     </div>
     <div class="login-btns">
-        <button mat-raised-button class="prime" [disabled]="btnDisabled" color="primary" (click)="login()">Anmelden</button>
-        <button mat-stroked-button class="secondary" [disabled]="btnDisabled" color="primary" (click)="guestLogin()">Gäste-Login</button>
+        <button mat-raised-button class="prime" [disabled]="isBtnDisabled" color="primary" (click)="login()">Anmelden</button>
+        <button mat-stroked-button class="secondary" [disabled]="isBtnDisabled" color="primary" (click)="guestLogin()">Gäste-Login</button>
     </div>
 </div>

@@ -33,8 +33,8 @@ import { environment } from 'src/environments/environment';
 import { AlertService } from '../../auth/components/alert/alert.service';
 import { CrudService } from './crud.service';
 import { TreeService } from './tree.service';
-// import { getAuth, updateEmail } from 'firebase/auth';
 import { UserService } from './user.service';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +43,11 @@ export class AuthService {
   loggedUserId: string = '';
   error: boolean = false;
   isShown:boolean = true;
+  private btnDisabledSubject: Subject<boolean> = new Subject<boolean>();
+  btnDisabledObservable$: Observable<boolean> = this.btnDisabledSubject.asObservable();
+  private _btnDisabled: boolean = false;
+
+
 
   constructor(
     public auth: Auth,
@@ -103,12 +108,12 @@ export class AuthService {
   }
 
   googleWithAuth() {
+    this.btndisabled = true;
     signInWithPopup(this.auth, new GoogleAuthProvider()).then(async (resp) => {
       const userId = resp.user.uid;
       const userPhotoURL = resp.user.photoURL;
       const fullName = resp.user.displayName;
       const email = resp.user.email;
-      const itemCollection = collection(this.firestore, environment.userDb);
       let userIsReg = await this.isRegUser(userId);
       let userData = {
         uid: userId,
@@ -122,7 +127,6 @@ export class AuthService {
       };
 
       if (userIsReg.length > 0) {
-        // setDoc(doc(itemCollection, userIsReg), userData);
       } else {
         this.crud.addItem(userData, environment.userDb).then((docRef) => {
           this.upDateChannelUser(docRef);
@@ -130,9 +134,10 @@ export class AuthService {
         });
       }
       this.setUserDataToLocalStorage(userId);
-      setTimeout(() => {
         this.route.navigateByUrl('');
-      }, 200);
+    }).finally(() => {
+      // Re-enable the button when the sign-in process is completed (either success or error)
+      this.btndisabled = false;
     });
   }
 
@@ -147,13 +152,13 @@ export class AuthService {
   }
 
   signIn(email: string, password: string) {
+    // Disable the button while the signIn process is ongoing
+    this.btndisabled = true;
     signInWithEmailAndPassword(this.auth, email, password)
       .then((resp) => {
         this.setUserDataToLocalStorage(resp.user.uid);
         if (resp.user.emailVerified) {
-          setTimeout(() => {
             this.route.navigateByUrl('');
-          }, 900);
         } else {
           this.alert('Verifiziere Deine E-Mail-Adresse!');
         }
@@ -167,26 +172,31 @@ export class AuthService {
           this.alert('Zugriff gesperrt, bitte versuche es später erneut.')
         } else {
         this.alert(code);}
+      }).finally(() => {
+        // Re-enable the button when the sign-in process is completed (either success or error)
+        this.btndisabled = false;
       });
   }
 
-  signInGuest() {
-    signInAnonymously(this.auth).then((resp) => {
-      const userId: string = resp.user.uid;
-      const itemCollection = collection(this.firestore, environment.userDb);
-      setDoc(doc(itemCollection), {
-        uid: userId,
-        fullName: 'Guest',
-        photoURL: './assets/images/profile-icons/big/avatar-1.png',
-        accessToChannel: [],
-        isOnline: false,
-      });
-      this.setUserDataToLocalStorage(userId);
-      setTimeout(() => {
-        this.route.navigateByUrl('');
-      }, 900);
-    });
-  }
+  // signInGuest() {
+  //   this.btndisabled = true;
+  //   signInAnonymously(this.auth).then((resp) => {
+  //     const userId: string = resp.user.uid;
+  //     const itemCollection = collection(this.firestore, environment.userDb);
+  //     setDoc(doc(itemCollection), {
+  //       uid: userId,
+  //       fullName: 'Guest',
+  //       photoURL: './assets/images/profile-icons/big/avatar-1.png',
+  //       accessToChannel: [],
+  //       isOnline: false,
+  //     });
+  //     this.setUserDataToLocalStorage(userId);
+  //     setTimeout(() => {
+  //       this.route.navigateByUrl('');
+  //     }, 900);
+  //   });
+  //   this.btndisabled = false;
+  // }
 
   logOut() {
     signOut(this.auth);
@@ -198,9 +208,8 @@ export class AuthService {
     const q = query(itemCollection, where('uid', '==', uid));
     getDocs(q).then((doc) => {
       if (doc.docs.length > 1) {
-        //TODO: Error | More than 1 found
       } else if (doc.docs.length == 0) {
-        //TODO: Error | less than 1 found
+        //
       } else {
         let userDbId = doc.docs[0].id;
         this.loggedUserId = userDbId;
@@ -231,54 +240,54 @@ export class AuthService {
     return isReg;
   }
 
-  handleReauthenticationAndChangeEmail(email: string, password: string, newEmail: string) {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    if (user) {
-      const credential = EmailAuthProvider.credential(email, password);
-      reauthenticateWithCredential(user, credential).then(() => {
-        // User re-authenticated, now update email
-        this.handleEmailChange(newEmail); 
-      }).catch((error) => {
-        // Handle errors here, such as wrong password
-        console.error('Re-authentication failed', error);
-      });
-    }
-  }
+  // handleReauthenticationAndChangeEmail(email: string, password: string, newEmail: string) {
+  //   const auth = getAuth();
+  //   const user = auth.currentUser;
+  //   if (user) {
+  //     const credential = EmailAuthProvider.credential(email, password);
+  //     reauthenticateWithCredential(user, credential).then(() => {
+  //       // User re-authenticated, now update email
+  //       this.handleEmailChange(newEmail); 
+  //     }).catch((error) => {
+  //       // Handle errors here, such as wrong password
+  //       console.error('Re-authentication failed', error);
+  //     });
+  //   }
+  // }
 
-  handleEmailChange(newEmail: string) {
-    let previousUserEmail = this.auth.currentUser?.email;
+  // handleEmailChange(newEmail: string) {
+  //   let previousUserEmail = this.auth.currentUser?.email;
 
-    if (previousUserEmail != newEmail) {
-      const auth = getAuth();
-      const user = auth.currentUser;
+  //   if (previousUserEmail != newEmail) {
+  //     const auth = getAuth();
+  //     const user = auth.currentUser;
       
-      if (user) {
+  //     if (user) {
       
-        updateEmail(user, newEmail).then(() => {
-            // Email updated!
-            // console.log("Email updated", newEmail, user);
-            // Send email to verify email to new email address
-            // sendEmailVerification(user).then(() => {
-            // console.log("Email verification sent", user);
-            // }); 
-          })
-          .catch((error) => {
-            console.error("Error", error);
+  //       updateEmail(user, newEmail).then(() => {
+  //           // Email updated!
+  //           // console.log("Email updated", newEmail, user);
+  //           // Send email to verify email to new email address
+  //           // sendEmailVerification(user).then(() => {
+  //           // console.log("Email verification sent", user);
+  //           // }); 
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error", error);
             
-            // An error occurred
-            let code = error.code;
-            code = code.slice(5);
-            this.alert(code);
-          });
-      } else {
-        console.error('No user is currently signed in.');
-      }
-    } else {
-      console.warn("Email adresses are not different", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+  //           // An error occurred
+  //           let code = error.code;
+  //           code = code.slice(5);
+  //           this.alert(code);
+  //         });
+  //     } else {
+  //       console.error('No user is currently signed in.');
+  //     }
+  //   } else {
+  //     console.warn("Email adresses are not different", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
       
-    }
-  }
+  //   }
+  // }
 
   handleResetPasswort(actionCode: string, newPassword: string) {
     const auth = getAuth();
@@ -355,5 +364,14 @@ export class AuthService {
     array.push(email)
     
     return array;
+  }
+
+  get btndisabled(): boolean {
+    return this._btnDisabled;
+  }
+  
+  set btndisabled(value: boolean) {
+    this._btnDisabled = value;
+    this.btnDisabledSubject.next(value); // Emit the updated value
   }
 }
