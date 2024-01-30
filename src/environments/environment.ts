@@ -13,9 +13,9 @@ export const environment = {
   threadDb: 'threads',
   messagesDb: 'messages',
   mainChannel: '8veqP2ohCvtLVgT46sP5', //id of "Allgemein" channel
-  guest: 'AD0QcMsUIh2iCkEDRpGX', //id of Guest-Access
-  admin1: '0oHZDUNTO04Ay098XBNe', //id of Christian-Access
-  admin2: 'lkk8gvYTiba7jyo8Z6n2', //id of Tom-Access
+  guest: 'TAOV7UMFVB6o0D2Dv5rK', //id of Guest-Access
+  admin1: 'fOmrLagL6gZEtMQehNqj', //id of Christian-Access
+  admin2: 'Ly0QGVLdoRH3b9RWpAJk', //id of Tom-Access
   smallerDesktopWidth: 1570
 };
 
