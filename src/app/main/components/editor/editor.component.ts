@@ -302,7 +302,7 @@ export class EditorComponent implements OnInit {
    * and initializing channel users using the 'initializeChannelUsers()' function.
    */
   activateSearchMarketUsers() {
-    this.searchMarktUsers = true
+    this.searchMarktUsers = true;
     this.initializeChannelUsers();
   }
 
@@ -342,7 +342,7 @@ export class EditorComponent implements OnInit {
       const textNachLetztemAt = currentValue.substring(this.lastIndexOfAt + 1);
       this.searchUser(textNachLetztemAt);
     }
-    if(this.lastIndexOfRaute !== -1) {
+    if (this.lastIndexOfRaute !== -1) {
       let textAfterRaute = currentValue.substring(this.lastIndexOfRaute + 1);
       this.filterItems(textAfterRaute);
     }
@@ -383,47 +383,47 @@ export class EditorComponent implements OnInit {
    * @param {Event} event - The input event object.
    */
 
-  @HostListener('input', ['$event'])
-  onInput(event: Event): void {
-    const textarea = event.target as HTMLTextAreaElement;
-    const text = textarea.value;
-    const cursorIndex = textarea.selectionStart;
-    this.setCursor()
-    // Check if the '@' character is typed or '@' preceded by a newline character.
-    if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
-      this.activateSearchMarketUsers();
-    }
-    // Check if the '#' character is typed or '#' preceded by a newline character.
-    if (text.charAt(cursorIndex - 1) === '#' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '#')) {
-      this.activateSearchForChannelToMark();
-    }
-    const atPosition = text.lastIndexOf('@');
-    const hashPosition = text.lastIndexOf('#');
-    if (atPosition === -1) {
-      this.searchMarktUsers = false;
-    }else if (atPosition !== this.lastAtPosition) {
-      this.searchMarktUsers = true;
-    }
+  // @HostListener('input', ['$event'])
+  // onInput(event: Event): void {
+  //   const textarea = event.target as HTMLTextAreaElement;
+  //   const text = textarea.value;
+  //   const cursorIndex = textarea.selectionStart;
+  //   this.setCursor()
+  //   // Check if the '@' character is typed or '@' preceded by a newline character.
+  //   if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
+  //     this.activateSearchMarketUsers();
+  //   }
+  //   // Check if the '#' character is typed or '#' preceded by a newline character.
+  //   if (text.charAt(cursorIndex - 1) === '#' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '#')) {
+  //     this.activateSearchForChannelToMark();
+  //   }
+  //   const atPosition = text.lastIndexOf('@');
+  //   const hashPosition = text.lastIndexOf('#');
+  //   if (atPosition === -1) {
+  //     this.searchMarktUsers = false;
+  //   } else if (atPosition !== this.lastAtPosition) {
+  //     this.searchMarktUsers = true;
+  //   }
 
-    if (hashPosition === -1) {
-      this.searchMarktChannel = false;
-    }else if (hashPosition !== this.lastHashPosition) {
-      this.searchMarktChannel = true;
-    }
-    this.lastAtPosition = atPosition;
-    this.lastHashPosition = hashPosition;
-  }
+  //   if (hashPosition === -1) {
+  //     this.searchMarktChannel = false;
+  //   } else if (hashPosition !== this.lastHashPosition) {
+  //     this.searchMarktChannel = true;
+  //   }
+  //   this.lastAtPosition = atPosition;
+  //   this.lastHashPosition = hashPosition;
+  // }
 
   /**
    * Sets the cursor position in a textarea element to the end of the content.
    */
   setCursor() {
-    const textarea: HTMLTextAreaElement = this.keyPress.nativeElement;
-    if (textarea) {
-      let lengthOFtext = this.message.length
-      textarea.focus(); // Fokus auf das Textfeld setzen
-      textarea.setSelectionRange(lengthOFtext, lengthOFtext); // Cursorposition anpassen
-    }
+    // const textarea: HTMLTextAreaElement = this.keyPress.nativeElement;
+    // if (textarea) {
+    //   let lengthOFtext = this.message.length
+    //   textarea.focus(); // Fokus auf das Textfeld setzen
+    //   textarea.setSelectionRange(lengthOFtext, lengthOFtext); // Cursorposition anpassen
+    // }
   }
 
   /**
@@ -536,14 +536,14 @@ export class EditorComponent implements OnInit {
     }
   }
 
-  addChannelintoMSG(value:any, id:any){
+  addChannelintoMSG(value: any, id: any) {
     const textToAdd = this.message.substring(0, this.lastIndexOfRaute + 1);
     this.message = `${textToAdd}` + `${value}`
     this.searchMarktChannel = false;
     this.markedChannel.push(id);
   }
 
-  checkMarkedChannel(message: string) {   
+  checkMarkedChannel(message: string) {
     this.markedChannel.forEach((channel) => {
       let existChannel = this.editorService.allChannel.find((exist: any) => exist.id == channel);
       if (existChannel.name == message.match(existChannel.name)) {
@@ -556,6 +556,17 @@ export class EditorComponent implements OnInit {
       }
     })
   }
+
+
+  onKeyUp(event: KeyboardEvent): void {
+    if (event.key === '@') {
+      const cursorPosition = (event.target as HTMLTextAreaElement).selectionStart;
+      console.log('Die @-Taste wurde bei Position', cursorPosition, 'gedrückt.');
+      this.activateSearchMarketUsers();
+    }
+  }
+
+
 
 }
 
