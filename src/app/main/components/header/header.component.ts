@@ -18,8 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   fullName: string = '';
   userProfileImage: string = '';
 
-  constructor(public dialog: MatDialog, private userservice: UserService, public auth: Auth, private firestore: Firestore, private refreshService: RefreshService) {
-  }
+  constructor(public dialog: MatDialog, private userservice: UserService, public auth: Auth, private firestore: Firestore, private refreshService: RefreshService) {}
 
 
   ngOnInit(): void {
@@ -27,15 +26,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.refreshData();
     });
 
-    setTimeout(() => {
-      if (this.userservice.loginUser === undefined) {
-        window.location.reload();
-      } else {
-        this.setUserData();
-      }
-    }, 500);
+    this.waitForLoginUser();
+    
   }
 
+  // Check every 225ms if the loginUser is now defined within the userService
+  waitForLoginUser() {
+    const interval = setInterval(() => {
+      if (this.userservice.loginUser !== undefined) {
+        this.setUserData();
+        clearInterval(interval); // Stop repeating the interval once the loginUser is defined
+      }
+    }, 225);
+  }
 
   ngOnDestroy() {
     this.fullName = '';
