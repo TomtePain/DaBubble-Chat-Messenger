@@ -61,12 +61,6 @@
             }
         }
 
-        // img:hover {
-        //     cursor: pointer;
-        //     background-color: #ECEEFE;
-        //     border-radius: 20px;
-        // }
-
         #options-icon {
             width: 40px;
             height: 40px;
@@ -166,10 +160,10 @@
     .message-chat-info {
         margin-right: 30px;
         margin-left: unset;
-
-        display: flex; // ///////////////////////////////////////// NEW ADDED
-        flex-direction: column; // ///////////////////////////////////////// NEW ADDED
-        align-items: flex-end; // ///////////////////////////////////////// NEW ADDED
+        max-width: 700px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
 
         .message-chat-info-header {
             flex-direction: row-reverse;
@@ -273,6 +267,7 @@
 
 .message-chat-info {
     margin-left: 30px;
+    max-width: 700px;
 
     .message-chat-info-header {
         display: flex;
@@ -579,21 +574,16 @@
     }
 
     .message-chat {
-        width: -webkit-fill-available; //////////////////////////// ADDED BY TOM
-        padding: 10px 30px; //////////////////////////// ADDED BY TOM
+        width: -webkit-fill-available; 
+        padding: 10px 30px; 
     }
 
     .message-chat-info {
 
-        // .message-chat-info-header {
-        //     gap: unset; //////////////////////////// ADDED BY TOM
-        // }
-
         .message-chat-info-content {
             font-size: 17px;
         }
-
-       
+      
 
         .message-chat-info-header {
             h3 {
@@ -630,10 +620,6 @@
     .editor-container {
         width: calc(100vw - 72px - 40px);
         margin: 36px -72px 16px 0;
-
-        // textarea {
-        //     min-height: 72px !important;
-        //   }
     }
 }
 

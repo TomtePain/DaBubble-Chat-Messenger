@@ -165,6 +165,7 @@
   .message-chat-info {
       margin-right: 30px;
       margin-left: unset;
+      max-width: 700px;
 
       .message-chat-info-header {
           flex-direction: row-reverse;
@@ -274,6 +275,7 @@
 
 .message-chat-info {
   margin-left: 30px;
+  max-width: 700px;
 
   .message-chat-info-header {
       display: flex;
@@ -375,16 +377,10 @@
   }
 
   .reaction-container {
-      // width: 62px; CHANGE BY CHRISTIAN
-      // height: 32px; CHANGE BY CHRISTIAN
-      // border-radius: 20px; CHANGE BY CHRISTIAN
-      // border: 1px solid #ADB0D9; CHANGE BY CHRISTIAN
-      // background-color: white; CHANGE BY CHRISTIAN
       display: flex;
       gap: 10px;
       margin-bottom: 5px;
       align-items: center;
-      // justify-content: center; CHANGE BY CHRISTIAN
       position: relative;
       cursor: pointer;
 
@@ -558,10 +554,6 @@
   .editor-container {
     width: calc(100vw - 72px - 40px);
     margin: 36px -72px 16px 0;
-
-    // textarea {
-    //     min-height: 72px !important;
-    //   }
 }
 }
 
