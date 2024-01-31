@@ -141,7 +141,7 @@ export class TreeComponent implements OnInit {
     return this.tree.currentSelectedChannel === nodeId;;
   }
 
-
+  // Get all channels from databse
   getChannels() {
     onSnapshot(this.channelRef, (querySnapshot) => {
       const result = querySnapshot.docs.map((doc) => {
@@ -159,12 +159,15 @@ export class TreeComponent implements OnInit {
     });
   }
 
-
+// Filter all channels for their type (if they are a real channel or a direct messages channel). Then
   filterType(result: any) {
     const channels = result.filter((item: any) => item.type === 'channel');
     const messages = result.filter((item: any) => item.type === 'message');
 
-    this.findUsersFromMessageId(messages);
+    this.findUserDocsIdsFromDirectMessageId(messages);
+    this.getUsers();
+
+
     this.tree.userChannels = channels;
     this.dbChannels = channels;
     this.tree.allChannels = channels;    
@@ -173,46 +176,61 @@ export class TreeComponent implements OnInit {
   }
 
 
-  findUsersFromMessageId(messages: any) {
+  findUserDocsIdsFromDirectMessageId(messages: any) {    
     messages.forEach((message: any) => {
       if (message.ids && Array.isArray(message.ids)) {
         const idsNotMatchingUid = message.ids.filter((id: any) => id !== this.currentUserDbId);
         this.userDmData.push(...idsNotMatchingUid);
-        // //////////////////////////////////////////////////// ADDED 
-        let idIsUID = message.ids.filter((id: any) => id == this.currentUserDbId && message.own && message.ids.length == 1);
+        const idIsUID = message.ids.filter((id: any) => id == this.currentUserDbId && message.own && message.ids.length == 1);
         this.userDmData.push(...idIsUID);
-        // //////////////////////////////////////////////////// ADDED 
       }
-    });
-    this.getUsers();
+    });    
   }
 
 
   async getUsers() {
     const userRef = collection(this.firestore, environment.userDb);
-
     const querySnapshot = await getDocs(userRef); // Use getDocs to fetch data once
+    const uid = this.userservice.loginUser.uid;
 
     const filteredDocs = querySnapshot.docs.filter((doc) => {
       const docId = doc.id;     
       return this.userDmData.includes(docId);
     });
+    
     this.dbMessages = filteredDocs.map((doc) => {
+
       const data = doc.data();
-      return {
-        id: doc.id, // Store the document ID as id
-        fullName: data['fullName'],
-        photoURL: data['photoURL'],
-        uid: data['uid'],
-        type: data['type'],
-        isOnline: data['isOnline'],
-      };
+      const isOwn = (uid === data['uid']);
+
+        return {
+          id: doc.id, // Store the document ID as id
+          own: isOwn,
+          fullName: data['fullName'],
+          photoURL: data['photoURL'],
+          uid: data['uid'],
+          type: data['type'],
+          isOnline: data['isOnline'],
+        };
     });
-    this.updateMessages();
+
+    this.sortDirectMessages();
+    this.updateDirectMessagesChannels();
   }
 
+  sortDirectMessages() {
+  // Sort the dbMessages array first by "own" (true comes first), and then by "fullName" in alphabetical order
+  this.dbMessages.sort((a, b) => {
+    // First, sort by "own" (true comes first)
+    if (a.own && !b.own) return -1;
+    if (!a.own && b.own) return 1;
 
-  updateMessages() {  
+  // If "own" is the same, sort by "fullName" alphabetically
+  return a.fullName.localeCompare(b.fullName);
+});}
+
+
+  updateDirectMessagesChannels() {  
     const updatedMessages = [
       {
         name: 'Direktnachrichten',
