@@ -270,6 +270,7 @@ export class EditorComponent implements OnInit {
   hideBoxes() {
     this.showEmojiPicker = false;
     this.searchMarktUsers = false;
+    this.searchMarktChannel = false;
   }
 
   // KW SEARCH SECTION
@@ -281,8 +282,6 @@ export class EditorComponent implements OnInit {
    */
   initializeChannelUsers() {
     this.channelUsers = this.editorService.usersData;
-    // this.channelUsers = this.removeDuplicatesFromJsonArray(this.channelUsers, 'uid');
-    // this.channelUsers = this.channelUser;
     this.searchResult = [];
     this.searchResult = this.channelUsers;
   }
@@ -394,7 +393,7 @@ export class EditorComponent implements OnInit {
     if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
       this.activateSearchMarketUsers();
     }
-    // Check if the '@' character is typed or '@' preceded by a newline character.
+    // Check if the '#' character is typed or '#' preceded by a newline character.
     if (text.charAt(cursorIndex - 1) === '#' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '#')) {
       this.activateSearchForChannelToMark();
     }
@@ -402,14 +401,13 @@ export class EditorComponent implements OnInit {
     const hashPosition = text.lastIndexOf('#');
     if (atPosition === -1) {
       this.searchMarktUsers = false;
-    }
-    if (hashPosition === -1) {
-      this.searchMarktChannel = false;
-    }
-    else if (atPosition !== this.lastAtPosition) {
+    }else if (atPosition !== this.lastAtPosition) {
       this.searchMarktUsers = true;
     }
-    else if (hashPosition !== this.lastAtPosition) {
+
+    if (hashPosition === -1) {
+      this.searchMarktChannel = false;
+    }else if (hashPosition !== this.lastHashPosition) {
       this.searchMarktChannel = true;
     }
     this.lastAtPosition = atPosition;
@@ -542,7 +540,7 @@ export class EditorComponent implements OnInit {
     const textToAdd = this.message.substring(0, this.lastIndexOfRaute + 1);
     this.message = `${textToAdd}` + `${value}`
     this.searchMarktChannel = false;
-    this.markedChannel.push(id)
+    this.markedChannel.push(id);
   }
 
   checkMarkedChannel(message: string) {   
