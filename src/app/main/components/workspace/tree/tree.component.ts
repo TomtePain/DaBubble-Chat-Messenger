@@ -191,8 +191,8 @@ export class TreeComponent implements OnInit {
   async getUsers() {
     const userRef = collection(this.firestore, environment.userDb);
     const querySnapshot = await getDocs(userRef); // Use getDocs to fetch data once
-    const uid = this.userservice.loginUser.uid;
-
+    
+    
     const filteredDocs = querySnapshot.docs.filter((doc) => {
       const docId = doc.id;     
       return this.userDmData.includes(docId);
@@ -201,7 +201,7 @@ export class TreeComponent implements OnInit {
     this.dbMessages = filteredDocs.map((doc) => {
 
       const data = doc.data();
-      const isOwn = (uid === data['uid']);
+      const isOwn = (this.currentUserDbId === doc.id);
 
         return {
           id: doc.id, // Store the document ID as id
@@ -214,7 +214,7 @@ export class TreeComponent implements OnInit {
         };
     });
 
-    this.sortDirectMessages();
+    this.sortDirectMessages();    
     this.updateDirectMessagesChannels();
   }
 
