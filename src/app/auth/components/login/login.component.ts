@@ -51,6 +51,7 @@ const setLogoAnimation = trigger('setLogoAnimation', [
   styleUrls: ['./login.component.scss'],
   animations: [fadeOut, setLogoAnimation],
 })
+
 export class LoginComponent implements OnInit {
   isShown: boolean = true;
   isBtnDisabled: boolean = false;
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
+  
   constructor(
     public fb: FormBuilder,
     private router: Router,

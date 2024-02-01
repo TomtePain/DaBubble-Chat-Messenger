@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth, signOut } from '@angular/fire/auth';
-import { Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
+import { DocumentReference, Firestore, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -10,16 +10,28 @@ import { CrudService } from './crud.service';
   providedIn: 'root'
 })
 export class UserService {
-  userDBId = localStorage.getItem('userId');//: string = '';
-  documentRef;
+  userDBId = localStorage.getItem('userId');
+  documentRef!: DocumentReference;
   allUsers: any;
   allChannels: any;
   alluserRef:any;
   loginUser:any;
 
-  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private crud:CrudService) {
-    this.documentRef = doc(this.firestore, environment.userDb + `/` + this.userDBId);
+  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private crud:CrudService) {    
+    this.setDocumentRef();
     this.getAllUsers();
+    this.saveLoginUserData();
+    console.log("userService running");
+    
+  }
+
+  setDocumentRef() {
+    this.documentRef = doc(this.firestore, environment.userDb + `/` + this.userDBId);
+  }
+
+  resetLoginUser() {
+    this.userDBId = localStorage.getItem('userId');
+    this.setDocumentRef();
     this.saveLoginUserData();
   }
 

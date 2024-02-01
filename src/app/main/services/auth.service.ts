@@ -57,9 +57,7 @@ export class AuthService {
     private crud: CrudService,
     private tree: TreeService,
     private userservice: UserService
-  ) {
-    console.log('')
-  }
+  ) {}
 
   regUser(
     regFormValue: any,
@@ -72,7 +70,7 @@ export class AuthService {
       return;
     }
     createUserWithEmailAndPassword(this.auth, email, password)
-      .then((resp) => {
+      .then(async (resp) => {
         const userId = resp.user.uid;
         let userData = {
           uid: userId,
@@ -86,13 +84,15 @@ export class AuthService {
         };
         sendEmailVerification(resp.user);
         this.crud.addItem(userData, environment.userDb).then((docRef) => {
-          this.upDateChannelUser(docRef);
+          this.updateChannelUser(docRef);
           this.tree.createOwnDM(docRef);
         });
         this.alert(
           'Konto erfolgreich erstellt, bitte verifiziere Deine Email-Adresse.'
         );
-        this.setUserDataToLocalStorage(userId);
+        await this.setUserDataToLocalStorage(userId);
+        await this.setLoginUser();
+        this.route.navigateByUrl('');    
         this.error = false;
       })
       .catch((err) => {
@@ -108,6 +108,7 @@ export class AuthService {
   }
 
   googleWithAuth() {
+    // Disable the button while the signIn process is ongoing
     this.btndisabled = true;
     signInWithPopup(this.auth, new GoogleAuthProvider()).then(async (resp) => {
       const userId = resp.user.uid;
@@ -129,25 +130,16 @@ export class AuthService {
       if (userIsReg.length > 0) {
       } else {
         this.crud.addItem(userData, environment.userDb).then((docRef) => {
-          this.upDateChannelUser(docRef);
+          this.updateChannelUser(docRef);
           this.tree.createOwnDM(docRef);
         });
       }
-      this.setUserDataToLocalStorage(userId);
-        this.route.navigateByUrl('');
+      await this.setUserDataToLocalStorage(userId);
+      await this.setLoginUser();
+      this.route.navigateByUrl('');            
     }).finally(() => {
       // Re-enable the button when the sign-in process is completed (either success or error)
       this.btndisabled = false;
-    });
-  }
-
-  upDateChannelUser(docRef: any) {
-    let updateItem = doc(
-      collection(this.firestore, environment.channelDb),
-      environment.mainChannel
-    );
-    updateDoc(updateItem, {
-      ids: arrayUnion(docRef.id),
     });
   }
 
@@ -155,10 +147,12 @@ export class AuthService {
     // Disable the button while the signIn process is ongoing
     this.btndisabled = true;
     signInWithEmailAndPassword(this.auth, email, password)
-      .then((resp) => {
-        this.setUserDataToLocalStorage(resp.user.uid);
+      .then(async (resp) => {
+        // Wait for setUserDataToLocalStorage and setLoginUser to complete
+        await this.setUserDataToLocalStorage(resp.user.uid)
+        await this.setLoginUser();
         if (resp.user.emailVerified) {
-            this.route.navigateByUrl('');
+            this.route.navigateByUrl('');            
         } else {
           this.alert('Verifiziere Deine E-Mail-Adresse!');
         }
@@ -178,25 +172,15 @@ export class AuthService {
       });
   }
 
-  // signInGuest() {
-  //   this.btndisabled = true;
-  //   signInAnonymously(this.auth).then((resp) => {
-  //     const userId: string = resp.user.uid;
-  //     const itemCollection = collection(this.firestore, environment.userDb);
-  //     setDoc(doc(itemCollection), {
-  //       uid: userId,
-  //       fullName: 'Guest',
-  //       photoURL: './assets/images/profile-icons/big/avatar-1.png',
-  //       accessToChannel: [],
-  //       isOnline: false,
-  //     });
-  //     this.setUserDataToLocalStorage(userId);
-  //     setTimeout(() => {
-  //       this.route.navigateByUrl('');
-  //     }, 900);
-  //   });
-  //   this.btndisabled = false;
-  // }
+  updateChannelUser(docRef: any) {
+    let updateItem = doc(
+      collection(this.firestore, environment.channelDb),
+      environment.mainChannel
+    );
+    updateDoc(updateItem, {
+      ids: arrayUnion(docRef.id),
+    });
+  }
 
   logOut() {
     signOut(this.auth);
@@ -204,17 +188,35 @@ export class AuthService {
   }
 
   setUserDataToLocalStorage(uid: string) {
-    const itemCollection = collection(this.firestore, environment.userDb);
-    const q = query(itemCollection, where('uid', '==', uid));
-    getDocs(q).then((doc) => {
-      if (doc.docs.length > 1) {
-      } else if (doc.docs.length == 0) {
-        //
-      } else {
-        let userDbId = doc.docs[0].id;
-        this.loggedUserId = userDbId;
-        localStorage.setItem('userId', userDbId);
-        this.userservice.userDBId = userDbId;
+    return new Promise((resolve, reject) => {
+      const userCollection = collection(this.firestore, environment.userDb);
+      const q = query(userCollection, where('uid', '==', uid));
+      getDocs(q).then((doc) => {
+        // Process documents as before
+        if (doc.docs.length == 1) {
+          let userDbId = doc.docs[0].id;
+          this.loggedUserId = userDbId;
+          localStorage.setItem('userId', userDbId);
+          this.userservice.userDBId = userDbId;
+          resolve(userDbId);
+        } else {
+          reject();
+        }
+      }).catch((error) => {
+        reject(error); // Reject the Promise on error
+        console.log(error);
+      });
+    });
+  }
+
+  setLoginUser(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.userservice.resetLoginUser();        
+        resolve();
+      } catch (error) {
+        reject(error);
+        console.log(error);
       }
     });
   }
