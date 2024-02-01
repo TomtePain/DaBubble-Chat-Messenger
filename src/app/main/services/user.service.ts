@@ -20,9 +20,7 @@ export class UserService {
   constructor(public auth: Auth, private firestore: Firestore, private route: Router, private crud:CrudService) {    
     this.setDocumentRef();
     this.getAllUsers();
-    this.saveLoginUserData();
-    console.log("userService running");
-    
+    this.saveLoginUserData();    
   }
 
   setDocumentRef() {
