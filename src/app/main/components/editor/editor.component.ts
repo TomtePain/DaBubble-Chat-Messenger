@@ -52,6 +52,7 @@ export class EditorComponent implements OnInit {
   markedUsersInText: Array<any> = [];
   markedChannel: Array<any> = [];
   markedChannelinText: Array<any> = [];
+  cursorPosition: number = 0;
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -335,7 +336,8 @@ export class EditorComponent implements OnInit {
    */
   showForMarkt() {
     let currentValue: string = this.message.trim();
-    this.lastIndexOfAt = currentValue.lastIndexOf('@');
+    // this.lastIndexOfAt = currentValue.lastIndexOf('@');
+    this.lastIndexOfAt = this.cursorPosition;
     this.lastIndexOfRaute = currentValue.lastIndexOf('#');
 
     if (this.lastIndexOfAt !== -1) {
@@ -354,10 +356,10 @@ export class EditorComponent implements OnInit {
    * @param {string} name - The name to be added to the message.
   */
   addToMsg(name: string, id: string) {
-    const textToAdd = this.message.substring(0, this.lastIndexOfAt + 1);
+    const textToAdd = this.message.substring(0, this.cursorPosition + 1);
     this.message = `${textToAdd}` + `${name}`;
     this.searchMarktUsers = false;
-    this.setCursor();
+    // this.setCursor();
     this.markedUsers.push(id);
   }
 
@@ -560,9 +562,16 @@ export class EditorComponent implements OnInit {
 
   onKeyUp(event: KeyboardEvent): void {
     if (event.key === '@') {
-      const cursorPosition = (event.target as HTMLTextAreaElement).selectionStart;
-      console.log('Die @-Taste wurde bei Position', cursorPosition, 'gedrückt.');
+      let cursorPosition = (event.target as HTMLTextAreaElement).selectionStart;
+      this.cursorPosition = cursorPosition;
+      console.log('Die @-Taste wurde bei Position', this.cursorPosition, 'gedrückt.');
+      console.log('Die @-Taste + 1 wurde bei Position', this.cursorPosition +1, 'gedrückt.');
+      
       this.activateSearchMarketUsers();
+      this.initializeChannelUsers();
+      this.showForMarkt();
+
+      console.log('searchresult:', this.searchResult)
     }
   }
 
