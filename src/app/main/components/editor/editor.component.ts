@@ -30,6 +30,7 @@ export class EditorComponent implements OnInit {
   @Input() currentChannel: Array<any> = [];
   @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
+  @ViewChild('searchFieldUser') searchFieldUser!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchResultForChannel: Array<any> = [];
   searchMarktUsers: boolean = false;
@@ -321,12 +322,13 @@ export class EditorComponent implements OnInit {
   }
 
   searchUser(searchValue: string) {
-    this.searchResult = this.channelUsers.filter((el) => {
-      return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
-    });
-    if (this.searchResult.length <= 0) {
-      // this.searchMarktUsers = false;
-    }
+
+    // this.searchResult = this.channelUsers.filter((el) => {
+    //   return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
+    // });
+    // if (this.searchResult.length <= 0) {
+    //   // this.searchMarktUsers = false;
+    // }
   }
 
   /**
@@ -335,19 +337,19 @@ export class EditorComponent implements OnInit {
    * @param {any} event - The event triggering the display of market user content.
    */
   showForMarkt() {
-    let currentValue: string = this.message.trim();
-    // this.lastIndexOfAt = currentValue.lastIndexOf('@');
-    this.lastIndexOfAt = (this.cursorPosition + 1) ;
-    this.lastIndexOfRaute = currentValue.lastIndexOf('#');
+    // let currentValue: string = this.message.trim();
+    // // this.lastIndexOfAt = currentValue.lastIndexOf('@');
+    // this.lastIndexOfAt = (this.cursorPosition + 1) ;
+    // this.lastIndexOfRaute = currentValue.lastIndexOf('#');
 
-    if (this.lastIndexOfAt !== -1) {
-      const textNachLetztemAt = currentValue.substring(this.lastIndexOfAt + 1);
-      this.searchUser(textNachLetztemAt);
-    }
-    if (this.lastIndexOfRaute !== -1) {
-      let textAfterRaute = currentValue.substring(this.lastIndexOfRaute + 1);
-      this.filterItems(textAfterRaute);
-    }
+    // if (this.lastIndexOfAt !== -1) {
+    //   const textNachLetztemAt = currentValue.substring(this.lastIndexOfAt + 1);
+    //   this.searchUser(textNachLetztemAt);
+    // }
+    // if (this.lastIndexOfRaute !== -1) {
+    //   let textAfterRaute = currentValue.substring(this.lastIndexOfRaute + 1);
+    //   this.filterItems(textAfterRaute);
+    // }
   }
 
   /**
@@ -569,21 +571,38 @@ export class EditorComponent implements OnInit {
     if (event.key === '@') {
       let cursorPosition = (event.target as HTMLTextAreaElement).selectionStart;
       this.cursorPosition = cursorPosition;
-      console.log('Die @-Taste wurde bei Position', this.cursorPosition, 'gedrückt.');
-      console.log('Die @-Taste + 1 wurde bei Position', this.cursorPosition +1, 'gedrückt.');
-      
+
       this.activateSearchMarketUsers();
       this.initializeChannelUsers();
-      this.showForMarkt();
 
-      console.log('searchresult:', this.searchResult)
-
-
-      
+      setTimeout(() => {
+        this.searchFieldUser.nativeElement.focus();
+      }, 0);
     }
   }
 
 
+  activateMarkUser():void {
+    let textarea : HTMLTextAreaElement = this.keyPress.nativeElement;
+    this.cursorPosition = textarea.selectionStart;
 
+    let newMessage = this.message.slice(0, this.cursorPosition) + '@' + this.message.slice(this.cursorPosition);
+    this.message = newMessage;
+
+    this.activateSearchMarketUsers();
+      this.initializeChannelUsers();
+
+      setTimeout(() => {
+        this.searchFieldUser.nativeElement.focus();
+      }, 0);
+  }
+
+
+  searchResultForUser() {
+    let searchValue = this.searchFieldUser.nativeElement.value;
+
+    this.searchResult = this.channelUsers.filter((el) => {
+      return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
+    });
+  }
 }
-

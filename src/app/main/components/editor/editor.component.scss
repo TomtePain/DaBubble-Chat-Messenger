@@ -91,6 +91,7 @@
   flex-direction: column;
   gap: 16px;
   overflow: auto;
+  margin-bottom: 56px; //// added for searchInputField
 
   &::-webkit-scrollbar {
     width: 4px;
