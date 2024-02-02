@@ -325,7 +325,7 @@ export class EditorComponent implements OnInit {
       return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
     });
     if (this.searchResult.length <= 0) {
-      this.searchMarktUsers = false;
+      // this.searchMarktUsers = false;
     }
   }
 
@@ -337,7 +337,7 @@ export class EditorComponent implements OnInit {
   showForMarkt() {
     let currentValue: string = this.message.trim();
     // this.lastIndexOfAt = currentValue.lastIndexOf('@');
-    this.lastIndexOfAt = this.cursorPosition;
+    this.lastIndexOfAt = (this.cursorPosition + 1) ;
     this.lastIndexOfRaute = currentValue.lastIndexOf('#');
 
     if (this.lastIndexOfAt !== -1) {
@@ -356,8 +356,13 @@ export class EditorComponent implements OnInit {
    * @param {string} name - The name to be added to the message.
   */
   addToMsg(name: string, id: string) {
-    const textToAdd = this.message.substring(0, this.cursorPosition + 1);
-    this.message = `${textToAdd}` + `${name}`;
+    // const textToAdd = this.message.substring(0, this.cursorPosition + 1);
+    // this.message = `${textToAdd}` + `${name}`;
+
+
+    let newMessage = this.message.slice(0, this.cursorPosition + 1) + name + this.message.slice(this.cursorPosition + 1);
+    this.message = newMessage;
+
     this.searchMarktUsers = false;
     // this.setCursor();
     this.markedUsers.push(id);
@@ -572,6 +577,9 @@ export class EditorComponent implements OnInit {
       this.showForMarkt();
 
       console.log('searchresult:', this.searchResult)
+
+
+      
     }
   }
 
