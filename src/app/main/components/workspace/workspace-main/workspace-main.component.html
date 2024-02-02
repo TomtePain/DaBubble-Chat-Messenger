@@ -2,7 +2,7 @@
     <div class="workspace-header">
         <div class="img-title">
             <img src="assets/workspace-images/workspace-logo.svg" alt="">
-            <h3>Code learning</h3>
+            <h3>Workspace</h3>
         </div>
         <div class="edit-container" (click)="createNewMessage()">
             <button mat-icon-button>
@@ -16,7 +16,8 @@
 </div>
 <div class="workspace" (click)="toggleWorkspace()">
     <div class="workspace-toggle">
-        <div>Workspace-Menü schließen</div>
+        <div *ngIf="workspace">Workspace-Menü schließen</div>
+        <div *ngIf="!workspace">Workspace-Menü öffnen</div>
         <!-- <img class="rotate-90" src="assets/workspace-images/workspace-show-menu.svg" alt=""> -->
         <div class="workspace-icon rotate-90" [ngClass]="{'workspace-hide': workspace, 'workspace-show': !workspace}">
             <div *ngIf="workspace"></div>
@@ -28,4 +29,4 @@
     <div *ngIf="workspace"></div>
     <div *ngIf="!workspace"></div>
     <!-- <img *ngIf="!workspace" src="assets/images/icons/show-workspace.png" alt=""> -->
-</div>
+</div>‚
