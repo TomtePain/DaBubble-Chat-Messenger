@@ -18,7 +18,6 @@
     <div class="workspace-toggle">
         <div *ngIf="workspace">Workspace-Menü schließen</div>
         <div *ngIf="!workspace">Workspace-Menü öffnen</div>
-        <!-- <img class="rotate-90" src="assets/workspace-images/workspace-show-menu.svg" alt=""> -->
         <div class="workspace-icon rotate-90" [ngClass]="{'workspace-hide': workspace, 'workspace-show': !workspace}">
             <div *ngIf="workspace"></div>
             <div *ngIf="!workspace"></div>
@@ -28,5 +27,5 @@
 <div class="workspace-toggle-mobile" [ngClass]="{'workspace-hide': workspace, 'workspace-show': !workspace}" (click)="toggleWorkspace()">
     <div *ngIf="workspace"></div>
     <div *ngIf="!workspace"></div>
-    <!-- <img *ngIf="!workspace" src="assets/images/icons/show-workspace.png" alt=""> -->
+
 </div>‚
