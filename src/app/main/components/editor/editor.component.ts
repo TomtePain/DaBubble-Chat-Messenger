@@ -31,6 +31,7 @@ export class EditorComponent implements OnInit {
   @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
   @ViewChild('searchFieldUser') searchFieldUser!: ElementRef;
+  @ViewChild('searchFieldChannel') searchFieldChannel!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchResultForChannel: Array<any> = [];
   searchMarktUsers: boolean = false;
@@ -292,12 +293,12 @@ export class EditorComponent implements OnInit {
    * Updates the message by appending '@', sets the cursor, triggers the keyup event,
    * and activates the search for market users.
    */
-  updateMessageAndSearch() {
-    this.message = this.message + '@';
-    this.setCursor();
-    this.triggerKeyup();
-    this.activateSearchMarketUsers();
-  }
+  // updateMessageAndSearch() {
+  //   this.message = this.message + '@';
+  //   this.setCursor();
+  //   this.triggerKeyup();
+  //   this.activateSearchMarketUsers();
+  // }
 
   /**
    * Activates the search for market users by setting the 'searchMarktUsers' flag to true
@@ -312,14 +313,14 @@ export class EditorComponent implements OnInit {
    * Triggers a 'keyup' event programmatically by creating a KeyboardEvent with the specified key
    * and dispatching it on the native element referenced by 'keyPress'.
    */
-  triggerKeyup() {
-    const event = new KeyboardEvent('keyup', {
-      bubbles: true,
-      cancelable: true,
-      key: 'a',
-    });
-    this.keyPress.nativeElement.dispatchEvent(event);
-  }
+  // triggerKeyup() {
+  //   const event = new KeyboardEvent('keyup', {
+  //     bubbles: true,
+  //     cancelable: true,
+  //     key: 'a',
+  //   });
+  //   this.keyPress.nativeElement.dispatchEvent(event);
+  // }
 
   searchUser(searchValue: string) {
 
@@ -358,15 +359,10 @@ export class EditorComponent implements OnInit {
    * @param {string} name - The name to be added to the message.
   */
   addToMsg(name: string, id: string) {
-    // const textToAdd = this.message.substring(0, this.cursorPosition + 1);
-    // this.message = `${textToAdd}` + `${name}`;
-
-
     let newMessage = this.message.slice(0, this.cursorPosition + 1) + name + this.message.slice(this.cursorPosition + 1);
     this.message = newMessage;
 
     this.searchMarktUsers = false;
-    // this.setCursor();
     this.markedUsers.push(id);
   }
 
@@ -536,18 +532,19 @@ export class EditorComponent implements OnInit {
   }
 
 
-  filterItems(searchTerm: string) {
-    this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
-      return el.name.toLowerCase().includes(searchTerm.toLocaleLowerCase());
-    });
-    if (this.searchResultForChannel.length <= 0) {
-      this.searchMarktChannel = false;
-    }
-  }
+  // filterItems(searchTerm: string) {
+  //   this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
+  //     return el.name.toLowerCase().includes(searchTerm.toLocaleLowerCase());
+  //   });
+  //   if (this.searchResultForChannel.length <= 0) {
+  //     this.searchMarktChannel = false;
+  //   }
+  // }
 
   addChannelintoMSG(value: any, id: any) {
-    const textToAdd = this.message.substring(0, this.lastIndexOfRaute + 1);
-    this.message = `${textToAdd}` + `${value}`
+    let newMessage = this.message.slice(0, this.cursorPosition + 1) + value + this.message.slice(this.cursorPosition + 1);
+    this.message = newMessage;
+
     this.searchMarktChannel = false;
     this.markedChannel.push(id);
   }
@@ -573,36 +570,56 @@ export class EditorComponent implements OnInit {
       this.cursorPosition = cursorPosition;
 
       this.activateSearchMarketUsers();
-      this.initializeChannelUsers();
 
       setTimeout(() => {
         this.searchFieldUser.nativeElement.focus();
+      }, 0);
+    } else if (event.key === '#') {
+      let cursorPosition = (event.target as HTMLTextAreaElement).selectionStart;
+      this.cursorPosition = cursorPosition;
+
+      this.activateSearchForChannelToMark();
+
+      setTimeout(() => {
+        this.searchFieldChannel.nativeElement.focus();
       }, 0);
     }
   }
 
 
-  activateMarkUser():void {
-    let textarea : HTMLTextAreaElement = this.keyPress.nativeElement;
+  activateMarkUser(): void {
+    let textarea: HTMLTextAreaElement = this.keyPress.nativeElement;
     this.cursorPosition = textarea.selectionStart;
 
     let newMessage = this.message.slice(0, this.cursorPosition) + '@' + this.message.slice(this.cursorPosition);
     this.message = newMessage;
 
     this.activateSearchMarketUsers();
-      this.initializeChannelUsers();
 
-      setTimeout(() => {
-        this.searchFieldUser.nativeElement.focus();
-      }, 0);
+    setTimeout(() => {
+      this.searchFieldUser.nativeElement.focus();
+    }, 0);
   }
 
 
-  searchResultForUser() {
+  searchResultsForUser() {
     let searchValue = this.searchFieldUser.nativeElement.value;
 
     this.searchResult = this.channelUsers.filter((el) => {
       return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
     });
   }
+
+  searchResultsForChannel() {
+    let searchValue = this.searchFieldChannel.nativeElement.value;
+
+    this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
+      return el.name.toLowerCase().includes(searchValue.toLocaleLowerCase());
+    });
+  }
+
+
+
+
+
 }
