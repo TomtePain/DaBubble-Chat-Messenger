@@ -34,9 +34,9 @@
 
   <!-- Text input starts here -->
   <textarea type="text" class="scroll" placeholder="Nachricht an #{{currentChannel[0].name}}" id="text" *ngIf="isChatArea && channelType == 'channel' " [(ngModel)]="message" (focus)="hideBoxes()" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageKeyBoard($event)" (keypress)="onKeyUp($event)"></textarea>
-  <textarea type="text" class="scroll" placeholder="Nachricht an {{setDirectMessageBodyUser()}}" id="text" *ngIf="isChatArea && channelType == 'message' " [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt()" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageKeyBoard($event)"></textarea>
-  <textarea type="text" class="scroll" placeholder="Antworten..." id="thread-text" *ngIf="(isThreadArea && !isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt()"  #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageThreadKeyBoard($event)"></textarea>
-  <textarea type="text" class="scroll" placeholder="Antworten und Thread erstellen..." id="new-thread-text" *ngIf="(isThreadArea && isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" (keyup)="showForMarkt()" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewThreadKeyBoard($event)"></textarea>
+  <textarea type="text" class="scroll" placeholder="Nachricht an {{setDirectMessageBodyUser()}}" id="text" *ngIf="isChatArea && channelType == 'message' " [(ngModel)]="message" (focus)="hideBoxes()" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageKeyBoard($event)" (keypress)="onKeyUp($event)"></textarea>
+  <textarea type="text" class="scroll" placeholder="Antworten..." id="thread-text" *ngIf="(isThreadArea && !isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewMessageThreadKeyBoard($event)" (keypress)="onKeyUp($event)"></textarea>
+  <textarea type="text" class="scroll" placeholder="Antworten und Thread erstellen..." id="new-thread-text" *ngIf="(isThreadArea && isNewThread)" [(ngModel)]="message" (focus)="hideBoxes()" #keyPress (drop)="uploadFile($event)" (keydown.enter)="addNewThreadKeyBoard($event)" (keypress)="onKeyUp($event)"></textarea>
 
    <!-- File Upload starts here -->
   <input type="file" #fileInput (change)="onFileSelect($event)" accept=".pdf, image/*" style="display: none;" />

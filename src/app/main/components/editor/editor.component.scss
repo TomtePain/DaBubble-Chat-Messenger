@@ -169,13 +169,14 @@
 }
 
 .markt-users {
-  margin-left: 20px;
+  // margin-left: 20px;
   background-color: white;
   position: absolute;
   border: 1px solid rgb(173, 176, 217);
   border-radius: 20px 20px 20px 0px;
   padding: 20px 21px 20px 21px;
-  width: 335px;
+  // width: 335px;
+  width: 300px; // Changed by Tom (For better thread view)
   min-height: 171px;
   max-height: 180px;
   display: flex;
