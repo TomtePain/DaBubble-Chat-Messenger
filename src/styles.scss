@@ -148,6 +148,15 @@ body {
   font-family: 'Material Icons' !important;
 }
 
+.mat-icon {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 24px !important;
+  width: 24px !important;
+  font-size: 24px !important;
+}
+
 .mb-20{
   margin-bottom: 20px;
 }
