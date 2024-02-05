@@ -129,10 +129,8 @@ export class SingelChatComponent implements OnInit {
       .subscribe(() => {
         // Check the length of the route's children at the end of navigation
         if (this.route.children.length > 0) {
-          console.log('Child route is active');
           this.hideMainChatOnSmallerScreens = true;
         } else {
-          console.log('No child route active');
           this.hideMainChatOnSmallerScreens = false;
         }
       });

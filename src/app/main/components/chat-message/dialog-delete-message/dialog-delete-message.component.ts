@@ -44,9 +44,6 @@ export class DialogDeleteMessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkForPDF();
-    console.log('messagetype:', this.messageType);
-    console.log('threadid:', this.threadId);
-    console.log('this.messageData.id:', this.messageData.id)
   }
 
   closeDialog() {
