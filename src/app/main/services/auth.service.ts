@@ -33,6 +33,7 @@ import { environment } from 'src/environments/environment';
 import { AlertService } from '../../auth/components/alert/alert.service';
 import { CrudService } from './crud.service';
 import { TreeService } from './tree.service';
+// import { getAuth, updateEmail } from 'firebase/auth';
 import { UserService } from './user.service';
 import { Subject, Observable } from 'rxjs';
 
@@ -47,8 +48,6 @@ export class AuthService {
   btnDisabledObservable$: Observable<boolean> = this.btnDisabledSubject.asObservable();
   private _btnDisabled: boolean = false;
 
-
-
   constructor(
     public auth: Auth,
     private firestore: Firestore,
@@ -57,7 +56,9 @@ export class AuthService {
     private crud: CrudService,
     private tree: TreeService,
     private userservice: UserService
-  ) {}
+  ) {
+    console.log('')
+  }
 
   regUser(
     regFormValue: any,
@@ -70,7 +71,7 @@ export class AuthService {
       return;
     }
     createUserWithEmailAndPassword(this.auth, email, password)
-      .then(async (resp) => {
+      .then((resp) => {
         const userId = resp.user.uid;
         let userData = {
           uid: userId,
@@ -84,15 +85,13 @@ export class AuthService {
         };
         sendEmailVerification(resp.user);
         this.crud.addItem(userData, environment.userDb).then((docRef) => {
-          this.updateChannelUser(docRef);
+          this.upDateChannelUser(docRef);
           this.tree.createOwnDM(docRef);
         });
         this.alert(
           'Konto erfolgreich erstellt, bitte verifiziere Deine Email-Adresse.'
         );
-        await this.setUserDataToLocalStorage(userId);
-        await this.setLoginUser();
-        this.route.navigateByUrl('');    
+        this.setUserDataToLocalStorage(userId);
         this.error = false;
       })
       .catch((err) => {
@@ -108,13 +107,12 @@ export class AuthService {
   }
 
   googleWithAuth() {
-    // Disable the button while the signIn process is ongoing
-    this.btndisabled = true;
     signInWithPopup(this.auth, new GoogleAuthProvider()).then(async (resp) => {
       const userId = resp.user.uid;
       const userPhotoURL = resp.user.photoURL;
       const fullName = resp.user.displayName;
       const email = resp.user.email;
+      const itemCollection = collection(this.firestore, environment.userDb);
       let userIsReg = await this.isRegUser(userId);
       let userData = {
         uid: userId,
@@ -128,31 +126,38 @@ export class AuthService {
       };
 
       if (userIsReg.length > 0) {
+        // setDoc(doc(itemCollection, userIsReg), userData);
       } else {
         this.crud.addItem(userData, environment.userDb).then((docRef) => {
-          this.updateChannelUser(docRef);
+          this.upDateChannelUser(docRef);
           this.tree.createOwnDM(docRef);
         });
       }
-      await this.setUserDataToLocalStorage(userId);
-      await this.setLoginUser();
-      this.route.navigateByUrl('');            
-    }).finally(() => {
-      // Re-enable the button when the sign-in process is completed (either success or error)
-      this.btndisabled = false;
+      this.setUserDataToLocalStorage(userId);
+      setTimeout(() => {
+        this.route.navigateByUrl('');
+      }, 200);
+    });
+  }
+
+  upDateChannelUser(docRef: any) {
+    let updateItem = doc(
+      collection(this.firestore, environment.channelDb),
+      environment.mainChannel
+    );
+    updateDoc(updateItem, {
+      ids: arrayUnion(docRef.id),
     });
   }
 
   signIn(email: string, password: string) {
-    // Disable the button while the signIn process is ongoing
-    this.btndisabled = true;
     signInWithEmailAndPassword(this.auth, email, password)
-      .then(async (resp) => {
-        // Wait for setUserDataToLocalStorage and setLoginUser to complete
-        await this.setUserDataToLocalStorage(resp.user.uid)
-        await this.setLoginUser();
+      .then((resp) => {
+        this.setUserDataToLocalStorage(resp.user.uid);
         if (resp.user.emailVerified) {
-            this.route.navigateByUrl('');            
+          setTimeout(() => {
+            this.route.navigateByUrl('');
+          }, 900);
         } else {
           this.alert('Verifiziere Deine E-Mail-Adresse!');
         }
@@ -166,19 +171,24 @@ export class AuthService {
           this.alert('Zugriff gesperrt, bitte versuche es später erneut.')
         } else {
         this.alert(code);}
-      }).finally(() => {
-        // Re-enable the button when the sign-in process is completed (either success or error)
-        this.btndisabled = false;
       });
   }
 
-  updateChannelUser(docRef: any) {
-    let updateItem = doc(
-      collection(this.firestore, environment.channelDb),
-      environment.mainChannel
-    );
-    updateDoc(updateItem, {
-      ids: arrayUnion(docRef.id),
+  signInGuest() {
+    signInAnonymously(this.auth).then((resp) => {
+      const userId: string = resp.user.uid;
+      const itemCollection = collection(this.firestore, environment.userDb);
+      setDoc(doc(itemCollection), {
+        uid: userId,
+        fullName: 'Guest',
+        photoURL: './assets/images/profile-icons/big/avatar-1.png',
+        accessToChannel: [],
+        isOnline: false,
+      });
+      this.setUserDataToLocalStorage(userId);
+      setTimeout(() => {
+        this.route.navigateByUrl('');
+      }, 900);
     });
   }
 
@@ -188,35 +198,18 @@ export class AuthService {
   }
 
   setUserDataToLocalStorage(uid: string) {
-    return new Promise((resolve, reject) => {
-      const userCollection = collection(this.firestore, environment.userDb);
-      const q = query(userCollection, where('uid', '==', uid));
-      getDocs(q).then((doc) => {
-        // Process documents as before
-        if (doc.docs.length == 1) {
-          let userDbId = doc.docs[0].id;
-          this.loggedUserId = userDbId;
-          localStorage.setItem('userId', userDbId);
-          this.userservice.userDBId = userDbId;
-          resolve(userDbId);
-        } else {
-          reject();
-        }
-      }).catch((error) => {
-        reject(error); // Reject the Promise on error
-        console.log(error);
-      });
-    });
-  }
-
-  setLoginUser(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        this.userservice.resetLoginUser();        
-        resolve();
-      } catch (error) {
-        reject(error);
-        console.log(error);
+    const itemCollection = collection(this.firestore, environment.userDb);
+    const q = query(itemCollection, where('uid', '==', uid));
+    getDocs(q).then((doc) => {
+      if (doc.docs.length > 1) {
+        //TODO: Error | More than 1 found
+      } else if (doc.docs.length == 0) {
+        //TODO: Error | less than 1 found
+      } else {
+        let userDbId = doc.docs[0].id;
+        this.loggedUserId = userDbId;
+        localStorage.setItem('userId', userDbId);
+        this.userservice.userDBId = userDbId;
       }
     });
   }
@@ -242,54 +235,54 @@ export class AuthService {
     return isReg;
   }
 
-  // handleReauthenticationAndChangeEmail(email: string, password: string, newEmail: string) {
-  //   const auth = getAuth();
-  //   const user = auth.currentUser;
-  //   if (user) {
-  //     const credential = EmailAuthProvider.credential(email, password);
-  //     reauthenticateWithCredential(user, credential).then(() => {
-  //       // User re-authenticated, now update email
-  //       this.handleEmailChange(newEmail); 
-  //     }).catch((error) => {
-  //       // Handle errors here, such as wrong password
-  //       console.error('Re-authentication failed', error);
-  //     });
-  //   }
-  // }
+  handleReauthenticationAndChangeEmail(email: string, password: string, newEmail: string) {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      const credential = EmailAuthProvider.credential(email, password);
+      reauthenticateWithCredential(user, credential).then(() => {
+        // User re-authenticated, now update email
+        this.handleEmailChange(newEmail); 
+      }).catch((error) => {
+        // Handle errors here, such as wrong password
+        console.error('Re-authentication failed', error);
+      });
+    }
+  }
 
-  // handleEmailChange(newEmail: string) {
-  //   let previousUserEmail = this.auth.currentUser?.email;
+  handleEmailChange(newEmail: string) {
+    let previousUserEmail = this.auth.currentUser?.email;
 
-  //   if (previousUserEmail != newEmail) {
-  //     const auth = getAuth();
-  //     const user = auth.currentUser;
+    if (previousUserEmail != newEmail) {
+      const auth = getAuth();
+      const user = auth.currentUser;
       
-  //     if (user) {
+      if (user) {
       
-  //       updateEmail(user, newEmail).then(() => {
-  //           // Email updated!
-  //           // console.log("Email updated", newEmail, user);
-  //           // Send email to verify email to new email address
-  //           // sendEmailVerification(user).then(() => {
-  //           // console.log("Email verification sent", user);
-  //           // }); 
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error", error);
+        updateEmail(user, newEmail).then(() => {
+            // Email updated!
+            // console.log("Email updated", newEmail, user);
+            // Send email to verify email to new email address
+            // sendEmailVerification(user).then(() => {
+            // console.log("Email verification sent", user);
+            // }); 
+          })
+          .catch((error) => {
+            console.error("Error", error);
             
-  //           // An error occurred
-  //           let code = error.code;
-  //           code = code.slice(5);
-  //           this.alert(code);
-  //         });
-  //     } else {
-  //       console.error('No user is currently signed in.');
-  //     }
-  //   } else {
-  //     console.warn("Email adresses are not different", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
+            // An error occurred
+            let code = error.code;
+            code = code.slice(5);
+            this.alert(code);
+          });
+      } else {
+        console.error('No user is currently signed in.');
+      }
+    } else {
+      console.warn("Email adresses are not different", "previousUserEmail", previousUserEmail, "newEmail", newEmail);
       
-  //   }
-  // }
+    }
+  }
 
   handleResetPasswort(actionCode: string, newPassword: string) {
     const auth = getAuth();

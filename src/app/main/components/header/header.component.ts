@@ -26,11 +26,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.refreshData();
     });
 
-    this.waitForLoginUser();
-    
+    // this.waitForLoginUser();
+
+    setTimeout(() => {
+      if (this.userservice.loginUser === undefined) {
+        // console.log("this.userservice.loginUser is undefined", this.userservice.loginUser);
+        // console.log("reload");
+        window.location.reload();
+      } else {
+        // console.log("this.userservice.loginUser is defined", this.userservice.loginUser);
+        this.setUserData();
+      }
+    }, 500);
   }
 
-  // Check every 225ms if the loginUser is now defined within the userService
+ // Check every 225ms if the loginUser is now defined within the userService
   waitForLoginUser() {
     const interval = setInterval(() => {
       if (this.userservice.loginUser !== undefined) {
@@ -39,6 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     }, 225);
   }
+
 
   ngOnDestroy() {
     this.fullName = '';
