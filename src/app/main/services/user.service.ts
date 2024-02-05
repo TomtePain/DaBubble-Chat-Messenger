@@ -17,10 +17,10 @@ export class UserService {
   alluserRef:any;
   loginUser:any;
 
-  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private crud:CrudService) {    
+  constructor(public auth: Auth, private firestore: Firestore, private route: Router, private crud:CrudService) {
     this.setDocumentRef();
     this.getAllUsers();
-    this.saveLoginUserData();    
+    this.saveLoginUserData();
   }
 
   setDocumentRef() {
@@ -44,7 +44,6 @@ export class UserService {
       this.allChannels = resp;
       return resp;
     })
-    
   }
 
   saveLoginUserData() {
@@ -85,4 +84,3 @@ export class UserService {
     this.route.navigateByUrl('auth/login');
   }
 }
- 
