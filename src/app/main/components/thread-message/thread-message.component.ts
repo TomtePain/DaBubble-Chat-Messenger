@@ -84,7 +84,6 @@ export class ThreadMessageComponent implements OnInit{
 
   showMoreEmojis(i: any) {
     this.reactionBarOpen = !this.reactionBarOpen;
-    console.log("this.reactionBarOpen", this.reactionBarOpen);
     
     for (let j = 0; j < this.sortedReactionTypes.length; j++) {
       let emojiElement = document.getElementById(
@@ -109,7 +108,6 @@ export class ThreadMessageComponent implements OnInit{
     if (this.threadId) {
       this.reactionservice.toggleReaction(type, messageId, reactionData, 'thread', this.threadId);
       this.reactionBarOpen = false;
-      console.log("this.reactionBarOpen", this.reactionBarOpen);
   } else {
     console.error('this.threadId does not exists');
   }

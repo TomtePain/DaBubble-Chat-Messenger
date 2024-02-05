@@ -30,6 +30,8 @@ export class EditorComponent implements OnInit {
   @Input() currentChannel: Array<any> = [];
   @Input() channelType: string = '';
   @ViewChild('keyPress', { static: false }) keyPress!: ElementRef;
+  @ViewChild('searchFieldUser') searchFieldUser!: ElementRef;
+  @ViewChild('searchFieldChannel') searchFieldChannel!: ElementRef;
   searchResult: Array<UserProfile> = [];
   searchResultForChannel: Array<any> = [];
   searchMarktUsers: boolean = false;
@@ -52,6 +54,7 @@ export class EditorComponent implements OnInit {
   markedUsersInText: Array<any> = [];
   markedChannel: Array<any> = [];
   markedChannelinText: Array<any> = [];
+  cursorPosition: number = 0;
 
   constructor(public firestore: Firestore, public crud: CrudService, public userservice: UserService, private route: ActivatedRoute, private router: Router, public editorService: EditorService, public dialog: MatDialog) {
     //Clears the editor in Single Chat and Editor everytime a route changes.
@@ -286,66 +289,14 @@ export class EditorComponent implements OnInit {
     this.searchResult = this.channelUsers;
   }
 
-  /**
-   * Updates the message by appending '@', sets the cursor, triggers the keyup event,
-   * and activates the search for market users.
-   */
-  updateMessageAndSearch() {
-    this.message = this.message + '@';
-    this.setCursor();
-    this.triggerKeyup();
-    this.activateSearchMarketUsers();
-  }
 
   /**
    * Activates the search for market users by setting the 'searchMarktUsers' flag to true
    * and initializing channel users using the 'initializeChannelUsers()' function.
    */
   activateSearchMarketUsers() {
-    this.searchMarktUsers = true
+    this.searchMarktUsers = true;
     this.initializeChannelUsers();
-  }
-
-  /**
-   * Triggers a 'keyup' event programmatically by creating a KeyboardEvent with the specified key
-   * and dispatching it on the native element referenced by 'keyPress'.
-   */
-  triggerKeyup() {
-    const event = new KeyboardEvent('keyup', {
-      bubbles: true,
-      cancelable: true,
-      key: 'a',
-    });
-    this.keyPress.nativeElement.dispatchEvent(event);
-  }
-
-  searchUser(searchValue: string) {
-    this.searchResult = this.channelUsers.filter((el) => {
-      return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
-    });
-    if (this.searchResult.length <= 0) {
-      this.searchMarktUsers = false;
-    }
-  }
-
-  /**
-   * Displays content relevant to market users based on the provided event.
-   *
-   * @param {any} event - The event triggering the display of market user content.
-   */
-  showForMarkt() {
-    let currentValue: string = this.message.trim();
-    this.lastIndexOfAt = currentValue.lastIndexOf('@');
-    this.lastIndexOfRaute = currentValue.lastIndexOf('#');
-
-    if (this.lastIndexOfAt !== -1) {
-      const textNachLetztemAt = currentValue.substring(this.lastIndexOfAt + 1);
-      this.searchUser(textNachLetztemAt);
-    }
-    if(this.lastIndexOfRaute !== -1) {
-      let textAfterRaute = currentValue.substring(this.lastIndexOfRaute + 1);
-      this.filterItems(textAfterRaute);
-    }
   }
 
   /**
@@ -354,10 +305,10 @@ export class EditorComponent implements OnInit {
    * @param {string} name - The name to be added to the message.
   */
   addToMsg(name: string, id: string) {
-    const textToAdd = this.message.substring(0, this.lastIndexOfAt + 1);
-    this.message = `${textToAdd}` + `${name}`;
+    let newMessage = this.message.slice(0, this.cursorPosition + 1) + name + this.message.slice(this.cursorPosition + 1);
+    this.message = newMessage;
+
     this.searchMarktUsers = false;
-    this.setCursor();
     this.markedUsers.push(id);
   }
 
@@ -375,56 +326,6 @@ export class EditorComponent implements OnInit {
     })
   }
 
-  /**
-   * Event listener for the 'input' event that triggers when the user types in a textarea.
-   * Checks for the '@' character or '@' preceded by a newline character and activates the
-   * search for market users accordingly.
-   *
-   * @param {Event} event - The input event object.
-   */
-
-  @HostListener('input', ['$event'])
-  onInput(event: Event): void {
-    const textarea = event.target as HTMLTextAreaElement;
-    const text = textarea.value;
-    const cursorIndex = textarea.selectionStart;
-    this.setCursor()
-    // Check if the '@' character is typed or '@' preceded by a newline character.
-    if (text.charAt(cursorIndex - 1) === '@' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '@')) {
-      this.activateSearchMarketUsers();
-    }
-    // Check if the '#' character is typed or '#' preceded by a newline character.
-    if (text.charAt(cursorIndex - 1) === '#' || (text.charAt(cursorIndex - 2) === '\n' && text.charAt(cursorIndex - 1) === '#')) {
-      this.activateSearchForChannelToMark();
-    }
-    const atPosition = text.lastIndexOf('@');
-    const hashPosition = text.lastIndexOf('#');
-    if (atPosition === -1) {
-      this.searchMarktUsers = false;
-    }else if (atPosition !== this.lastAtPosition) {
-      this.searchMarktUsers = true;
-    }
-
-    if (hashPosition === -1) {
-      this.searchMarktChannel = false;
-    }else if (hashPosition !== this.lastHashPosition) {
-      this.searchMarktChannel = true;
-    }
-    this.lastAtPosition = atPosition;
-    this.lastHashPosition = hashPosition;
-  }
-
-  /**
-   * Sets the cursor position in a textarea element to the end of the content.
-   */
-  setCursor() {
-    const textarea: HTMLTextAreaElement = this.keyPress.nativeElement;
-    if (textarea) {
-      let lengthOFtext = this.message.length
-      textarea.focus(); // Fokus auf das Textfeld setzen
-      textarea.setSelectionRange(lengthOFtext, lengthOFtext); // Cursorposition anpassen
-    }
-  }
 
   /**
    * Handles the upload of one or more files from a drag-and-drop event.
@@ -527,23 +428,15 @@ export class EditorComponent implements OnInit {
   }
 
 
-  filterItems(searchTerm: string) {
-    this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
-      return el.name.toLowerCase().includes(searchTerm.toLocaleLowerCase());
-    });
-    if (this.searchResultForChannel.length <= 0) {
-      this.searchMarktChannel = false;
-    }
-  }
+  addChannelintoMSG(value: any, id: any) {
+    let newMessage = this.message.slice(0, this.cursorPosition + 1) + value + this.message.slice(this.cursorPosition + 1);
+    this.message = newMessage;
 
-  addChannelintoMSG(value:any, id:any){
-    const textToAdd = this.message.substring(0, this.lastIndexOfRaute + 1);
-    this.message = `${textToAdd}` + `${value}`
     this.searchMarktChannel = false;
     this.markedChannel.push(id);
   }
 
-  checkMarkedChannel(message: string) {   
+  checkMarkedChannel(message: string) {
     this.markedChannel.forEach((channel) => {
       let existChannel = this.editorService.allChannel.find((exist: any) => exist.id == channel);
       if (existChannel.name == message.match(existChannel.name)) {
@@ -557,5 +450,51 @@ export class EditorComponent implements OnInit {
     })
   }
 
-}
 
+  onKeyUp(event: KeyboardEvent): void {
+    if (event.key === '@') {
+      let cursorPosition = (event.target as HTMLTextAreaElement).selectionStart;
+      this.cursorPosition = cursorPosition;
+      this.activateSearchMarketUsers();
+      setTimeout(() => { this.searchFieldUser.nativeElement.focus(); }, 0);
+    } else if (event.key === '#') {
+      let cursorPosition = (event.target as HTMLTextAreaElement).selectionStart;
+      this.cursorPosition = cursorPosition;
+      this.activateSearchForChannelToMark();
+      setTimeout(() => { this.searchFieldChannel.nativeElement.focus(); }, 0);
+    }
+  }
+
+
+  activateMarkUser(): void {
+    let textarea: HTMLTextAreaElement = this.keyPress.nativeElement;
+    this.cursorPosition = textarea.selectionStart;
+
+    let newMessage = this.message.slice(0, this.cursorPosition) + '@' + this.message.slice(this.cursorPosition);
+    this.message = newMessage;
+
+    this.activateSearchMarketUsers();
+
+    setTimeout(() => {
+      this.searchFieldUser.nativeElement.focus();
+    }, 0);
+  }
+
+
+  searchResultsForUser() {
+    let searchValue = this.searchFieldUser.nativeElement.value;
+
+    this.searchResult = this.channelUsers.filter((el) => {
+      return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
+    });
+  }
+
+
+  searchResultsForChannel() {
+    let searchValue = this.searchFieldChannel.nativeElement.value;
+
+    this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
+      return el.name.toLowerCase().includes(searchValue.toLocaleLowerCase());
+    });
+  }
+}

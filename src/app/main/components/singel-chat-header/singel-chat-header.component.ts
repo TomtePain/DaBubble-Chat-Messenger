@@ -57,7 +57,6 @@ export class SingelChatHeaderComponent implements OnInit {
     let allChannels: Array<any> = [];
     this.channel = [];
     this.channelUser = [];
-    console.log()
     this.crud.getItem(environment.channelDb).subscribe((result) => {
       allChannels = result;
       this.channel = allChannels.find(exist => exist.id == this.channelID);

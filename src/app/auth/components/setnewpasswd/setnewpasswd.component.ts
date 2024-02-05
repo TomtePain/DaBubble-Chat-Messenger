@@ -65,7 +65,6 @@ export class SetnewpasswdComponent {
   }
 
   verifyEmail() {
-    this.auth.handleVerifyEmail(this.actionCode)
-    console.log('Email wird verifiziert');
+    this.auth.handleVerifyEmail(this.actionCode);
   }
 }
