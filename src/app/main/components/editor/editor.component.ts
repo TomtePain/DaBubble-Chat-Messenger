@@ -7,7 +7,7 @@ import { EditorService } from '../../services/editor.service';
 import { UserProfile } from 'src/app/interfaces/user-profile';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadComponent } from '../../dialogs/upload/upload.component';
-import { File } from '../../interfaces/editor';
+import { File } from '../../interfaces/file';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
