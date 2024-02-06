@@ -1,0 +1,62 @@
+
+<div>
+  <!-- Container that includes for Channels-->
+  <mat-tree  [dataSource]="channelSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node">
+      <div class="channel" (click)="this.tree.handleNodeClick(node)" [class.selected]="isSelected(node.id)">
+        <div class="img-container">
+          <img [src]="isSelected(node.id) ? 'assets/images/workspace-images/tag-clicked.svg' : node.img" class="tag-container">
+        </div>
+        <p>{{node.name}}</p>
+      </div>
+    </mat-tree-node>
+  
+      <!-- "Header" are for Channels-->
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+      <div class="space-between ">
+        <button  class="channel-interaction mb-20" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="this.tree.changeArrow('arrow-1',true)">
+          <div class="arrow-container">
+            <img id="arrow-1" class="arrow" src="assets/images/workspace-images/arrow_drop_down.svg" alt="">
+          </div>
+          <div class="tree-row">
+            <div class="channel-name">
+              <img src="assets/images/workspace-images/workspaces.svg" alt="worspace">
+              <div class="channel-text">{{node.name}}</div>
+            </div>
+          </div>
+        </button>
+        <button mat-icon-button (click)="this.tree.openAddChannelDialog()">
+          <img src="assets/images/workspace-images/workspace-add.svg" alt="add">
+        </button>
+      </div>
+    </mat-tree-node>
+  </mat-tree>
+
+  <!-- Container that includes for the direct messages-->
+  <mat-tree [dataSource]="messagesSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node">
+      <div class="dm-container" (click)="this.tree.routeToDmChannel(node)" id="{{node.id}}" [class.selected]="isSelected(node.id)"> 
+        <div class="container-img">
+          <img class="profile-img-container" src="{{node.img}}" alt="">
+          <!-- <img class="online-state" [src]="node.isOnline ? 'assets/workspace-images/online.svg' : 'assets/workspace-images/offline.svg'" alt=""> -->
+        </div>
+        <p>{{node.name}} <span *ngIf="node.id == currentUserDbId">(Du)</span></p> 
+      </div>
+    </mat-tree-node>
+
+    <!-- "Header" are for Direct messages-->
+    <mat-tree-node  *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+      <button class="channel-interaction mb-20 mt-20" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="this.tree.changeArrow('arrow-2',false)">
+        <div class="arrow-container">
+          <img id="arrow-2" class="arrow" src="assets/images/workspace-images/arrow_drop_down.svg" alt="">
+        </div>
+        <div class="tree-row">
+          <div class="channel-name">
+            <img src="assets/images/workspace-images/account_circle.svg" alt="">
+            <div class="channel-text">{{node.name}}</div>
+          </div>
+        </div>
+      </button>
+    </mat-tree-node>
+  </mat-tree>
+</div>

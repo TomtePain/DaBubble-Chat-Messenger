@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="head-container">
+    <h3>Channel erstellen</h3>
+    <img src="assets/images/icons/close.svg" alt="close" (click)="closeDialog()">
+  </div>
+    
+    <p>Channels dienen Deinem Team zur Kommunikation.
+       Am besten sollten sie Themenbezogen sein #marketing zum Beispiel.
+    </p>
+  
+    <form class="form-container" (ngSubmit)="onFormSubmit()" [formGroup]="channelForm">
+      <div>
+        <p><b>Channel-Name</b></p>
+      </div>
+        <input type="text" class="hashtag" placeholder="z.B. Kooperationsprojekte" formControlName="channelName" name="channelName" required>
+         <mat-error *ngIf="channelForm.get('channelName')?.dirty && channelForm.get('channelName')?.invalid">Channel muss mindestens aus 3 Zeichen bestehen</mat-error>
+      <div>
+        <p><b>Beschreibung</b> (optional)</p>
+      </div>
+        <input type="text" placeholder="Dein Text hier" formControlName="description" name="description">
+      
+      <div class="btn-container">
+        <button class="btn-prime add-btn" [disabled]="channelForm.invalid" type="submit">Erstellen</button>
+      </div>
+      
+    </form>
+  </div>
+  
