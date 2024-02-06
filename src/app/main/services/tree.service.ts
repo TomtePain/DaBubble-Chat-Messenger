@@ -19,7 +19,7 @@ export class TreeService {
   clickedBottom: boolean = false;
   userChannels: any = [];
   userMessages: any = [];
-  currentUserDbId = this.userservice.userDBId;
+  currentUserDbId!: string | null;
   currentSelectedChannel: string | null = null;
   isSearchActive = false;
   isNewMessage = false;
@@ -72,7 +72,8 @@ export class TreeService {
 
 
   async routeToDmChannel(selectedNode: any) {
-
+    this.currentUserDbId = this.userservice.userDBId; //to make sure the userDBId is not null anymore
+    
     if (selectedNode.id === this.currentUserDbId) {
       this.routeToOwnDM();
       this.currentSelectedChannel = selectedNode.id;
