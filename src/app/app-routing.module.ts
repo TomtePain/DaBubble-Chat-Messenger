@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainComponent } from './main/main.component';
-import { AuthComponent } from './auth/auth.component';
+import { MainComponent } from './modules/main/main.component';
+import { AuthComponent } from './modules/auth/auth.component';
 import { redirectUnauthorizedTo, canActivate } from '@angular/fire/auth-guard';
-import { PagenotfoundComponent } from './main/components/pagenotfound/pagenotfound.component';
-import { ImprintComponent } from './main/components/imprint/imprint.component';
-import { PrivacyComponent } from './main/components/privacy/privacy.component';
+import { PagenotfoundComponent } from './shared/pagenotfound/pagenotfound.component';
+import { ImprintComponent } from './shared/imprint/imprint.component';
+import { PrivacyComponent } from './shared/privacy/privacy.component';
 const redirectToLogin = () => redirectUnauthorizedTo(['auth/login']);
 const routes: Routes = [
   {path: 'imprint', component: ImprintComponent},
@@ -13,13 +13,13 @@ const routes: Routes = [
   {
     path: '',
     component: MainComponent,
-    loadChildren: () => import('./main/main-router.module').then(m => m.MainRoutingModule),
+    loadChildren: () => import('./modules/main/main-router.module').then(m => m.MainRoutingModule),
     ...canActivate(redirectToLogin)
   },
   {
     path: 'auth',
     component: AuthComponent,
-    loadChildren: () => import('./auth/auth-router.module').then(m => m.AuthRoutingModule)
+    loadChildren: () => import('./modules/auth/auth-router.module').then(m => m.AuthRoutingModule)
   },
   {path: '**', component: PagenotfoundComponent}
 ];

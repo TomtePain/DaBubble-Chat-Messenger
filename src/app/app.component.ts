@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TreeService } from './main/services/tree.service';
-import { SearchService } from './main/services/search.service';
+import { TreeService } from './core/services/tree.service';
+import { SearchService } from './core/services/search.service';
 
 @Component({
   selector: 'app-root',
