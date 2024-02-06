@@ -257,7 +257,7 @@ export class TreeComponent implements OnInit {
         ...this.dbChannels.map
           (channel => ({
              id: channel.id, name: channel.name, img: channel.img,type:channel.type })),
-        { name: 'add channels', img: 'assets/workspace-images/add_circle.svg', id: 'add' }]
+        { name: 'add channels', img: 'assets/images/workspace-images/add_circle.svg', id: 'add' }]
       }
     ];
     this.channelSource.data = updatedChannels as ChannelNode[];

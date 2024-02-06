@@ -1,7 +1,7 @@
 <div class="card">
     <div class="container-between">
         <h3><b>Leute hinzufügen</b> </h3>
-        <img class="pointer" src="assets/add-channel/close.svg" alt="close" (click)="closeDialog()">
+        <img class="pointer" src="assets/images/icons/close.svg" alt="close" (click)="closeDialog()">
     </div>
     <form (ngSubmit)="onSubmit()" class="container-form">
         <div class="container-select">
@@ -19,7 +19,7 @@
                  <div class="added-to-channel-users ">
                     <img class="added-to-channel-img" src="{{added.photoURL}}" alt="profile-img">
                     <p>{{added.fullName}}</p>
-                    <img class="added-user-close" src="assets/add-channel/close.svg" alt="close" (click)="removeFromAddList(i)">
+                    <img class="added-user-close" src="assets/images/icons/close.svg" alt="close" (click)="removeFromAddList(i)">
                  </div>
             </div>
             </div>

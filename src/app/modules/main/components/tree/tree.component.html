@@ -5,7 +5,7 @@
     <mat-tree-node *matTreeNodeDef="let node">
       <div class="channel" (click)="this.tree.handleNodeClick(node)" [class.selected]="isSelected(node.id)">
         <div class="img-container">
-          <img [src]="isSelected(node.id) ? 'assets/workspace-images/tag-clicked.svg' : node.img" class="tag-container">
+          <img [src]="isSelected(node.id) ? 'assets/images/workspace-images/tag-clicked.svg' : node.img" class="tag-container">
         </div>
         <p>{{node.name}}</p>
       </div>
@@ -16,17 +16,17 @@
       <div class="space-between ">
         <button  class="channel-interaction mb-20" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="this.tree.changeArrow('arrow-1',true)">
           <div class="arrow-container">
-            <img id="arrow-1" class="arrow" src="assets/workspace-images/arrow_drop_down.svg" alt="">
+            <img id="arrow-1" class="arrow" src="assets/images/workspace-images/arrow_drop_down.svg" alt="">
           </div>
           <div class="tree-row">
             <div class="channel-name">
-              <img src="assets/workspace-images/workspaces.svg" alt="worspace">
+              <img src="assets/images/workspace-images/workspaces.svg" alt="worspace">
               <div class="channel-text">{{node.name}}</div>
             </div>
           </div>
         </button>
         <button mat-icon-button (click)="this.tree.openAddChannelDialog()">
-          <img src="assets/workspace-images/workspace-add.svg" alt="add">
+          <img src="assets/images/workspace-images/workspace-add.svg" alt="add">
         </button>
       </div>
     </mat-tree-node>
@@ -48,11 +48,11 @@
     <mat-tree-node  *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
       <button class="channel-interaction mb-20 mt-20" matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" (click)="this.tree.changeArrow('arrow-2',false)">
         <div class="arrow-container">
-          <img id="arrow-2" class="arrow" src="assets/workspace-images/arrow_drop_down.svg" alt="">
+          <img id="arrow-2" class="arrow" src="assets/images/workspace-images/arrow_drop_down.svg" alt="">
         </div>
         <div class="tree-row">
           <div class="channel-name">
-            <img src="assets/workspace-images/account_circle.svg" alt="">
+            <img src="assets/images/workspace-images/account_circle.svg" alt="">
             <div class="channel-text">{{node.name}}</div>
           </div>
         </div>

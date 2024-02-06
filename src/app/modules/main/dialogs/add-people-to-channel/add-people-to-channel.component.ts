@@ -50,7 +50,7 @@ export class AddPeopleToChannelComponent {
       const newChannel = {
         name: this.channelName,
         description: this.description,
-        img: 'assets/workspace-images/tag.svg',
+        img: 'assets/images/workspace-images/tag.svg',
         ids: this.addedToChannelIds,
         searchTerms: this.searchTerms,
         creator: this.uid,
