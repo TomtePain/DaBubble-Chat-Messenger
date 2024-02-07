@@ -483,7 +483,6 @@ export class EditorComponent implements OnInit {
 
   searchResultsForUser() {
     let searchValue = this.searchFieldUser.nativeElement.value;
-
     this.searchResult = this.channelUsers.filter((el) => {
       return el.fullName.toLowerCase().includes(searchValue.toLocaleLowerCase());
     });
@@ -492,9 +491,23 @@ export class EditorComponent implements OnInit {
 
   searchResultsForChannel() {
     let searchValue = this.searchFieldChannel.nativeElement.value;
-
     this.searchResultForChannel = this.editorService.allChannel.filter((el) => {
       return el.name.toLowerCase().includes(searchValue.toLocaleLowerCase());
     });
+  }
+
+  handleEscape(event: KeyboardEvent, type: string) {
+    if (event.key === 'Escape') {
+      // Code to execute when ESC is pressed
+      this.hideBoxes();
+    } else if ((type === 'channel' && event.key === 'Backspace' && this.searchFieldChannel.nativeElement.value < 1)) {
+      // Code to execute when Backspace is pressed in the channel search field and the channel search field is empty
+      this.hideBoxes();
+    } else if ((type === 'user' && event.key === 'Backspace' && this.searchFieldUser.nativeElement.value < 1)) {
+      // Code to execute when Backspace is pressed in the user search field and the user search field is empty
+      // (event.target as HTMLInputElement).value = '';
+      // event.preventDefault();
+      this.hideBoxes();
+    }  
   }
 }

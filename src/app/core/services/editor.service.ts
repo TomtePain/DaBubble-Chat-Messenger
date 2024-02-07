@@ -1,14 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, getDoc, getDocs, updateDoc, query, where } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  query,
+  where,
+} from '@angular/fire/firestore';
 import { UserProfile } from 'src/app/core/interfaces/user-profile';
 import { environment } from 'src/environments/environment';
-import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
+import {
+  Storage,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from '@angular/fire/storage';
 import { from } from 'rxjs';
 import { UserService } from './user.service';
 import { CrudService } from './crud.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditorService {
   usersId!: Array<string>;
@@ -18,14 +32,19 @@ export class EditorService {
   newFileName: string = '';
   allChannel: Array<any> = [];
 
-  constructor(private firestore: Firestore, private storage: Storage, private userservice: UserService, public crud: CrudService) {
+  constructor(
+    private firestore: Firestore,
+    private storage: Storage,
+    private userservice: UserService,
+    public crud: CrudService
+  ) {
     this.getAllChannels();
-   }
+  }
 
   /**
    * Retrieves and populates user data for a single document identified by 'docId' from Firestore.
    *
-   * @param {string} docId - The ID of the document to retrieve data 
+   * @param {string} docId - The ID of the document to retrieve data
    */
   async subSingelData(docId: string) {
     try {
@@ -48,13 +67,6 @@ export class EditorService {
           const userDataSnapshot = await getDoc(
             doc(this.firestore, environment.userDb, uid)
           );
-
-          // Convert and append the user data to the 'usersData' array.
-          ////// CHANGED BY TOM
-          // const userData = userDataSnapshot.data() as UserProfile;
-          // if (userData) {
-          //   this.usersData.push(userData);
-          // }
         }
       }
     } catch (error) {
@@ -64,16 +76,18 @@ export class EditorService {
   }
 
   uploadDataToStore(file: any) {
-    const storageRef = ref(this.storage, `/upload/${this.userservice.userDBId}/` + this.newFileName);
+    const storageRef = ref(
+      this.storage,
+      `/upload/${this.userservice.userDBId}/` + this.newFileName
+    );
     const uploadTask = from(uploadBytes(storageRef, file));
     uploadTask.subscribe(() => {
-      getDownloadURL(storageRef).then(resp => {
+      getDownloadURL(storageRef).then((resp) => {
         this.fileUrl = resp;
         this.fileName = this.newFileName;
-      })
-    })
+      });
+    });
   }
-
 
   uploadData(file: any) {
     let counter = this.userservice.loginUser.uploadFileCounter;
@@ -84,23 +98,27 @@ export class EditorService {
   }
 
   updateUploadCounter(counter: number) {
-    const docInstance = doc(this.firestore, environment.userDb, this.userservice.userDBId as string);
+    const docInstance = doc(
+      this.firestore,
+      environment.userDb,
+      this.userservice.userDBId as string
+    );
     let updateCounter = {
-      uploadFileCounter: counter
+      uploadFileCounter: counter,
     };
     updateDoc(docInstance, updateCounter);
   }
 
   messageToSearchTerms(sentence: string): string[] {
     // Clean the sentence and remove non-word characters, except spaces
-    const messageWordsOnly = sentence.trim().replace(/[^\p{L}\p{N}\s]/gu, "");
+    const messageWordsOnly = sentence.trim().replace(/[^\p{L}\p{N}\s]/gu, '');
 
     // Convert the cleaned sentence to lowercase
     const messageLowerCase = messageWordsOnly.toLowerCase();
 
     // Split the lowercase sentence into words based on spaces
     const regex = /\s+/;
-    let array = messageLowerCase.split(regex).filter(word => word.length > 0);
+    let array = messageLowerCase.split(regex).filter((word) => word.length > 0);
 
     // Add the entire lowercase sentence as a separate element
     array.push(messageLowerCase);
@@ -113,7 +131,6 @@ export class EditorService {
     return messageLowercase;
   }
 
-
   async getAllChannels() {
     let channelsRef = collection(this.firestore, environment.channelDb);
     let selectedChannel = await getDocs(
@@ -124,10 +141,8 @@ export class EditorService {
       )
     );
 
-    selectedChannel.forEach((doc:any) => {
-      this.allChannel.push({ id: doc.id, ... doc.data() });
+    selectedChannel.forEach((doc: any) => {
+      this.allChannel.push({ id: doc.id, ...doc.data() });
     });
   }
-
-
 }

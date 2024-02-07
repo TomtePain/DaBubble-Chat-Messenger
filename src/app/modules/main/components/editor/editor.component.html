@@ -16,17 +16,17 @@
         <div>{{ item.fullName }}</div>
       </div>
     </div>
-    <input type="text" placeholder="nach User Suchen" #searchFieldUser class="search-field-user-channel" (keyup)="searchResultsForUser()">
+    <input type="text" placeholder="User suchen" #searchFieldUser class="search-field-user-channel" (keyup)="searchResultsForUser()" (keydown)="handleEscape($event, 'user')">
   </div>
 
   <div class="markt-users" *ngIf="searchMarktChannel">
     <div class="users-box">
       <div class="no-searchresults" *ngIf="searchResultForChannel.length <= 0">Es wurden leider keine Einträge zu Ihrer Suche gefunden.</div>
       <div class="user-box channel-box" *ngFor="let item of searchResultForChannel" (click)="addChannelintoMSG(item.name, item.id)">
-        <div>#{{ item.name }}</div>
+        <div># {{ item.name }}</div>
       </div>
     </div>
-    <input type="text" placeholder="nach Channel Suchen" #searchFieldChannel class="search-field-user-channel" (keyup)="searchResultsForChannel()">
+    <input type="text" placeholder="Channel suchen" #searchFieldChannel class="search-field-user-channel" (keyup)="searchResultsForChannel()" (keydown)="handleEscape($event, 'channel')">
   </div>
 
    <!-- CONTENT FOR THE USE OF @-SIGN FUNCTION!!! #######   END   ######### -->
