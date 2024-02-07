@@ -505,8 +505,6 @@ export class EditorComponent implements OnInit {
       this.hideBoxes();
     } else if ((type === 'user' && event.key === 'Backspace' && this.searchFieldUser.nativeElement.value < 1)) {
       // Code to execute when Backspace is pressed in the user search field and the user search field is empty
-      // (event.target as HTMLInputElement).value = '';
-      // event.preventDefault();
       this.hideBoxes();
     }  
   }
