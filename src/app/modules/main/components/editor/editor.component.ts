@@ -500,12 +500,21 @@ export class EditorComponent implements OnInit {
     if (event.key === 'Escape') {
       // Code to execute when ESC is pressed
       this.hideBoxes();
+      this.returnFocusToEditor();
     } else if ((type === 'channel' && event.key === 'Backspace' && this.searchFieldChannel.nativeElement.value < 1)) {
       // Code to execute when Backspace is pressed in the channel search field and the channel search field is empty
       this.hideBoxes();
+      this.returnFocusToEditor();
     } else if ((type === 'user' && event.key === 'Backspace' && this.searchFieldUser.nativeElement.value < 1)) {
       // Code to execute when Backspace is pressed in the user search field and the user search field is empty
       this.hideBoxes();
+      this.returnFocusToEditor();
     }  
+  }
+
+  returnFocusToEditor() {
+    setTimeout(() => {
+      this.keyPress.nativeElement.focus();
+    }, 0);
   }
 }
