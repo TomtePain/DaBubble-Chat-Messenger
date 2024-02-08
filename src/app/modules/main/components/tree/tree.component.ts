@@ -167,9 +167,9 @@ export class TreeComponent implements OnInit {
     this.findUserDocsIdsFromDirectMessageId(messages);
     this.getUsers();
 
-
     this.tree.userChannels = channels;
     this.dbChannels = channels;
+    
     this.tree.allChannels = channels;    
     this.updateChannels();
     this.treeControl.expandAll();
@@ -250,16 +250,23 @@ export class TreeComponent implements OnInit {
 
 
   updateChannels() {
+    // First, sort the dbChannels array so that the channel with the specific ID comes first
+    const sortedChannels = [...this.dbChannels].sort((a, b) => {
+      if (a.id === environment.mainChannel) return -1;
+      if (b.id === environment.mainChannel) return 1;
+      return 0;
+    });
+
     const updatedChannels = [
       {
         name: 'Channels',
         children: [
-        ...this.dbChannels.map
-          (channel => ({
+        ...sortedChannels.map(channel => ({
              id: channel.id, name: channel.name, img: channel.img,type:channel.type })),
         { name: 'Channels hinzufügen', img: 'assets/images/workspace-images/add_circle.svg', id: 'add' }]
       }
     ];
+    
     this.channelSource.data = updatedChannels as ChannelNode[];
     this.treeControl.expandAll();
   }
